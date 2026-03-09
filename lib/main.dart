@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/features/BottomBar/screens/bottom_bar.dart';
+import 'package:payment_app/features/home/screens/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
         primaryColor: themeColor
         
       ),
-      home: BottomBarScreen(),
+      home: HomeScreen(),
     );
       },
     );
