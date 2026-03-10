@@ -8,3 +8,4 @@ const blackColor = Colors.black;
 const whiteColor = Colors.white;
 const greyColor = Colors.grey;
 const bgColor = Color.fromARGB(255, 248, 248, 248);
+const transparent = Colors.transparent;

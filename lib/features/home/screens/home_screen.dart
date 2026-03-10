@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:payment_app/core/constants/sizedbox.dart';
@@ -6,6 +7,7 @@ import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
 import 'package:payment_app/features/home/widgets/feature_shortcut.dart';
 import 'package:payment_app/features/home/widgets/rechargeBill_shortcut.dart';
+import 'package:payment_app/features/scan/screens/scan_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,10 +19,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.dark.copyWith(
+        statusBarColor: transparent,
+        
+      ),
       child: Scaffold(
         backgroundColor: bgColor,
+        // extendBodyBehindAppBar: true,
         appBar: AppBar(
+          backgroundColor: transparent,
+          elevation: 0,
+          surfaceTintColor: transparent,
           leading: Padding(
             padding: const EdgeInsets.only(left: 16.0),
             child: CircleAvatar(
@@ -66,13 +76,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     //****************Shortcuts of the app features***************/
-                    featureShortcuts(Icons.qr_code_scanner, "Scan\n Any QR"),
-                    featureShortcuts(Icons.people_alt, "Pay\nAnyone"),
-                    featureShortcuts(Icons.account_balance, "Bank\nTransfer"),
-                    featureShortcuts(Icons.article, "Balance &\nHistory"),
+                    featureShortcuts(Icons.qr_code_scanner, "Scan\n Any QR", (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const ScanScreen()));
+                    }),
+                    featureShortcuts(Icons.people_alt, "Pay\nAnyone", (){}),
+                    featureShortcuts(Icons.account_balance, "Bank\nTransfer", (){}),
+                    featureShortcuts(Icons.article, "Balance &\nHistory", (){}),
                   ],
                 ),
-
+      
                 height30,
                 Container(
                   decoration: BoxDecoration(
@@ -234,9 +246,12 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-
+      
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const ScanScreen()));
+      
+          },
           backgroundColor: themeColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.r),
