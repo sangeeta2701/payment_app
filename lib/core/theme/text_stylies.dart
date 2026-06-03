@@ -13,5 +13,9 @@ static TextStyle blackContentTextStyle = GoogleFonts.inter( fontWeight: FontWeig
 static TextStyle greyContentTextStyle = GoogleFonts.inter( fontWeight: FontWeight.w400, color: greyColor);
 static TextStyle whiteContentTextStyle = GoogleFonts.inter( fontWeight: FontWeight.w400, color: whiteColor);
 static TextStyle blackDescriptionTextStyle = GoogleFonts.inter( fontWeight: FontWeight.w400, color: blackColor);
+static TextStyle errorTextStyle = GoogleFonts.inter( fontWeight: FontWeight.w400, color: redColor);
+static TextStyle whiteButtonTextStyle = GoogleFonts.inter( fontWeight: FontWeight.w600, color: whiteColor);
+
+
 
 }

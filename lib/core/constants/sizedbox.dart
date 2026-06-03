@@ -10,6 +10,7 @@ final height16 = SizedBox(height: 16.h,);
 final height20 = SizedBox(height: 20.h,);
 final height24 = SizedBox(height: 24.h,);
 final height30 = SizedBox(height: 30.h,);
+final height60 = SizedBox(height: 60.h,);
 
 
 //******************Constant Widths******************
