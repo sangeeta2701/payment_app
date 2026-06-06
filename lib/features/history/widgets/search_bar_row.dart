@@ -3,7 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 
 class SearchBarRow extends StatelessWidget {
-  const SearchBarRow({super.key});
+  final ValueChanged<String>? onSearchChanged; 
+
+  const SearchBarRow({
+    super.key, 
+    this.onSearchChanged, 
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +31,7 @@ class SearchBarRow extends StatelessWidget {
                   SizedBox(width: 12.w),
                   Expanded(
                     child: TextField(
+                      onChanged: onSearchChanged, 
                       decoration: InputDecoration(
                         hintText: "Search",
                         hintStyle: TextStyle(color: greyColor, fontSize: 12.sp),
@@ -44,7 +50,6 @@ class SearchBarRow extends StatelessWidget {
             icon: Icon(Icons.tune, color: Colors.black87, size: 18.sp),
             style: IconButton.styleFrom(
               backgroundColor: const Color(0xFFF5F4F9),
-              // borderRadius: BorderRadius.circular(24.r),
               padding: EdgeInsets.all(12.w),
             ),
           )
