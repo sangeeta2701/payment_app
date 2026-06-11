@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
+import 'package:payment_app/features/Pay%20Anyone/screens/pay_anyone_screen.dart';
+import 'package:payment_app/features/history/screens/history_screen.dart';
 import 'package:payment_app/features/home/widgets/feature_shortcut.dart';
 import 'package:payment_app/features/home/widgets/rechargeBill_shortcut.dart';
 import 'package:payment_app/features/scan/screens/scan_screen.dart';
@@ -79,9 +81,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     featureShortcuts(Icons.qr_code_scanner, "Scan\n Any QR", (){
                       Navigator.push(context, MaterialPageRoute(builder: (context) => const ScanScreen()));
                     }),
-                    featureShortcuts(Icons.people_alt, "Pay\nAnyone", (){}),
+                    featureShortcuts(Icons.people_alt, "Pay\nAnyone", (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const PayAnyoneScreen()));
+                    }),
                     featureShortcuts(Icons.account_balance, "Bank\nTransfer", (){}),
-                    featureShortcuts(Icons.article, "Balance &\nHistory", (){}),
+                    featureShortcuts(Icons.article, "Balance &\nHistory", (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const HistoryScreen()));
+                    }),
                   ],
                 ),
       

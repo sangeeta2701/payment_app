@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/features/Amount/screen/add_amount_screen.dart';
+import 'package:payment_app/features/home/screens/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,8 +24,8 @@ class MyApp extends StatelessWidget {
         primaryColor: themeColor
         
       ),
-      // home: HomeScreen(),
-      home: AddAmountScreen(isFromQR: false, userName: "John Doe", upiId: "john.doe@upi"),
+      home: HomeScreen(),
+      // home: AddAmountScreen(isFromQR: false, userName: "John Doe", upiId: "john.doe@upi"),
     );
       },
     );

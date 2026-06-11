@@ -45,6 +45,7 @@ dependencies:
   riverpod: ^3.2.1
   animated_bottom_navigation_bar: ^1.4.0
   intl: ^0.20.2
+  fast_contacts: ^5.0.1
 
 dev_dependencies:
   flutter_test:
