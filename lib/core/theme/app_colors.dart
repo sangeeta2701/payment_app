@@ -7,6 +7,9 @@ const themeColorLight =  Color.fromARGB(255, 160, 192, 230);
 const blackColor = Colors.black;
 const whiteColor = Colors.white;
 const greyColor = Colors.grey;
-const bgColor = Color.fromARGB(255, 248, 248, 248);
+// const bgColor = Color.fromARGB(255, 248, 248, 248);
+const bgColor = Color.fromARGB(255, 243, 243, 243);
+
 const transparent = Colors.transparent;
 const redColor =  Colors.red;
+const lightBlueColor = Color(0xFF0091FF);
