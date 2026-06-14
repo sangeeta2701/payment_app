@@ -1,12 +1,11 @@
-//updated with dynamic serch bar
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:payment_app/core/theme/text_stylies.dart'; 
-import 'package:payment_app/features/history/models/transaction_model.dart';
-import 'package:payment_app/features/history/widgets/header_section.dart';
-import 'package:payment_app/features/history/widgets/month_group_header.dart';
-import 'package:payment_app/features/history/widgets/search_bar_row.dart';
-import 'package:payment_app/features/history/widgets/transaction_item_tile.dart';
+import 'package:payment_app/core/theme/text_stylies.dart';
+import 'package:payment_app/features/history/widgets/account_horizobtal_list.dart'; 
+import '../models/transaction_model.dart';
+import '../widgets/payment_history_header.dart';
+import '../widgets/month_group_header.dart';
+import '../widgets/transaction_item_tile.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
@@ -16,49 +15,83 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  // Your unchanging master dataset template
   final List<GroupedTransactions> sampleData = [
     GroupedTransactions(
       monthYear: "June 2026",
+      summaryMeta: "Total Received \n₹140",
+      isCreditSummary: true,
       transactions: [
         TransactionModel(
           id: "1",
-          title: "ZAVE SHOPPING TEC...",
-          subtitle: "2 hours ago",
-          amount: 377.86,
+          title: "Mridul",
+          emojiSuffix: "😉",
+          dateString: "Sent on 14 Jun",
+          timestamp: "08:52 PM",
+          amount: 450.00,
           type: TransactionType.debit,
-          fallbackIcon: Icons.arrow_outward,
-          bankLogoAsset: 'assets/bank_a.png',
+          categoryTag: "Money Sent",
+          categoryBgColor: const Color(0xFFE8F5E9),
+          categoryTextColor: const Color(0xFF2E7D32),
+          categoryIcon: Icons.call_made,
+          providerLogo: "phonepe",
         ),
         TransactionModel(
           id: "2",
-          title: "Transfer to XXXXXX0123",
-          subtitle: "1 day ago",
-          amount: 600.00,
-          type: TransactionType.debit,
-          fallbackIcon: Icons.account_balance_wallet,
-          bankLogoAsset: 'assets/bank_b.png',
+          title: "Hrishitha",
+          emojiSuffix: "😉😎 Feb 10",
+          dateString: "Received on 12 Jun",
+          timestamp: "10:25 PM",
+          amount: 75.00,
+          type: TransactionType.credit,
+          categoryTag: "Money Received",
+          categoryBgColor: const Color(0xFFE8F5E9),
+          categoryTextColor: const Color(0xFF2E7D32),
+          categoryIcon: Icons.call_received,
+          providerLogo: "phonepe",
+        ),
+        
+        TransactionModel(
+          id: "3",
+          title: "Hrishitha",
+          emojiSuffix: "😉😎 Feb 10",
+          dateString: "Received on 10 Jun",
+          timestamp: "08:52 PM",
+          amount: 65.00,
+          type: TransactionType.credit,
+          categoryTag: "Money Received",
+          categoryBgColor: const Color(0xFFE8F5E9),
+          categoryTextColor: const Color(0xFF2E7D32),
+          categoryIcon: Icons.call_received,
+          providerLogo: "phonepe",
         ),
       ],
     ),
     GroupedTransactions(
       monthYear: "May 2026",
+      summaryMeta: "Total Spent\nRefresh ↻",
+      isCreditSummary: false,
       transactions: [
         TransactionModel(
           id: "3",
-          title: "Received from Boo 🌷❤️",
-          subtitle: "28 May",
-          amount: 1000.00,
+          title: "Hrishitha",
+          emojiSuffix: "😉😎 Feb 10",
+          dateString: "Received on 27 May",
+          timestamp: "10:44 PM",
+          amount: 55.00,
           type: TransactionType.credit,
-          avatarUrl: "https://img.magnific.com/free-vector/mans-face-flat-style_90220-2877.jpg?semt=ais_hybrid&w=740&q=80",
-          bankLogoAsset: 'assets/bank_a.png',
+          categoryTag: "Money Received",
+          categoryBgColor: const Color(0xFFE8F5E9),
+          categoryTextColor: const Color(0xFF2E7D32),
+          categoryIcon: Icons.call_received,
+          providerLogo: "phonepe",
         ),
       ],
     ),
   ];
 
-  // The active list variable that changes dynamically
   List<GroupedTransactions> _filteredData = [];
+  bool _isSearching = false;
+  String _searchQuery = "";
 
   @override
   void initState() {
@@ -66,81 +99,129 @@ class _HistoryScreenState extends State<HistoryScreen> {
     _filteredData = sampleData;
   }
 
-  void _filterSearch(String query) {
-    // If search text field gets cleared, reset immediately to show all items
-    if (query.isEmpty) {
-      setState(() {
+  void _handleSearchToggle(bool searching) {
+    setState(() {
+      _isSearching = searching;
+      if (!searching) {
+        _searchQuery = "";
         _filteredData = sampleData;
-      });
+      }
+    });
+  }
+
+  void _filterSearch(String query) {
+    _searchQuery = query;
+    if (query.isEmpty) {
+      setState(() => _filteredData = sampleData);
       return;
     }
 
     List<GroupedTransactions> matchedGroups = [];
-
     for (var group in sampleData) {
       final matchingTXs = group.transactions.where((tx) {
-        return tx.title.toLowerCase().contains(query.toLowerCase());
+        return tx.title.toLowerCase().contains(query.toLowerCase()) ||
+               tx.categoryTag.toLowerCase().contains(query.toLowerCase());
       }).toList();
 
       if (matchingTXs.isNotEmpty) {
         matchedGroups.add(GroupedTransactions(
           monthYear: group.monthYear,
+          summaryMeta: group.summaryMeta,
+          isCreditSummary: group.isCreditSummary,
           transactions: matchingTXs,
         ));
       }
     }
-
-    setState(() {
-      _filteredData = matchedGroups;
-    });
+    setState(() => _filteredData = matchedGroups);
   }
 
   @override
   Widget build(BuildContext context) {
+    // Top layout light blue gradient finish base
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(height: 16.h),
-            const HeaderSection(),
-            SizedBox(height: 20.h),
-            SearchBarRow(onSearchChanged: _filterSearch),
-            SizedBox(height: 24.h),
-            Expanded(
+      backgroundColor: const Color(0xFFF4F9FD),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFD0E7F9),
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          "Balance & History",
+          style: AppTextStyles.blackContentTextStyle.copyWith(
+            fontSize: 18.sp,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      body: Column(
+        children: [
+          // Top gradient layout wrapper containing Horizontal Accounts
+          Container(
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Color(0xFFD0E7F9), Color(0xFFF4F9FD)],
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                  child: Text(
+                    "Your Accounts",
+                    style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold, color: Colors.black),
+                  ),
+                ),
+                const AccountsHorizontalList(),
+                SizedBox(height: 16.h),
+              ],
+            ),
+          ),
+          
+          // Action controls header layer
+          PaymentHistoryHeader(
+            isSearching: _isSearching,
+            onSearchToggle: _handleSearchToggle,
+            onSearchChanged: _filterSearch,
+          ),
+
+          // Main history transaction ledger list view container
+          Expanded(
+            child: Container(
+              color: Colors.white,
               child: _filteredData.isEmpty 
                   ? _buildEmptyState() 
                   : _buildGroupedListView(),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  // Renders the normal list layout view
   Widget _buildGroupedListView() {
     return ListView.builder(
       itemCount: _filteredData.length,
       itemBuilder: (context, groupIndex) {
         final group = _filteredData[groupIndex];
         return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            MonthGroupHeader(title: group.monthYear),
-            ListView.separated(
+            MonthGroupHeader(
+              monthTitle: group.monthYear,
+              summaryText: group.summaryMeta,
+              isCredit: group.isCreditSummary,
+            ),
+            ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: group.transactions.length,
-              separatorBuilder: (context, index) => Divider(
-                color: Colors.grey.shade100,
-                height: 1,
-                indent: 72.w,
-              ),
               itemBuilder: (context, txIndex) {
-                return TransactionItemTile(
-                  transaction: group.transactions[txIndex],
-                );
+                return TransactionItemTile(transaction: group.transactions[txIndex]);
               },
             ),
           ],
@@ -149,23 +230,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
     );
   }
 
-  // Renders your visual message when nothing matches the input keyword
   Widget _buildEmptyState() {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.receipt_long_outlined,
-            size: 60.sp,
-            color: Colors.grey.shade300,
-          ),
-          SizedBox(height: 16.h),
-          Text(
-            "No transaction available",
-            style: AppTextStyles.greyContentTextStyle.copyWith(fontSize: 14.sp),
-          ),
-        ],
+      child: Text(
+        "No matching transaction items found.",
+        style: AppTextStyles.greyContentTextStyle.copyWith(fontSize: 13.sp),
       ),
     );
   }

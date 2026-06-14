@@ -5,28 +5,43 @@ enum TransactionType { debit, credit }
 class TransactionModel {
   final String id;
   final String title;
-  final String subtitle; // e.g., "2 hours ago", "28 May"
+  final String? emojiSuffix;
+  final String dateString;
+  final String timestamp;
   final double amount;
   final TransactionType type;
-  final String? avatarUrl; // For contacts with images
-  final IconData? fallbackIcon; // For generic system/merchant icons
-  final String bankLogoAsset; // Path to the small bank logo
+  final String categoryTag; // e.g., "Money Received", "Shopping"
+  final Color categoryBgColor;
+  final Color categoryTextColor;
+  final IconData? categoryIcon;
+  final String providerLogo; // PhonePe, SBI badge identifiers
 
   TransactionModel({
     required this.id,
     required this.title,
-    required this.subtitle,
+    this.emojiSuffix,
+    required this.dateString,
+    required this.timestamp,
     required this.amount,
     required this.type,
-    this.avatarUrl,
-    this.fallbackIcon,
-    required this.bankLogoAsset,
+    required this.categoryTag,
+    required this.categoryBgColor,
+    required this.categoryTextColor,
+    this.categoryIcon,
+    required this.providerLogo,
   });
 }
 
 class GroupedTransactions {
-  final String monthYear; // e.g., "June 2026"
+  final String monthYear;
+  final String summaryMeta; // e.g., "Total Received ₹140" or "Total Spent"
+  final bool isCreditSummary;
   final List<TransactionModel> transactions;
 
-  GroupedTransactions({required this.monthYear, required this.transactions});
+  GroupedTransactions({
+    required this.monthYear,
+    required this.summaryMeta,
+    required this.isCreditSummary,
+    required this.transactions,
+  });
 }
