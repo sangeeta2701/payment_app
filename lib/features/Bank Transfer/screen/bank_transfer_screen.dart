@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
+import 'package:payment_app/features/Pay%20Anyone/screens/pay_anyone_screen.dart';
 
 // Modular Child Imports
 import '../widgets/transfer_option_card.dart';
@@ -67,7 +68,9 @@ class BankTransferScreen extends StatelessWidget {
                       iconColor: lightBlueColor,
                       title: "Transfer to UPI ID",
                       subtitle: "Send money to Gpay, Phonepe, Bhim or any UPI app",
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const PayAnyoneScreen()));
+                      },
                     ),
               ),
               SizedBox(height: 16.h),

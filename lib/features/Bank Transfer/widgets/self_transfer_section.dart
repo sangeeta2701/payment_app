@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
+import 'package:payment_app/features/Add%20Bank/screen/select_bank_screen.dart';
 
 class SelfTransferSection extends StatelessWidget {
   const SelfTransferSection({super.key});
@@ -92,7 +93,9 @@ class SelfTransferSection extends StatelessWidget {
             
             // Add Another Option Trigger Row
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SelectBankScreen(),));
+              },
               child: Row(
                 children: [
                   SizedBox(width: 8.w),
