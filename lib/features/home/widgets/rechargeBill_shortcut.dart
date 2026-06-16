@@ -4,13 +4,16 @@ import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
 
-Widget rechargeBillShortcuts(IconData icon, String title) {
-    return Column(
-      
-                children: [
-                 Icon(icon, color: themeColor,size: 16.h,),
-                  height4,
-                  Text(title, style:AppTextStyles. blackContentTextStyle.copyWith(fontSize: 12.sp),textAlign: TextAlign.center,)
-                ],
-              );
+Widget rechargeBillShortcuts(IconData icon, String title, VoidCallback onTap) {
+    return InkWell(
+      onTap: onTap,
+      child: Column(
+        
+                  children: [
+                   Icon(icon, color: themeColor,size: 16.h,),
+                    height4,
+                    Text(title, style:AppTextStyles. blackContentTextStyle.copyWith(fontSize: 12.sp,height: 1.2,),textAlign: TextAlign.center,)
+                  ],
+                ),
+    );
   }

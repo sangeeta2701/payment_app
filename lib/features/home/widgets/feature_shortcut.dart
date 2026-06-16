@@ -16,7 +16,7 @@ Widget featureShortcuts(IconData icon, String title, VoidCallback onTap) {
                       child: Icon(icon, color: whiteColor,size: 16.h,),
                     ),
                     height4,
-                    Text(title, style: AppTextStyles.blackContentTextStyle.copyWith(fontSize: 12.sp),textAlign: TextAlign.center,)
+                    Text(title, style: AppTextStyles.blackContentTextStyle.copyWith(fontSize: 12.sp,height: 1.2,),textAlign: TextAlign.center,)
                   ],
                 ),
     );

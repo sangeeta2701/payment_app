@@ -6,6 +6,7 @@ import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
 import 'package:payment_app/features/Bank%20Transfer/screen/bank_transfer_screen.dart';
+import 'package:payment_app/features/Mobile%20Recharge/screens/mobile_rechage_screen.dart';
 import 'package:payment_app/features/Pay%20Anyone/screens/pay_anyone_screen.dart';
 import 'package:payment_app/features/history/screens/history_screen.dart';
 import 'package:payment_app/features/home/widgets/feature_shortcut.dart';
@@ -121,15 +122,26 @@ class _HomeScreenState extends State<HomeScreen> {
                             rechargeBillShortcuts(
                               Icons.phone_android_outlined,
                               "Mobile\nRecharge",
+                              () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => const MobileRechargeScreen()));
+                              }
                             ),
-                            rechargeBillShortcuts(Icons.tv, "DTH\nRecharge"),
+                            rechargeBillShortcuts(Icons.tv, "DTH\nRecharge", () {
+                              // Handle tap event for DTH Recharge
+                            }),
                             rechargeBillShortcuts(
                               Icons.lightbulb_outline,
                               "Electricity\nBill",
+                              () {
+                                // Handle tap event for Electricity Bill
+                              }
                             ),
                             rechargeBillShortcuts(
                               Icons.water_drop_outlined,
                               "Water\nBill",
+                              () {
+                                // Handle tap event for Water Bill
+                              }
                             ),
                           ],
                         ),
@@ -184,18 +196,30 @@ class _HomeScreenState extends State<HomeScreen> {
                             rechargeBillShortcuts(
                               Icons.flight_outlined,
                               "Flight",
+                              () {
+                                // Handle tap event for Flight
+                              }
                             ),
                             rechargeBillShortcuts(
                               Icons.train_outlined,
                               "Train",
+                              () {
+                                // Handle tap event for Train
+                              }
                             ),
                             rechargeBillShortcuts(
                               Icons.directions_bus_outlined,
                               "Bus",
+                              () {
+                                // Handle tap event for Bus
+                              }
                             ),
                             rechargeBillShortcuts(
                               Icons.domain_outlined,
                               "Hotels",
+                              () {
+                                // Handle tap event for Hotels
+                              }
                             ),
                           ],
                         ),
@@ -230,18 +254,30 @@ class _HomeScreenState extends State<HomeScreen> {
                             rechargeBillShortcuts(
                               Icons.currency_rupee_outlined,
                               "Loan",
+                              () {
+                                // Handle tap event for Loan
+                              }
                             ),
                             rechargeBillShortcuts(
                               Icons.directions_car_outlined,
                               "Car\nInsurance",
+                              () {
+                                // Handle tap event for Car Insurance
+                              }
                             ),
                             rechargeBillShortcuts(
                               Icons.monetization_on_outlined,
                               "Save in\nGolds",
+                              () {
+                                // Handle tap event for Golds
+                              }
                             ),
                             rechargeBillShortcuts(
                               Icons.bar_chart_outlined,
                               "Stocks",
+                              () {
+                                // Handle tap event for Stocks
+                              }
                             ),
                           ],
                         ),
