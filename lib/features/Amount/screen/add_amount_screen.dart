@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
-import 'package:payment_app/features/Pin/screens/enter_pin_screen.dart';
 
 class AddAmountScreen extends StatefulWidget {
   final bool isFromQR;
