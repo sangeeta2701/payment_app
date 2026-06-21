@@ -76,6 +76,8 @@ class SelfTransferSection extends StatelessWidget {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
+                      SizedBox(height: 4.h),
+                      
                       GestureDetector(
                         onTap: () {}, // Trigger Balance enquiry sheet
                         child: Text(
