@@ -46,6 +46,8 @@ dependencies:
   animated_bottom_navigation_bar: ^1.4.0
   intl: ^0.20.2
   fast_contacts: ^5.0.1
+  firebase_core: ^2.32.0
+  firebase_auth: ^4.19.7
 
 dev_dependencies:
   flutter_test:
