@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
-import 'package:payment_app/features/auth/screens/otp_screen.dart';
+import 'package:payment_app/features/Auth/screens/otp_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

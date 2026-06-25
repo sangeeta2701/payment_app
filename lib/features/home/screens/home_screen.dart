@@ -9,9 +9,9 @@ import 'package:payment_app/features/Bank%20Transfer/screen/bank_transfer_screen
 import 'package:payment_app/features/Mobile%20Recharge/screens/mobile_rechage_screen.dart';
 import 'package:payment_app/features/Pay%20Anyone/screens/pay_anyone_screen.dart';
 import 'package:payment_app/features/history/screens/history_screen.dart';
-import 'package:payment_app/features/home/widgets/add_bank_bottom_sheet.dart';
-import 'package:payment_app/features/home/widgets/feature_shortcut.dart';
-import 'package:payment_app/features/home/widgets/rechargeBill_shortcut.dart';
+import 'package:payment_app/features/Home/widgets/add_bank_bottom_sheet.dart';
+import 'package:payment_app/features/Home/widgets/feature_shortcut.dart';
+import 'package:payment_app/features/Home/widgets/rechargeBill_shortcut.dart';
 import 'package:payment_app/features/scan/screens/scan_screen.dart';
 
 class HomeScreen extends StatefulWidget {

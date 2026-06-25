@@ -5,7 +5,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
 import 'package:payment_app/core/utils/app_snackbar.dart';
-import 'package:payment_app/features/history/screens/history_screen.dart';
+import 'package:payment_app/features/History/screens/history_screen.dart';
 import 'package:payment_app/features/scan/widgets/scanShortcuts.dart';
 
 class ScanScreen extends StatefulWidget {

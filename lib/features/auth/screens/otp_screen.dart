@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
-import 'package:payment_app/features/home/screens/home_screen.dart';
+import 'package:payment_app/features/Home/screens/home_screen.dart';
 
 class OtpScreen extends StatefulWidget {
   final String phoneNumber;

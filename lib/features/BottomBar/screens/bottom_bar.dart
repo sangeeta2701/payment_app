@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/features/history/screens/history_screen.dart';
-import 'package:payment_app/features/home/screens/home_screen.dart';
+import 'package:payment_app/features/Home/screens/home_screen.dart';
 import 'package:payment_app/features/scan/screens/scan_screen.dart';
 
 class BottomBarScreen extends StatefulWidget {
