@@ -8,6 +8,7 @@ import 'package:payment_app/core/theme/text_stylies.dart';
 import 'package:payment_app/features/Bank%20Transfer/screen/bank_transfer_screen.dart';
 import 'package:payment_app/features/Mobile%20Recharge/screens/mobile_rechage_screen.dart';
 import 'package:payment_app/features/Pay%20Anyone/screens/pay_anyone_screen.dart';
+import 'package:payment_app/features/Profile/screen/my_qr_profile_screen.dart';
 import 'package:payment_app/features/history/screens/history_screen.dart';
 import 'package:payment_app/features/Home/widgets/add_bank_bottom_sheet.dart';
 import 'package:payment_app/features/Home/widgets/feature_shortcut.dart';
@@ -46,15 +47,20 @@ class _HomeScreenState extends State<HomeScreen> {
           surfaceTintColor: transparent,
           leading: Padding(
             padding: const EdgeInsets.only(left: 16.0),
-            child: CircleAvatar(
-              radius: 20.r,
-              backgroundColor: themeColorLight,
-              child: Text(
-                "SG",
-                style: GoogleFonts.inter(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w400,
-                  color: themeColor,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const MyQrProfileScreen()));
+              },
+              child: CircleAvatar(
+                radius: 20.r,
+                backgroundColor: themeColorLight,
+                child: Text(
+                  "SG",
+                  style: GoogleFonts.inter(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                    color: themeColor,
+                  ),
                 ),
               ),
             ),
