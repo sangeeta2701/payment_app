@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
-import 'package:payment_app/features/History/widgets/account_horizobtal_list.dart'; 
+import 'package:payment_app/features/History/widgets/account_horizobtal_list.dart';
 import '../models/transaction_model.dart';
 import '../widgets/payment_history_header.dart';
 import '../widgets/month_group_header.dart';
@@ -49,7 +49,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           categoryIcon: Icons.call_received,
           providerLogo: "phonepe",
         ),
-        
+
         TransactionModel(
           id: "3",
           title: "Hrishitha",
@@ -120,16 +120,18 @@ class _HistoryScreenState extends State<HistoryScreen> {
     for (var group in sampleData) {
       final matchingTXs = group.transactions.where((tx) {
         return tx.title.toLowerCase().contains(query.toLowerCase()) ||
-               tx.categoryTag.toLowerCase().contains(query.toLowerCase());
+            tx.categoryTag.toLowerCase().contains(query.toLowerCase());
       }).toList();
 
       if (matchingTXs.isNotEmpty) {
-        matchedGroups.add(GroupedTransactions(
-          monthYear: group.monthYear,
-          summaryMeta: group.summaryMeta,
-          isCreditSummary: group.isCreditSummary,
-          transactions: matchingTXs,
-        ));
+        matchedGroups.add(
+          GroupedTransactions(
+            monthYear: group.monthYear,
+            summaryMeta: group.summaryMeta,
+            isCreditSummary: group.isCreditSummary,
+            transactions: matchingTXs,
+          ),
+        );
       }
     }
     setState(() => _filteredData = matchedGroups);
@@ -143,6 +145,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
       appBar: AppBar(
         backgroundColor: const Color(0xFFD0E7F9),
         elevation: 0,
+        scrolledUnderElevation: 0,
+        surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
@@ -171,10 +175,17 @@ class _HistoryScreenState extends State<HistoryScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 8.h,
+                  ),
                   child: Text(
                     "Your Accounts",
-                    style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold, color: Colors.black),
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
                 const AccountsHorizontalList(),
@@ -182,7 +193,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               ],
             ),
           ),
-          
+
           // Action controls header layer
           PaymentHistoryHeader(
             isSearching: _isSearching,
@@ -194,8 +205,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
           Expanded(
             child: Container(
               color: Colors.white,
-              child: _filteredData.isEmpty 
-                  ? _buildEmptyState() 
+              child: _filteredData.isEmpty
+                  ? _buildEmptyState()
                   : _buildGroupedListView(),
             ),
           ),
@@ -221,7 +232,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
               physics: const NeverScrollableScrollPhysics(),
               itemCount: group.transactions.length,
               itemBuilder: (context, txIndex) {
-                return TransactionItemTile(transaction: group.transactions[txIndex]);
+                return TransactionItemTile(
+                  transaction: group.transactions[txIndex],
+                );
               },
             ),
           ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 
 class MyNumberSection extends StatelessWidget {
@@ -24,7 +25,7 @@ class MyNumberSection extends StatelessWidget {
               style: TextStyle(color: whiteColor, fontWeight: FontWeight.bold, fontSize: 13.sp),
             ),
           ),
-          SizedBox(width: 14.w),
+          width12,
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,12 +34,13 @@ class MyNumberSection extends StatelessWidget {
                   "Sangeeta Gupta",
                   style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: blackColor),
                 ),
-                SizedBox(height: 2.h),
+                
+                height4,
                 Text(
                   "6266520680",
                   style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade700, fontWeight: FontWeight.w500),
                 ),
-                SizedBox(height: 6.h),
+                height4,
                 Text(
                   "Added on 19 Mar 2025",
                   style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade500, fontWeight: FontWeight.w500),

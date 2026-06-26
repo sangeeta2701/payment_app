@@ -300,7 +300,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                height30,
+                height60,
               ],
             ),
           ),

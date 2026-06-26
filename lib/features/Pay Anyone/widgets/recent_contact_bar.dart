@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
 import '../model/contact_model.dart';
 
@@ -62,7 +63,7 @@ class RecentContactsBar extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(height: 6.h),
+                      height8,
                       Text(
                         firstName,
                         maxLines: 1,

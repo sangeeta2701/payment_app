@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 
 class TransactionBubble extends StatelessWidget {
   final double amount;
@@ -41,7 +42,7 @@ class TransactionBubble extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 4.h),
+            height4,
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [

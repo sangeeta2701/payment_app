@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 
 class UpiAllowanceBanner extends StatelessWidget {
@@ -21,7 +22,7 @@ class UpiAllowanceBanner extends StatelessWidget {
             backgroundColor: Colors.orange,
             child: const Icon(Icons.priority_high, size: 12, color: Colors.white),
           ),
-          SizedBox(width: 10.w),
+          width8,
           Expanded(
             child: Text(
               "Receive money on Paytm from\nall UPI apps",

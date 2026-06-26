@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 
 class PaymentHistoryHeader extends StatelessWidget {
   final bool isSearching;
@@ -53,7 +54,7 @@ class PaymentHistoryHeader extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width: 8.w),
+            width8
           ],
           IconButton(
             icon: const Icon(Icons.tune, color: Colors.black87),

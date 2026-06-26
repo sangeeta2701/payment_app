@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/features/Pay%20Anyone/model/contact_model.dart';
 
 
@@ -35,7 +36,7 @@ class PaymentAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
           ),
-          SizedBox(width: 12.w),
+          width12,
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,7 +45,7 @@ class PaymentAppBar extends StatelessWidget implements PreferredSizeWidget {
                   contact.displayName,
                   style: TextStyle(color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.w600),
                 ),
-                SizedBox(height: 2.h),
+                height4,
                 Text(
                   contact.phoneNumber,
                   style: TextStyle(color: Colors.grey, fontSize: 11.sp),

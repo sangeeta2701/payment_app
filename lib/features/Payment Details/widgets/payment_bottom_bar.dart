@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 
 class PaymentBottomBar extends StatelessWidget {
   const PaymentBottomBar({super.key});
@@ -37,7 +38,7 @@ class PaymentBottomBar extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: 12.w),
+          width12,
           ElevatedButton(
             onPressed: () {
               // Proceed with payment sheet execution flow

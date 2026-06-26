@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 
 class OffersBanner extends StatelessWidget {
@@ -17,7 +18,7 @@ class OffersBanner extends StatelessWidget {
       child: Row(
         children: [
           Icon(Icons.local_offer, color: const Color(0xFF00875A), size: 18.sp),
-          SizedBox(width: 8.w),
+          width8,
           Expanded(
             child: Text(
               "$offerCount offers available for you",

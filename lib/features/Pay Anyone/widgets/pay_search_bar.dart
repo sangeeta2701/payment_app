@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
 
 class PaySearchBar extends StatelessWidget {
@@ -18,7 +19,7 @@ class PaySearchBar extends StatelessWidget {
       child: Row(
         children: [
           Icon(Icons.search, color: Colors.grey.shade600, size: 20.sp),
-          SizedBox(width: 10.w),
+          width8,
           Expanded(
             child: TextField(
               onChanged: onChanged,

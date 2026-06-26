@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/features/Mobile%20Recharge/widgets/contact_list_section.dart';
 import 'package:payment_app/features/Mobile%20Recharge/widgets/quick_rechage_section.dart';
@@ -14,12 +15,13 @@ class MobileRechargeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
         backgroundColor: bgColor,
         elevation: 0,
+        scrolledUnderElevation: 0,
+        surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: blackColor),
           onPressed: () => Navigator.pop(context),
@@ -39,42 +41,54 @@ class MobileRechargeScreen extends StatelessWidget {
                   color: const Color(0xFF1F1F1F),
                 ),
               ),
-              SizedBox(height: 14.h),
-              
+              height16,
+
               // 1. Promo Offers Ribbon
               const OffersBanner(offerCount: 26),
-              SizedBox(height: 14.h),
-              
+              height16,
+
               // 2. Main Search Input Textbox
               const ContactSearchField(),
-              SizedBox(height: 20.h),
-              
+              height20,
+
               // 3. Quick Data Recharges Header & Row
               Text(
                 "Quick Data Recharges",
-                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: blackColor),
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                  color: blackColor,
+                ),
               ),
-              SizedBox(height: 10.h),
+              height8,
               const QuickRechargesSection(),
-              SizedBox(height: 20.h),
-              
+              height20,
+
               // 4. Primary Personal Number Segment
               Text(
                 "My Number",
-                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: blackColor),
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                  color: blackColor,
+                ),
               ),
-              SizedBox(height: 10.h),
+              height8,
               const MyNumberSection(),
-              SizedBox(height: 20.h),
-              
+              height20,
+
               // 5. Phone Contacts Directory List
               Text(
                 "My Contacts",
-                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: blackColor),
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                  color: blackColor,
+                ),
               ),
-              SizedBox(height: 10.h),
+              height8,
               const ContactsListSection(),
-              SizedBox(height: 20.h),
+              height20,
             ],
           ),
         ),

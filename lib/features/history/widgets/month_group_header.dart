@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 
 class MonthGroupHeader extends StatelessWidget {
   final String monthTitle;
@@ -32,7 +33,7 @@ class MonthGroupHeader extends StatelessWidget {
                 summaryText.split('\n')[0],
                 style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade600, fontWeight: FontWeight.w500),
               ),
-              SizedBox(width: 4.w),
+              width4,
               Text(
                 summaryText.split('\n').length > 1 ? summaryText.split('\n')[1] : "",
                 style: TextStyle(
@@ -42,7 +43,7 @@ class MonthGroupHeader extends StatelessWidget {
                 ),
               ),
               if (isCredit) ...[
-                SizedBox(width: 4.w),
+                width4,
                 const Icon(Icons.chevron_right, size: 16, color: Colors.blue),
               ]
             ],

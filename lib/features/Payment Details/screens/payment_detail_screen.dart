@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
+import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/features/Pay%20Anyone/model/contact_model.dart';
 import '../widgets/payment_app_bar.dart';
 import '../widgets/transaction_bubble.dart';
@@ -41,7 +43,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: whiteColor,
       appBar: PaymentAppBar(contact: widget.contact),
       body: Column(
         children: [
@@ -93,7 +95,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                 color: const Color(0xFF1E1A3A),
               ),
             ),
-            SizedBox(height: 16.h),
+            height16,
             Text(
               "Say hello to ${widget.contact.displayName}",
               textAlign: TextAlign.center,
@@ -103,7 +105,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                 color: Colors.black87,
               ),
             ),
-            SizedBox(height: 6.h),
+            height8,
             Text(
               "Initiate a secure transfer directly to their verified bank routing address.",
               textAlign: TextAlign.center,

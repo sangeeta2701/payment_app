@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 
 class SearchBarRow extends StatelessWidget {
@@ -44,7 +45,7 @@ class SearchBarRow extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: 12.w),
+          width12,
           IconButton(
             onPressed: () {},
             icon: Icon(Icons.tune, color: Colors.black87, size: 18.sp),

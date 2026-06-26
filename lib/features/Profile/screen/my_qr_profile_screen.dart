@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
 import 'package:payment_app/features/Profile/widgets/linked_bank_selector.dart';
@@ -33,7 +34,7 @@ class MyQrProfileScreen extends StatelessWidget {
             icon: const Icon(Icons.notifications_none_outlined, color: Colors.black87),
             onPressed: () {},
           ),
-          SizedBox(width: 8.w),
+          width8,
         ],
       ),
       body: SafeArea(
@@ -66,7 +67,8 @@ class MyQrProfileScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 16.h),
+              
+              height16,
 
               // 2. User dynamic text header block
               const UserProfileHeader(
@@ -78,22 +80,22 @@ class MyQrProfileScreen extends StatelessWidget {
 
               // 3. Status warning prompt action banner
               const UpiAllowanceBanner(),
-              SizedBox(height: 16.h),
+              height16,
 
               // 4. Center QR graphic card frame container
               const QrDisplayCard(qrPayloadData: "upi://pay?pa=6266520680@paytm&pn=Sangeeta%20Gupta"),
-              SizedBox(height: 16.h),
+              height16,
 
               // 5. Active underlying bank metadata connector
               const LinkedBankSelector(
                 bankName: "State Bank Of India",
                 accountSuffix: "0106",
               ),
-              SizedBox(height: 16.h),
+              height16,
 
               // 6. Action Share row controls buttons
               const QrActionControls(),
-              SizedBox(height: 16.h),
+              height16,
               
               // Bottom Promotional Voucher block match
               Container(
@@ -114,7 +116,7 @@ class MyQrProfileScreen extends StatelessWidget {
                           Text("EPIC GETAWAYS SALE", 
                           style: AppTextStyles.blackContentTextStyle.copyWith(fontSize: 10.sp, height:1.2)
                           ),
-                          SizedBox(height: 4.h),
+                          height4,
                           Text("Get 20% off on\ntravel bookings", style: AppTextStyles.whiteContentTextStyle.copyWith(fontSize: 13.sp, height: 1.0)),
                         ],
                       ),
@@ -134,7 +136,7 @@ class MyQrProfileScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 24.h),
+              height24
             ],
           ),
         ),

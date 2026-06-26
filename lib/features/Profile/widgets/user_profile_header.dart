@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
 
@@ -39,7 +40,7 @@ class UserProfileHeader extends StatelessWidget {
             )
           ],
         ),
-        SizedBox(width: 14.w),
+        width12,
         
         // Context Name Details
         Expanded(
@@ -58,7 +59,7 @@ class UserProfileHeader extends StatelessWidget {
                   ]
                 ],
               ),
-              SizedBox(height: 2.h),
+              height4,
               Row(
                 children: [
                   Text(
@@ -66,7 +67,7 @@ class UserProfileHeader extends StatelessWidget {
                     // style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600, fontWeight: FontWeight.w500),
                     style: AppTextStyles.greyContentTextStyle.copyWith(fontSize: 12.sp, fontWeight: FontWeight.w500),
                   ),
-                  SizedBox(width: 6.w),
+                  width4,
                   GestureDetector(
                     onTap: () {
                       Clipboard.setData(ClipboardData(text: upiId));

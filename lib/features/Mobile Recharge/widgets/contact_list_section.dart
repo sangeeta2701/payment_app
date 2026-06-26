@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fast_contacts/fast_contacts.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
@@ -187,9 +188,9 @@ class _ContactsListSectionState extends State<ContactsListSection> {
       child: Column(
         children: [
           Icon(icon, size: 36.sp, color: greyColor),
-          SizedBox(height: 8.h),
+          height8,
           Text(message, textAlign: TextAlign.center, style: AppTextStyles.greyContentTextStyle.copyWith(fontSize: 12.sp)),
-          if (action != null) ...[SizedBox(height: 4.h), action],
+          if (action != null) ...[height4, action],
         ],
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 
 class LinkedBankSelector extends StatelessWidget {
@@ -29,7 +30,7 @@ class LinkedBankSelector extends StatelessWidget {
             decoration: const BoxDecoration(color: themeColor, shape: BoxShape.circle),
             child: const Icon(Icons.account_balance, color: whiteColor, size: 14),
           ),
-          SizedBox(width: 12.w),
+          width12,
           
           Expanded(
             child: Text(

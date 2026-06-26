@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 
 class QuickRechargesSection extends StatelessWidget {
@@ -28,7 +29,7 @@ class QuickRechargesSection extends StatelessWidget {
                   backgroundColor: themeColor,
                   child: const Text("Jio", style: TextStyle(color: whiteColor, fontSize: 9, fontWeight: FontWeight.bold)),
                 ),
-                SizedBox(width: 8.w),
+                width8,
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -37,13 +38,14 @@ class QuickRechargesSection extends StatelessWidget {
                       "Sangeeta Gupta",
                       style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold, color: blackColor),
                     ),
+                    height4,
                     Text(
                       "1 GB for ₹19",
                       style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w600, color: blackColor),
                     ),
                   ],
                 ),
-                SizedBox(width: 4.w),
+                width4,
                 Icon(Icons.chevron_right, size: 16.sp, color: Colors.grey.shade600),
               ],
             ),

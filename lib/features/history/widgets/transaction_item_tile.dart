@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 import '../models/transaction_model.dart';
 
 class TransactionItemTile extends StatelessWidget {
@@ -25,7 +26,7 @@ class TransactionItemTile extends StatelessWidget {
               style: TextStyle(color: const Color(0xFF673AB7), fontWeight: FontWeight.bold, fontSize: 14.sp),
             ),
           ),
-          SizedBox(width: 12.w),
+          width12,
 
           // Core Data details section
           Expanded(
@@ -41,7 +42,7 @@ class TransactionItemTile extends StatelessWidget {
                   "${transaction.dateString}, ${transaction.timestamp}",
                   style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600),
                 ),
-                SizedBox(height: 6.h),
+                width4,
                 
                 // Functional Categorization Badge Pill
                 Container(
@@ -80,7 +81,7 @@ class TransactionItemTile extends StatelessWidget {
                   color: transaction.type == TransactionType.credit ? const Color(0xFF00875A) : Colors.black,
                 ),
               ),
-              SizedBox(height: 8.h),
+              height8,
               Row(
                 children: [
                   Text("To ", style: TextStyle(fontSize: 11.sp, color: Colors.grey)),

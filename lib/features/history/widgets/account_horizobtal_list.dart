@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 
 class AccountsHorizontalList extends StatelessWidget {
@@ -25,7 +26,7 @@ class AccountsHorizontalList extends StatelessWidget {
               child: Icon(Icons.account_balance, size: 14, color: Color(0xFF0066C4)),
             ),
           ),
-          SizedBox(width: 12.w),
+          width12,
           
           // Card 2: UPI Lite Fast Account card
           _buildAccountCard(
@@ -39,7 +40,7 @@ class AccountsHorizontalList extends StatelessWidget {
               child: Icon(Icons.flash_on, size: 14, color: Colors.white),
             ),
           ),
-          SizedBox(width: 12.w),
+          width12,
           
           // Card 3: Paytm Bank / Secondary mock container element
           Container(

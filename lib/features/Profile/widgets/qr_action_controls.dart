@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 
 class QrActionControls extends StatelessWidget {
@@ -46,7 +47,7 @@ class QrActionControls extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, size: 18.sp, color: const Color(0xFF2C3E50)),
-            SizedBox(width: 8.w),
+            width8,
             Text(
               label,
               style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.bold, color: const Color(0xFF2C3E50)),
