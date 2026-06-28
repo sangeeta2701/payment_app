@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
+import 'package:payment_app/features/Pin/screens/enter_pin_screen.dart';
 
 class AddAmountScreen extends StatefulWidget {
   final bool isFromQR;
@@ -212,6 +213,7 @@ class _AddAmountScreenState extends State<AddAmountScreen> {
                 height: 52.h,
                 child: ElevatedButton(
                   onPressed: isButtonDisabled ? null : () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => EnterPinScreen()));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: themeColor,

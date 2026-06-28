@@ -109,7 +109,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
 import 'package:payment_app/features/Add%20Bank/models/bankModel.dart';
-import 'package:payment_app/features/Add%20Bank/screen/bank_notifier.dart';
+import 'package:payment_app/features/Add%20Bank/providers/bank_notifier.dart';
 
 class AccountVerificationSheet extends ConsumerWidget {
   final BankModel selectedBank;
