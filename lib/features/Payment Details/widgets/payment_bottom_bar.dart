@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:payment_app/core/constants/sizedbox.dart';
+import 'package:payment_app/core/theme/text_stylies.dart';
 
 class PaymentBottomBar extends StatelessWidget {
   const PaymentBottomBar({super.key});
@@ -31,7 +32,7 @@ class PaymentBottomBar extends StatelessWidget {
               child: TextField(
                 decoration: InputDecoration(
                   hintText: "Message or amount",
-                  hintStyle: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                  hintStyle: AppTextStyles.greyContentTextStyle.copyWith(fontSize: 14.sp),
                   border: InputBorder.none,
                   isDense: true,
                 ),
@@ -53,11 +54,7 @@ class PaymentBottomBar extends StatelessWidget {
             ),
             child: Text(
               "Pay",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.bold,
-              ),
+              style: AppTextStyles.whiteButtonTextStyle.copyWith(fontSize: 14.sp, fontWeight: FontWeight.w600),
             ),
           ),
         ],
