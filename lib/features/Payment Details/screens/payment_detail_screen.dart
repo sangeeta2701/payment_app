@@ -33,10 +33,12 @@ class PaymentDetailsScreen extends ConsumerWidget {
               data: (transactions) {
                 // If the stream returns an empty list array from Firestore
                 if (transactions.isEmpty) {
-                  return  Center(
+                  return Center(
                     child: Text(
                       "No transaction history yet.",
-                      style: AppTextStyles.greyContentTextStyle.copyWith(fontSize: 14.sp),
+                      style: AppTextStyles.greyContentTextStyle.copyWith(
+                        fontSize: 14.sp,
+                      ),
                     ),
                   );
                 }
@@ -78,17 +80,36 @@ class PaymentDetailsScreen extends ConsumerWidget {
                 ),
                 elevation: 0,
               ),
+
+              // onPressed: () {
+              //   Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => AddAmountScreen(
+              //         isFromQR: false,
+              //         userName: "Sanggeta",
+              //         upiId: "sanggeta@upi",
+              //       ),
+              //     ),
+              //   );
+              //   PaymentService.executeSecureTransaction(
+              //     targetPhone: contact.phoneNumber,
+              //     paymentAmount: 50.0,
+              //     transactionType: 'sent',
+              //   );
+              // },
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => AddAmountScreen(
                       isFromQR: false,
-                      userName: "Sanggeta",
-                      upiId: "sanggeta@upi",
+                      userName: contact.displayName,
+                      upiId: '${contact.phoneNumber}@payapp',
                     ),
                   ),
                 );
+
                 PaymentService.executeSecureTransaction(
                   targetPhone: contact.phoneNumber,
                   paymentAmount: 50.0,
