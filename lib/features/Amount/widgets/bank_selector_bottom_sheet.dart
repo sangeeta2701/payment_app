@@ -12,7 +12,8 @@ import 'bank_account_tile.dart';
 class BankSelectorBottomSheet extends ConsumerStatefulWidget {
   final double amountToPay;
   final String userName;
-  const BankSelectorBottomSheet({super.key, required this.amountToPay, required this.userName });
+  final String upiId;
+  const BankSelectorBottomSheet({super.key, required this.amountToPay, required this.userName, required this.upiId});
 
   @override
   ConsumerState<BankSelectorBottomSheet> createState() => _BankSelectorBottomSheetState();
@@ -119,7 +120,7 @@ class _BankSelectorBottomSheetState extends ConsumerState<BankSelectorBottomShee
           ? null
           : () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => EnterPinScreen(userName: widget.userName,amountToPay: widget.amountToPay,)));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => EnterPinScreen(userName: widget.userName,amountToPay: widget.amountToPay,upiId: widget.upiId,)));
             },
       child: Text(
         "Proceed Securely • ₹${amount.toStringAsFixed(0)}",

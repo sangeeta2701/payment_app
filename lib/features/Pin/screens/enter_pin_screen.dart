@@ -1,28 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart'; 
 import 'package:intl/intl.dart';
 import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
 import 'package:payment_app/features/Pin/widgest/pin_dots_indicator.dart';
 import 'package:payment_app/features/Pin/widgest/pin_keypad.dart';
+import 'package:payment_app/features/Transactions/providers/transaction_notifier.dart';
+import 'package:payment_app/features/Transactions/screen/transaction_details_screen.dart';
 
 
-class EnterPinScreen extends StatefulWidget {
+class EnterPinScreen extends ConsumerStatefulWidget {
   final String userName;
   final double amountToPay;
+  final String upiId;
 
   const EnterPinScreen({
     super.key,
     required this.userName,
     required this.amountToPay,
+    required this.upiId,
   });
 
   @override
-  State<EnterPinScreen> createState() => _EnterPinScreenState();
+  ConsumerState<EnterPinScreen> createState() => _EnterPinScreenState();
 }
 
-class _EnterPinScreenState extends State<EnterPinScreen> {
+class _EnterPinScreenState extends ConsumerState<EnterPinScreen> {
   String _currentPin = "";
   final int _maxPinLength = 6;
   bool _isProcessing = false;
@@ -32,7 +37,7 @@ class _EnterPinScreenState extends State<EnterPinScreen> {
     if (_isProcessing) return;
     
     setState(() {
-      _localError = null; // Clear error on key tap
+      _localError = null; 
       if (value == "back") {
         if (_currentPin.isNotEmpty) {
           _currentPin = _currentPin.substring(0, _currentPin.length - 1);
@@ -51,29 +56,41 @@ class _EnterPinScreenState extends State<EnterPinScreen> {
   }
 
   void _submitPaymentPipeline() async {
-    setState(() => _isProcessing = true);
-
-    try {
-      // Mock validation verification check
-      if (_currentPin == "123456") { 
-        // ➔ SUCCESS: Execute Firestore transaction insert mutation here
-        // await PaymentService.executeSecureTransaction(...);
-        
-        if (!mounted) return;
-        Navigator.pop(context); // Clear back stack
-      } else {
-        // FAILURE state error handling
-        setState(() {
-          _currentPin = "";
-          _isProcessing = false;
-          _localError = "Incorrect UPI PIN entered. Please try again.";
-        });
-      }
-    } catch (e) {
+    if (_currentPin != "123456") {
       setState(() {
-        _isProcessing = false;
-        _localError = "Transaction failed due to an unexpected connection issue.";
+        _currentPin = "";
+        _localError = "Incorrect UPI PIN entered. Please try again.";
       });
+      return;
+    }
+
+    setState(() {
+      _isProcessing = true;
+      _localError = null;
+    });
+
+    final txId = await ref.read(transactionProvider.notifier).executePayment(
+      receiverName: widget.userName,
+      amount: widget.amountToPay,
+      upiId: widget.upiId, 
+    );
+
+    setState(() => _isProcessing = false);
+
+    if (txId != null && mounted) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TransactionDetailsScreen(
+            transactionId: txId,
+            receiverName: widget.userName,
+            amount: widget.amountToPay,
+          ),
+        ),
+        (route) => route.isFirst, 
+      );
+    } else {
+      setState(() => _localError = "Transaction rejected by core banking gateway.");
     }
   }
 
@@ -105,7 +122,6 @@ class _EnterPinScreenState extends State<EnterPinScreen> {
               child: Column(
                 children: [
                   height30,
-                  // Dynamic Recipient metadata context block
                   Text(
                     "Sending money to",
                     style: AppTextStyles.greyContentTextStyle.copyWith(fontSize: 13.sp),
@@ -116,21 +132,17 @@ class _EnterPinScreenState extends State<EnterPinScreen> {
                     style: AppTextStyles.headingBlackTextStyle.copyWith(fontSize: 18.sp),
                   ),
                   height16,
-                  // Transformed Dynamic Amount Context Header
                   Text(
                     "₹${currencyFormatter.format(widget.amountToPay)}",
                     style: AppTextStyles.headingBlackTextStyle.copyWith(fontSize: 36.sp, fontWeight: FontWeight.bold),
                   ),
                   height60,
-
-                  // Static Info Context Messaging Panel
                   Text(
                     "ENTER UPI PIN",
                     style: AppTextStyles.headingThemeTextStyle.copyWith(fontSize: 12.sp, letterSpacing: 1.0),
                   ),
                   height20,
                   
-                  // Obfuscated filled indicator layer widget
                   PinDotsIndicator(pinLength: _currentPin.length),
                   
                   if (_localError != null) ...[
@@ -150,8 +162,6 @@ class _EnterPinScreenState extends State<EnterPinScreen> {
               ),
             ),
           ),
-          
-          // Bottom Grid Entry Layout Layer
           PinKeypad(onKeyTap: _handleKeyPress),
         ],
       ),

@@ -250,6 +250,7 @@ class _AddAmountScreenState extends State<AddAmountScreen> {
                                 return BankSelectorBottomSheet(
                                   amountToPay: double.tryParse(amount) ?? 0.0,
                                   userName: widget.userName,
+                                  upiId: widget.upiId,
                                 );
                               },
                             );
