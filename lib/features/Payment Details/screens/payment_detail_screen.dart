@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
@@ -51,14 +53,35 @@ class PaymentDetailsScreen extends ConsumerWidget {
                     vertical: 12.h,
                   ),
                   itemCount: transactions.length,
+                  // itemBuilder: (context, index) {
+                  //   final tx = transactions[index];
+                  //   final double amt = (tx['amount'] as num).toDouble();
+                  //   final bool isSentAction = tx['type'] == 'sent';
+
+                  //   return TransactionBubble(
+                  //     amount: amt,
+                  //     dateString: "10:05 PM",
+                  //     isSent: isSentAction,
+                  //   );
+                  // },
+
+                  // Inside payment_detail_screen.dart under your ListView.builder:
                   itemBuilder: (context, index) {
                     final tx = transactions[index];
                     final double amt = (tx['amount'] as num).toDouble();
                     final bool isSentAction = tx['type'] == 'sent';
 
+                    // ➔ SAFELY RESOLVE THE SERVER TIMESTAMP
+                    final Timestamp? serverTime = tx['timestamp'] as Timestamp?;
+                    final String formattedTime = serverTime != null
+                        ? DateFormat('hh:mm a').format(serverTime.toDate())
+                        : DateFormat('hh:mm a').format(
+                            DateTime.now(),
+                          ); // Fallback during hot-reload execution
+
                     return TransactionBubble(
                       amount: amt,
-                      dateString: "10:05 PM",
+                      dateString: formattedTime, // ➔ PASS THE DYNAMIC TIME
                       isSent: isSentAction,
                     );
                   },
@@ -81,23 +104,7 @@ class PaymentDetailsScreen extends ConsumerWidget {
                 elevation: 0,
               ),
 
-              // onPressed: () {
-              //   Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => AddAmountScreen(
-              //         isFromQR: false,
-              //         userName: "Sanggeta",
-              //         upiId: "sanggeta@upi",
-              //       ),
-              //     ),
-              //   );
-              //   PaymentService.executeSecureTransaction(
-              //     targetPhone: contact.phoneNumber,
-              //     paymentAmount: 50.0,
-              //     transactionType: 'sent',
-              //   );
-              // },
+              
               onPressed: () {
                 Navigator.push(
                   context,
@@ -110,11 +117,7 @@ class PaymentDetailsScreen extends ConsumerWidget {
                   ),
                 );
 
-                PaymentService.executeSecureTransaction(
-                  targetPhone: contact.phoneNumber,
-                  paymentAmount: 50.0,
-                  transactionType: 'sent',
-                );
+               
               },
               icon: Icon(
                 Icons.verified_user_outlined,

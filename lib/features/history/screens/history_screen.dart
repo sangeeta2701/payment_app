@@ -73,7 +73,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                   child: Text(
                     "Your Accounts",
-                    style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold, color: Colors.black),
+                    style: AppTextStyles.headingBlackTextStyle.copyWith(fontSize: 13.sp),
                   ),
                 ),
                 const AccountsHorizontalList(),

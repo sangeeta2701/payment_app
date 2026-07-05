@@ -2,20 +2,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-// Live stream listening directly to data updates 
-final chatHistoryStreamProvider = StreamProvider.family<List<Map<String, dynamic>>, String>((ref, targetPhone) {
+final chatHistoryStreamProvider = StreamProvider.autoDispose.family<List<Map<String, dynamic>>, String>((ref, targetPhone) {
   final User? user = FirebaseAuth.instance.currentUser;
   if (user == null) return Stream.value([]);
 
-  final String myUid = user.uid;
-  
-  // Querying records where current user is either sender or receiver
   return FirebaseFirestore.instance
       .collection('transactions')
-      .where('combinedRoomId', arrayContains: targetPhone) // Or structure via dedicated chat room ids
-      .orderBy('timestamp', descending: true)
+      .where('combinedRoomId', arrayContains: user.uid) 
       .snapshots()
-      .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
+      .map((snapshot) {
+        return snapshot.docs
+            .map((doc) => doc.data())
+            .where((data) => data['receiverPhone'] == targetPhone || data['senderId'] == targetPhone)
+            .toList();
+      });
 });
 
 // Class managing mutations and input processing
