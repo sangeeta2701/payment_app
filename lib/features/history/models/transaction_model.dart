@@ -15,6 +15,7 @@ class TransactionModel {
   final Color categoryTextColor;
   final IconData? categoryIcon;
   final String providerLogo; // PhonePe, SBI badge identifiers
+  final DateTime rawDateTime;
 
   TransactionModel({
     required this.id,
@@ -29,6 +30,7 @@ class TransactionModel {
     required this.categoryTextColor,
     this.categoryIcon,
     required this.providerLogo,
+    required this.rawDateTime,
   });
 }
 

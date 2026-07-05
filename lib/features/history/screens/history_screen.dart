@@ -1,167 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart'; // ➔ IMPORTED RIVERPOD
+import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
 import 'package:payment_app/features/History/widgets/account_horizobtal_list.dart';
 import '../models/transaction_model.dart';
+import '../providers/history_notifier.dart'; // Import providers
 import '../widgets/payment_history_header.dart';
 import '../widgets/month_group_header.dart';
 import '../widgets/transaction_item_tile.dart';
 
-class HistoryScreen extends StatefulWidget {
+class HistoryScreen extends ConsumerStatefulWidget {
   const HistoryScreen({super.key});
 
   @override
-  State<HistoryScreen> createState() => _HistoryScreenState();
+  ConsumerState<HistoryScreen> createState() => _HistoryScreenState();
 }
 
-class _HistoryScreenState extends State<HistoryScreen> {
-  final List<GroupedTransactions> sampleData = [
-    GroupedTransactions(
-      monthYear: "June 2026",
-      summaryMeta: "Total Received \n₹140",
-      isCreditSummary: true,
-      transactions: [
-        TransactionModel(
-          id: "1",
-          title: "Mridul",
-          emojiSuffix: "😉",
-          dateString: "Sent on 14 Jun",
-          timestamp: "08:52 PM",
-          amount: 450.00,
-          type: TransactionType.debit,
-          categoryTag: "Money Sent",
-          categoryBgColor: const Color(0xFFE8F5E9),
-          categoryTextColor: const Color(0xFF2E7D32),
-          categoryIcon: Icons.call_made,
-          providerLogo: "phonepe",
-        ),
-        TransactionModel(
-          id: "2",
-          title: "Hrishitha",
-          emojiSuffix: "😉😎 Feb 10",
-          dateString: "Received on 12 Jun",
-          timestamp: "10:25 PM",
-          amount: 75.00,
-          type: TransactionType.credit,
-          categoryTag: "Money Received",
-          categoryBgColor: const Color(0xFFE8F5E9),
-          categoryTextColor: const Color(0xFF2E7D32),
-          categoryIcon: Icons.call_received,
-          providerLogo: "phonepe",
-        ),
-
-        TransactionModel(
-          id: "3",
-          title: "Hrishitha",
-          emojiSuffix: "😉😎 Feb 10",
-          dateString: "Received on 10 Jun",
-          timestamp: "08:52 PM",
-          amount: 65.00,
-          type: TransactionType.credit,
-          categoryTag: "Money Received",
-          categoryBgColor: const Color(0xFFE8F5E9),
-          categoryTextColor: const Color(0xFF2E7D32),
-          categoryIcon: Icons.call_received,
-          providerLogo: "phonepe",
-        ),
-      ],
-    ),
-    GroupedTransactions(
-      monthYear: "May 2026",
-      summaryMeta: "Total Spent\nRefresh ↻",
-      isCreditSummary: false,
-      transactions: [
-        TransactionModel(
-          id: "3",
-          title: "Hrishitha",
-          emojiSuffix: "😉😎 Feb 10",
-          dateString: "Received on 27 May",
-          timestamp: "10:44 PM",
-          amount: 55.00,
-          type: TransactionType.credit,
-          categoryTag: "Money Received",
-          categoryBgColor: const Color(0xFFE8F5E9),
-          categoryTextColor: const Color(0xFF2E7D32),
-          categoryIcon: Icons.call_received,
-          providerLogo: "phonepe",
-        ),
-      ],
-    ),
-  ];
-
-  List<GroupedTransactions> _filteredData = [];
+class _HistoryScreenState extends ConsumerState<HistoryScreen> {
   bool _isSearching = false;
-  String _searchQuery = "";
-
-  @override
-  void initState() {
-    super.initState();
-    _filteredData = sampleData;
-  }
 
   void _handleSearchToggle(bool searching) {
     setState(() {
       _isSearching = searching;
       if (!searching) {
-        _searchQuery = "";
-        _filteredData = sampleData;
+        ref.read(historySearchQueryProvider.notifier).state = ""; // Clear state clean
       }
     });
   }
 
   void _filterSearch(String query) {
-    _searchQuery = query;
-    if (query.isEmpty) {
-      setState(() => _filteredData = sampleData);
-      return;
-    }
-
-    List<GroupedTransactions> matchedGroups = [];
-    for (var group in sampleData) {
-      final matchingTXs = group.transactions.where((tx) {
-        return tx.title.toLowerCase().contains(query.toLowerCase()) ||
-            tx.categoryTag.toLowerCase().contains(query.toLowerCase());
-      }).toList();
-
-      if (matchingTXs.isNotEmpty) {
-        matchedGroups.add(
-          GroupedTransactions(
-            monthYear: group.monthYear,
-            summaryMeta: group.summaryMeta,
-            isCreditSummary: group.isCreditSummary,
-            transactions: matchingTXs,
-          ),
-        );
-      }
-    }
-    setState(() => _filteredData = matchedGroups);
+    ref.read(historySearchQueryProvider.notifier).state = query.trim();
   }
 
   @override
   Widget build(BuildContext context) {
-    // Top layout light blue gradient finish base
+    // 1. Read live database stream collections reactively
+    final historyStream = ref.watch(historyStreamProvider);
+    final searchQuery = ref.watch(historySearchQueryProvider);
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F9FD),
+      backgroundColor: bgColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFFD0E7F9),
+        backgroundColor: bgColor,
         elevation: 0,
         scrolledUnderElevation: 0,
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: blackColor),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           "Balance & History",
-          style: AppTextStyles.blackContentTextStyle.copyWith(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold,
-          ),
+          style: AppTextStyles.blackContentTextStyle.copyWith(fontSize: 18.sp, fontWeight: FontWeight.bold),
         ),
       ),
       body: Column(
         children: [
-          // Top gradient layout wrapper containing Horizontal Accounts
           Container(
             width: double.infinity,
             decoration: const BoxDecoration(
@@ -175,17 +70,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                    vertical: 8.h,
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                   child: Text(
                     "Your Accounts",
-                    style: TextStyle(
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
+                    style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold, color: Colors.black),
                   ),
                 ),
                 const AccountsHorizontalList(),
@@ -194,20 +82,29 @@ class _HistoryScreenState extends State<HistoryScreen> {
             ),
           ),
 
-          // Action controls header layer
           PaymentHistoryHeader(
             isSearching: _isSearching,
             onSearchToggle: _handleSearchToggle,
             onSearchChanged: _filterSearch,
           ),
 
-          // Main history transaction ledger list view container
+          // 2. Wire up Async patterns gracefully inside our list tree framework
           Expanded(
             child: Container(
-              color: Colors.white,
-              child: _filteredData.isEmpty
-                  ? _buildEmptyState()
-                  : _buildGroupedListView(),
+              color: whiteColor,
+              child: historyStream.when(
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (err, stack) => Center(child: Text("Connection error: $err", style: const TextStyle(color: Colors.red))),
+                data: (masterGroups) {
+                  // Apply filter calculations on server collection variables if search is running
+                  final displayedGroups = _applySearchFilter(masterGroups, searchQuery);
+
+                  if (displayedGroups.isEmpty) {
+                    return _buildEmptyState();
+                  }
+                  return _buildGroupedListView(displayedGroups);
+                },
+              ),
             ),
           ),
         ],
@@ -215,11 +112,36 @@ class _HistoryScreenState extends State<HistoryScreen> {
     );
   }
 
-  Widget _buildGroupedListView() {
+  // Local helper strategy processing character filters cleanly over lists
+  List<GroupedTransactions> _applySearchFilter(List<GroupedTransactions> data, String query) {
+    if (query.isEmpty) return data;
+    
+    List<GroupedTransactions> filtered = [];
+    for (var group in data) {
+      final matches = group.transactions.where((tx) {
+        return tx.title.toLowerCase().contains(query.toLowerCase()) ||
+               tx.categoryTag.toLowerCase().contains(query.toLowerCase());
+      }).toList();
+
+      if (matches.isNotEmpty) {
+        filtered.add(
+          GroupedTransactions(
+            monthYear: group.monthYear,
+            summaryMeta: group.summaryMeta,
+            isCreditSummary: group.isCreditSummary,
+            transactions: matches,
+          ),
+        );
+      }
+    }
+    return filtered;
+  }
+
+  Widget _buildGroupedListView(List<GroupedTransactions> targetedData) {
     return ListView.builder(
-      itemCount: _filteredData.length,
+      itemCount: targetedData.length,
       itemBuilder: (context, groupIndex) {
-        final group = _filteredData[groupIndex];
+        final group = targetedData[groupIndex];
         return Column(
           children: [
             MonthGroupHeader(
@@ -232,9 +154,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               physics: const NeverScrollableScrollPhysics(),
               itemCount: group.transactions.length,
               itemBuilder: (context, txIndex) {
-                return TransactionItemTile(
-                  transaction: group.transactions[txIndex],
-                );
+                return TransactionItemTile(transaction: group.transactions[txIndex]);
               },
             ),
           ],
