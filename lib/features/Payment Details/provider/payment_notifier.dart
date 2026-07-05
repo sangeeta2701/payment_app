@@ -6,19 +6,24 @@ final chatHistoryStreamProvider = StreamProvider.autoDispose.family<List<Map<Str
   final User? user = FirebaseAuth.instance.currentUser;
   if (user == null) return Stream.value([]);
 
+  // and then client-side filter for my identity, or vice versa, to guarantee a locked structural index scope.
   return FirebaseFirestore.instance
       .collection('transactions')
-      .where('combinedRoomId', arrayContains: user.uid) 
+      .where('combinedRoomId', arrayContains: targetPhone) 
+      .orderBy('timestamp', descending: true) 
       .snapshots()
       .map((snapshot) {
         return snapshot.docs
             .map((doc) => doc.data())
-            .where((data) => data['receiverPhone'] == targetPhone || data['senderId'] == targetPhone)
+            .where((data) {
+              final List<dynamic> roomIds = data['combinedRoomId'] ?? [];
+              return roomIds.contains(user.uid);
+            })
             .toList();
       });
 });
 
-// Class managing mutations and input processing
+// Class managing mutations and input processing remains clean and operational
 class PaymentService {
   static Future<void> executeSecureTransaction({
     required String targetPhone,
@@ -33,7 +38,7 @@ class PaymentService {
       'receiverPhone': targetPhone,
       'combinedRoomId': [user.uid, targetPhone],
       'amount': paymentAmount,
-      'type': transactionType, // 'sent' or 'received'
+      'type': transactionType, 
       'timestamp': FieldValue.serverTimestamp(),
     });
   }

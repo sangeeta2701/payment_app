@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,9 +19,8 @@ class PaymentDetailsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final historyAsyncValue = ref.watch(
-      chatHistoryStreamProvider(contact.phoneNumber),
-    );
+    final historyAsyncValue = ref.watch(chatHistoryStreamProvider(contact.phoneNumber));
+    final String myUid = FirebaseAuth.instance.currentUser?.uid ?? "";
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -29,60 +29,85 @@ class PaymentDetailsScreen extends ConsumerWidget {
         children: [
           Expanded(
             child: historyAsyncValue.when(
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (err, stack) =>
-                  Center(child: Text("Error loading records: $err")),
+              loading: () => const Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(themeColor))),
+              error: (err, stack) => Center(child: Text("Error loading records: $err")),
               data: (transactions) {
-                // If the stream returns an empty list array from Firestore
                 if (transactions.isEmpty) {
                   return Center(
                     child: Text(
                       "No transaction history yet.",
-                      style: AppTextStyles.greyContentTextStyle.copyWith(
-                        fontSize: 14.sp,
-                      ),
+                      style: AppTextStyles.greyContentTextStyle.copyWith(fontSize: 14.sp),
                     ),
                   );
                 }
 
-                // Return the ListView if history data points are present
+                // 1. GROUP TRANSACTIONS BY DATE STRING PROGRAMMATICALLY
+                final Map<String, List<Map<String, dynamic>>> groupedTransactions = {};
+                for (var tx in transactions) {
+                  final Timestamp? serverTime = tx['timestamp'] as Timestamp?;
+                  if (serverTime != null) {
+                    final String dateKey = DateFormat('dd MMM yyyy').format(serverTime.toDate());
+                    groupedTransactions.putIfAbsent(dateKey, () => []).add(tx);
+                  }
+                }
+
+                final List<String> dateHeaders = groupedTransactions.keys.toList();
+
+                // 2. RENDER THE GROUPED DYNAMIC DATE LAYOUT
                 return ListView.builder(
-                  reverse: true,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                    vertical: 12.h,
-                  ),
-                  itemCount: transactions.length,
-                  // itemBuilder: (context, index) {
-                  //   final tx = transactions[index];
-                  //   final double amt = (tx['amount'] as num).toDouble();
-                  //   final bool isSentAction = tx['type'] == 'sent';
-
-                  //   return TransactionBubble(
-                  //     amount: amt,
-                  //     dateString: "10:05 PM",
-                  //     isSent: isSentAction,
-                  //   );
-                  // },
-
-                  // Inside payment_detail_screen.dart under your ListView.builder:
+                  reverse: true, // Loads chat timeline from the bottom up
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                  itemCount: dateHeaders.length,
                   itemBuilder: (context, index) {
-                    final tx = transactions[index];
-                    final double amt = (tx['amount'] as num).toDouble();
-                    final bool isSentAction = tx['type'] == 'sent';
+                    final String dateString = dateHeaders[index];
+                    final List<Map<String, dynamic>> dayTransactions = groupedTransactions[dateString]!;
 
-                    // ➔ SAFELY RESOLVE THE SERVER TIMESTAMP
-                    final Timestamp? serverTime = tx['timestamp'] as Timestamp?;
-                    final String formattedTime = serverTime != null
-                        ? DateFormat('hh:mm a').format(serverTime.toDate())
-                        : DateFormat('hh:mm a').format(
-                            DateTime.now(),
-                          ); // Fallback during hot-reload execution
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Dynamic Reference Sticky Date Header Pill
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 16.h),
+                          padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 4.h),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFEAEAEA),
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: Text(
+                            dateString,
+                            style: AppTextStyles.greyContentTextStyle.copyWith(
+                              fontSize: 11.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black54,
+                            ),
+                          ),
+                        ),
+                        
+                        // Render day-specific payment metrics bubbles
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: dayTransactions.length,
+                          itemBuilder: (context, txIndex) {
+                            final tx = dayTransactions[txIndex];
+                            final double amt = (tx['amount'] as num).toDouble();
+                            
+                            // Dynamically evaluate type based on current profile login signatures
+                            final bool isSentAction = tx['senderId'] == myUid;
 
-                    return TransactionBubble(
-                      amount: amt,
-                      dateString: formattedTime, // ➔ PASS THE DYNAMIC TIME
-                      isSent: isSentAction,
+                            final Timestamp? serverTime = tx['timestamp'] as Timestamp?;
+                            final String formattedTime = serverTime != null
+                                ? DateFormat('h:mm a').format(serverTime.toDate())
+                                : DateFormat('h:mm a').format(DateTime.now());
+
+                            return TransactionBubble(
+                              amount: amt,
+                              dateString: formattedTime,
+                              isSent: isSentAction, // Passes true for debit cards, false for incoming credits
+                            );
+                          },
+                        ),
+                      ],
                     );
                   },
                 );
@@ -90,21 +115,17 @@ class PaymentDetailsScreen extends ConsumerWidget {
             ),
           ),
 
-          // Reference Match: Bottom Static Pay Confirmation Call Trigger
           Container(
             width: double.infinity,
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+            color: whiteColor,
             child: ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
-                backgroundColor: themeColor, // Rich navy brand coloring accent
+                backgroundColor: themeColor,
                 minimumSize: Size(double.infinity, 48.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24.r),
-                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r)),
                 elevation: 0,
               ),
-
-              
               onPressed: () {
                 Navigator.push(
                   context,
@@ -116,19 +137,11 @@ class PaymentDetailsScreen extends ConsumerWidget {
                     ),
                   ),
                 );
-
-               
               },
-              icon: Icon(
-                Icons.verified_user_outlined,
-                color: whiteColor,
-                size: 18.sp,
-              ),
+              icon: Icon(Icons.verified_user_outlined, color: whiteColor, size: 18.sp),
               label: Text(
                 "Pay Securely",
-                style: AppTextStyles.whiteButtonTextStyle.copyWith(
-                  fontSize: 14.sp,
-                ),
+                style: AppTextStyles.whiteButtonTextStyle.copyWith(fontSize: 14.sp),
               ),
             ),
           ),

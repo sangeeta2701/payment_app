@@ -18,7 +18,7 @@ class TransactionBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Exact visual representation matching incoming image parameters
+    // ➔ Sent: Blue-tinted right card. Received: White-filled left card.
     final bubbleColor = isSent ? const Color(0xFFE3F2FD) : whiteColor;
     final alignment = isSent ? Alignment.centerRight : Alignment.centerLeft;
 
@@ -26,7 +26,7 @@ class TransactionBubble extends StatelessWidget {
       alignment: alignment,
       child: Container(
         width: 240.w,
-        margin: EdgeInsets.symmetric(vertical: 8.h),
+        margin: EdgeInsets.symmetric(vertical: 6.h),
         decoration: BoxDecoration(
           color: bubbleColor,
           borderRadius: BorderRadius.only(
@@ -37,9 +37,9 @@ class TransactionBubble extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.04),
-              blurRadius: 6,
-              offset: const Offset(0, 3),
+              color: Colors.black.withOpacity(0.03),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
             )
           ],
         ),
@@ -47,54 +47,56 @@ class TransactionBubble extends StatelessWidget {
           borderRadius: BorderRadius.circular(20.r),
           child: Stack(
             children: [
-              // Subtle background watermark stamp decoration match
               Positioned(
                 bottom: -10.h,
                 right: -10.w,
                 child: Opacity(
-                  opacity: 0.06,
-                  child: Icon(Icons.verified_outlined, size: 100.sp, color:lightBlueColor),
+                  opacity: 0.05,
+                  child: Icon(Icons.verified_outlined, size: 90.sp, color: lightBlueColor),
                 ),
               ),
-              
               Padding(
-                padding: EdgeInsets.all(16.w),
+                padding: EdgeInsets.all(14.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "₹${amount.toStringAsFixed(0)}",
-                          style: AppTextStyles.headingBlackTextStyle.copyWith(fontSize: 18.sp),
+                          "₹${amount.toStringAsFixed(amount % 1 == 0 ? 0 : 1)}",
+                          style: AppTextStyles.headingBlackTextStyle.copyWith(fontSize: 24.sp, fontWeight: FontWeight.bold),
                         ),
-                        width4,
-                        Icon(Icons.check_circle, color: const Color(0xFF00B15E), size: 18.sp),
+                        width8,
+                        Icon(Icons.check_circle, color: const Color(0xFF00B15E), size: 16.sp),
                       ],
                     ),
                     height4,
+                    // ➔ DYNAMIC CONDITION LABELS:
                     Text(
                       isSent ? "Sent to Bank A/c" : "Received",
-                      style: AppTextStyles.blackContentTextStyle.copyWith(fontSize: 14.sp, fontWeight: FontWeight.w600),
+                      style: AppTextStyles.blackContentTextStyle.copyWith(
+                        fontSize: 13.sp, 
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black87,
+                      ),
                     ),
-                    height12,
+                    SizedBox(height: 8.h),
                     Align(
                       alignment: Alignment.bottomRight,
                       child: Text(
                         dateString,
-                        style: AppTextStyles.blackContentTextStyle.copyWith(fontSize: 10.sp),
+                        style: AppTextStyles.blackContentTextStyle.copyWith(fontSize: 10.sp, color: Colors.black45),
                       ),
                     )
                   ],
                 ),
               ),
-              
-              // Reference Match: Bold structural base indicator underlines
               Positioned(
                 bottom: 0,
                 left: 0,
                 right: 0,
-                child: Container(height: 4.h, color: const Color(0xFF00B9F5)),
+                child: Container(height: 3.h, color: lightBlueColor),
               )
             ],
           ),
