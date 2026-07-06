@@ -99,8 +99,8 @@ class _BankSelectorBottomSheetState extends ConsumerState<BankSelectorBottomShee
             Navigator.pop(context);
             Navigator.push(context, MaterialPageRoute(builder: (context) => const SelectBankScreen()));
           },
-          icon: const Icon(Icons.add_card_rounded, color: Colors.white),
-          label: const Text("Add Bank Account", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          icon: const Icon(Icons.add_card_rounded, color: whiteColor),
+          label: const Text("Add Bank Account", style: TextStyle(color: whiteColor, fontWeight: FontWeight.bold)),
         ),
       ],
     );
@@ -108,24 +108,34 @@ class _BankSelectorBottomSheetState extends ConsumerState<BankSelectorBottomShee
 
   // Extracted Component: Dynamic Confirmation Button UI
   Widget _buildProceedButton(BuildContext context, double amount) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFF0F0C21),
-        minimumSize: Size(double.infinity, 48.h),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r)),
-        disabledBackgroundColor: Colors.grey.shade300,
-        elevation: 0,
-      ),
-      onPressed: !_isAccountSelected
-          ? null
-          : () {
-              Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => EnterPinScreen(userName: widget.userName,amountToPay: widget.amountToPay,upiId: widget.upiId,)));
-            },
-      child: Text(
-        "Proceed Securely • ₹${amount.toStringAsFixed(0)}",
-        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
+  return ElevatedButton(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: const Color(0xFF0F0C21),
+      minimumSize: Size(double.infinity, 48.h),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r)),
+      disabledBackgroundColor: Colors.grey.shade300,
+      elevation: 0,
+    ),
+    onPressed: !_isAccountSelected
+        ? null
+        : () {
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => EnterPinScreen(
+                  userName: widget.userName,
+                  amountToPay: widget.amountToPay,
+                  // ➔ GENERATE THE DYNAMIC UPI ADRESS FOR ROUTING:
+                  upiId: ref.read(activeUserBankProvider).value?['upiId'] ?? 'sanggeta@upi',
+                ),
+              ),
+            );
+          },
+    child: Text(
+      "Proceed Securely • ₹${amount.toStringAsFixed(0)}",
+      style: const TextStyle(color: whiteColor, fontWeight: FontWeight.bold),
+    ),
+  );
+}
 }

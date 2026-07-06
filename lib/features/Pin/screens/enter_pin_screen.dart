@@ -1,15 +1,15 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart'; 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
 import 'package:payment_app/features/Pin/widgest/pin_dots_indicator.dart';
 import 'package:payment_app/features/Pin/widgest/pin_keypad.dart';
-import 'package:payment_app/features/Transactions/providers/transaction_notifier.dart';
+import 'package:payment_app/features/Transactions/providers/payment_sdk_notifier.dart';
 import 'package:payment_app/features/Transactions/screen/transaction_details_screen.dart';
-
 
 class EnterPinScreen extends ConsumerStatefulWidget {
   final String userName;
@@ -37,7 +37,7 @@ class _EnterPinScreenState extends ConsumerState<EnterPinScreen> {
     if (_isProcessing) return;
     
     setState(() {
-      _localError = null; 
+      _localError = null;
       if (value == "back") {
         if (_currentPin.isNotEmpty) {
           _currentPin = _currentPin.substring(0, _currentPin.length - 1);
@@ -45,8 +45,6 @@ class _EnterPinScreenState extends ConsumerState<EnterPinScreen> {
       } else {
         if (_currentPin.length < _maxPinLength) {
           _currentPin += value;
-          
-          // Trigger execution pipeline immediately upon entry completion
           if (_currentPin.length == _maxPinLength) {
             _submitPaymentPipeline();
           }
@@ -69,33 +67,39 @@ class _EnterPinScreenState extends ConsumerState<EnterPinScreen> {
       _localError = null;
     });
 
-    final txId = await ref.read(transactionProvider.notifier).executePayment(
-      receiverName: widget.userName,
-      amount: widget.amountToPay,
-      upiId: widget.upiId, 
-    );
-
-    setState(() => _isProcessing = false);
-
-    if (txId != null && mounted) {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => TransactionDetailsScreen(
-            transactionId: txId,
-            receiverName: widget.userName,
-            amount: widget.amountToPay,
-          ),
-        ),
-        (route) => route.isFirst, 
-      );
-    } else {
-      setState(() => _localError = "Transaction rejected by core banking gateway.");
-    }
+    // ➔ LAUNCH NATIVE SECURE OVERLAY SDK SESSION
+    await ref.read(paymentSDKProvider.notifier).launchSecureCheckoutSession(
+          recipientName: widget.userName,
+          upiId: widget.upiId,
+          numericAmount: widget.amountToPay,
+        );
   }
 
   @override
   Widget build(BuildContext context) {
+    // Listen for events sent from our hardware abstraction plugin wrapper
+    ref.listen<PaymentSDKState>(paymentSDKProvider, (previous, next) {
+      if (next.status == PaymentSDKStatus.completed && next.transactionId != null) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TransactionDetailsScreen(
+              transactionId: next.transactionId!,
+              receiverName: widget.userName,
+              amount: widget.amountToPay,
+            ),
+          ),
+          (route) => route.isFirst,
+        );
+      } else if (next.status == PaymentSDKStatus.paymentFailed) {
+        setState(() {
+          _isProcessing = false;
+          _currentPin = "";
+          _localError = next.errorMessage ?? "Transaction failed.";
+        });
+      }
+    });
+
     final currencyFormatter = NumberFormat("#,##,###.00");
 
     return Scaffold(
@@ -122,25 +126,16 @@ class _EnterPinScreenState extends ConsumerState<EnterPinScreen> {
               child: Column(
                 children: [
                   height30,
-                  Text(
-                    "Sending money to",
-                    style: AppTextStyles.greyContentTextStyle.copyWith(fontSize: 13.sp),
-                  ),
+                  Text("Sending money to", style: AppTextStyles.greyContentTextStyle.copyWith(fontSize: 13.sp)),
                   height4,
-                  Text(
-                    widget.userName,
-                    style: AppTextStyles.headingBlackTextStyle.copyWith(fontSize: 18.sp),
-                  ),
+                  Text(widget.userName, style: AppTextStyles.headingBlackTextStyle.copyWith(fontSize: 18.sp)),
                   height16,
                   Text(
                     "₹${currencyFormatter.format(widget.amountToPay)}",
                     style: AppTextStyles.headingBlackTextStyle.copyWith(fontSize: 36.sp, fontWeight: FontWeight.bold),
                   ),
                   height60,
-                  Text(
-                    "ENTER UPI PIN",
-                    style: AppTextStyles.headingThemeTextStyle.copyWith(fontSize: 12.sp, letterSpacing: 1.0),
-                  ),
+                  Text("ENTER UPI PIN", style: AppTextStyles.headingThemeTextStyle.copyWith(fontSize: 12.sp, letterSpacing: 1.0)),
                   height20,
                   
                   PinDotsIndicator(pinLength: _currentPin.length),
