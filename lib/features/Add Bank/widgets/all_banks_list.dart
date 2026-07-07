@@ -50,13 +50,23 @@ class AllBanksList extends StatelessWidget {
                 final bank = banksList[index];
                 return ListTile(
                   onTap: () => onBankSelected(bank),
-                  leading: CircleAvatar(
-                    radius: 18.r,
-                    backgroundColor: const Color(0xFFF1F5F9),
-                    child: bank.assetPath != null
-                        ? Image.asset(bank.assetPath!, width: 20.w)
-                        : Icon(bank.fallbackIcon, color: lightBlueColor, size: 18.sp),
-                  ),
+                  leading: // Inside your ListTile/Grid view item builders:
+CircleAvatar(
+  radius: 20.r,
+  backgroundColor: const Color(0xFFF1F5F9),
+  child: bank.assetPath != null
+      ? ClipRRect(
+          borderRadius: BorderRadius.circular(12.r),
+          child: Image.network(
+            bank.assetPath!,
+            width: 24.w,
+            height: 24.h,
+            fit: BoxFit.contain,
+            errorBuilder: (context, error, stackTrace) => Icon(Icons.account_balance, size: 18.sp, color: lightBlueColor),
+          ),
+        )
+      : Icon(Icons.account_balance, color: lightBlueColor, size: 18.sp),
+),
                   title: Text(
                     bank.name,
                     style: AppTextStyles.headingBlackTextStyle.copyWith(fontSize: 11.sp),

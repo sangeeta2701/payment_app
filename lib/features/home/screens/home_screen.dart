@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart'; // ➔ IMPORTED RIVERPOD
 import 'package:google_fonts/google_fonts.dart';
 import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
@@ -14,33 +15,36 @@ import 'package:payment_app/features/Home/widgets/add_bank_bottom_sheet.dart';
 import 'package:payment_app/features/Home/widgets/feature_shortcut.dart';
 import 'package:payment_app/features/Home/widgets/rechargeBill_shortcut.dart';
 import 'package:payment_app/features/scan/screens/scan_screen.dart';
+import 'package:payment_app/features/Add%20Bank/providers/bank_notifier.dart'; // ➔ IMPORT YOUR NOTIFIER
 
-class HomeScreen extends StatefulWidget {
+// ➔ CHANGED TO ConsumerStatefulWidget
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-    showAddBankBottomSheet(context);
-  });
-  }
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  
 
   @override
   Widget build(BuildContext context) {
+    // ➔ LISTEN TO USER BANK ONBOARDING STATUS REACTIVELY
+    ref.listen<AsyncValue<bool>>(userAccountStatusStreamProvider, (previous, next) {
+      next.whenData((isLinked) {
+        if (!isLinked && mounted) {
+          showAddBankBottomSheet(context);
+        }
+      });
+    });
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark.copyWith(
         statusBarColor: transparent,
-        
       ),
       child: Scaffold(
         backgroundColor: bgColor,
-        // extendBodyBehindAppBar: true,
         appBar: AppBar(
           backgroundColor: transparent,
           elevation: 0,
@@ -94,7 +98,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    //****************Shortcuts of the app features***************/
                     featureShortcuts(Icons.qr_code_scanner, "Scan\n Any QR", (){
                       Navigator.push(context, MaterialPageRoute(builder: (context) => const ScanScreen()));
                     }),
@@ -306,11 +309,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) => const ScanScreen()));
-      
           },
           backgroundColor: themeColor,
           shape: RoundedRectangleBorder(

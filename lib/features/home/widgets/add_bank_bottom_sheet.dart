@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
 import 'package:payment_app/features/Add%20Bank/screen/select_bank_screen.dart';
@@ -37,7 +38,7 @@ void showAddBankBottomSheet(BuildContext context) {
                 borderRadius: BorderRadius.circular(2.r),
               ),
             ),
-            SizedBox(height: 24.h),
+            height24,
             
             // Icon emblem
             CircleAvatar(
@@ -45,7 +46,7 @@ void showAddBankBottomSheet(BuildContext context) {
               backgroundColor: const Color(0xFFE6F0FF),
               child: const Icon(Icons.account_balance_wallet_outlined, color: Color(0xFF1A6CE8), size: 30),
             ),
-            SizedBox(height: 16.h),
+            height16,
             
             // Title & Subtitle text
             Text(
@@ -56,21 +57,17 @@ void showAddBankBottomSheet(BuildContext context) {
                 color: const Color(0xFF1F1F1F),
               ),
             ),
-            SizedBox(height: 8.h),
+            height8,
             Text(
               "Link your bank account now to send and receive money securely using UPI.",
               textAlign: TextAlign.center,
-              // style: TextStyle(
-              //   fontSize: 13.sp,
-              //   color: Colors.grey.shade600,
-              //   height: 1.4,
-              // ),
+              
               style: AppTextStyles.greyContentTextStyle.copyWith(
                 fontSize: 13.sp,
                 height: 1.4,
               ),
             ),
-            SizedBox(height: 24.h),
+            height24,
             
             // Primary action button
             SizedBox(
@@ -103,7 +100,7 @@ void showAddBankBottomSheet(BuildContext context) {
                 ),
               ),
             ),
-            SizedBox(height: 8.h),
+            height8,
           ],
         ),
       );
