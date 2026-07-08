@@ -20,27 +20,43 @@ class _SelectBankScreenState extends ConsumerState<SelectBankScreen> {
   final TextEditingController _searchController = TextEditingController();
   String _currentQuery = "";
 
-  final List<BankModel> _allBanksMaster = [
-    BankModel(id: "1", name: "SBI Bank", isPopular: true, assetPath: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/State_Bank_of_India_logo.svg/1200px-State_Bank_of_India_logo.svg.png"),
-    BankModel(id: "2", name: "HDFC Bank", isPopular: true, assetPath: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/HDFC_Bank_Logo.svg/1200px-HDFC_Bank_Logo.svg.png"),
-    BankModel(id: "3", name: "Canara Bank", isPopular: true, assetPath: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Canara_Bank_Logo.svg/1200px-Canara_Bank_Logo.svg.png"),
-    BankModel(id: "4", name: "ICICI Bank", isPopular: true, assetPath: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/ICICI_Bank_Logo.svg/1200px-ICICI_Bank_Logo.svg.png"),
-    BankModel(id: "5", name: "Kotak Bank", isPopular: true, assetPath: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Kotak_Mahindra_Bank_Logo.svg/1200px-Kotak_Mahindra_Bank_Logo.svg.png"),
-    BankModel(id: "6", name: "Axis Bank", isPopular: true, assetPath: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Axis_Bank_Logo.svg/1200px-Axis_Bank_Logo.svg.png"),
-    BankModel(id: "7", name: "BOB Bank", isPopular: true, assetPath: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Bank_of_Bihar_Logo.svg/1200px-Bank_of_Bihar_Logo.svg.png"),
-    BankModel(id: "8", name: "Union BOI", isPopular: true, assetPath: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Union_Bank_of_India_Logo.svg/1200px-Union_Bank_of_India_Logo.svg.png"),
-    BankModel(id: "9", name: "Karnataka Bank", isPopular: true, assetPath: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Karnataka_Bank_Logo.svg/1200px-Karnataka_Bank_Logo.svg.png"),
-    BankModel(id: "10", name: "PNB Bank", isPopular: true, assetPath: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Post_Office_PNB_Logo.svg/1200px-Post_Office_PNB_Logo.svg.png"),
-    BankModel(id: "11", name: "Airtel Payments", isPopular: true, assetPath: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Airtel_Payments_Logo.svg/1200px-Airtel_Payments_Logo.svg.png"),
-    BankModel(id: "12", name: "India Post Payments", isPopular: true, assetPath: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/India_Post_Payments_Logo.svg/1200px-India_Post_Payments_Logo.svg.png"),
-    BankModel(id: "13", name: "ACE Co Op Bank Ltd", isPopular: false, assetPath: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/India_Post_Payments_Logo.svg/1200px-India_Post_Payments_Logo.svg.png"),
-    BankModel(id: "14", name: "AHILYANAGAR ZILLA PRATHAMIK SHIKSHAK SAHAKARI BANK LTD", isPopular: false, assetPath: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/India_Post_Payments_Logo.svg/1200px-India_Post_Payments_Logo.svg.png"),
-    BankModel(id: "15", name: "AP Mahesh Co Op Urban Bank Ltd", isPopular: false, assetPath: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/India_Post_Payments_Logo.svg/1200px-India_Post_Payments_Logo.svg.png"),
-    BankModel(id: "16", name: "AU Small Finance Bank", isPopular: false, assetPath: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/India_Post_Payments_Logo.svg/1200px-India_Post_Payments_Logo.svg.png"),
-    BankModel(id: "17", name: "Abhinandan Urban Co Op Bank Amravati", isPopular: false, assetPath: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/India_Post_Payments_Logo.svg/1200px-India_Post_Payments_Logo.svg.png"),
-    BankModel(id: "18", name: "Abhyudaya Co-Operative Bank", isPopular: false, assetPath: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/India_Post_Payments_Logo.svg/1200px-India_Post_Payments_Logo.svg.png"),
-    BankModel(id: "19", name: "Adarsh Co Operative Bank Ltd", isPopular: false, assetPath: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/India_Post_Payments_Logo.svg/1200px-India_Post_Payments_Logo.svg.png"),
-    BankModel(id: "20", name: "Ahmednagar Merchant's Co-Operative Bank", isPopular: false, assetPath: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/India_Post_Payments_Logo.svg/1200px-India_Post_Payments_Logo.svg.png"),
+final List<BankModel> _allBanksMaster = [
+    BankModel(
+      id: "1", 
+      name: "SBI Bank", 
+      isPopular: true, 
+      assetPath: "https://vignette.wikia.nocookie.net/logopedia/images/d/d4/State_Bank_of_India_logo.png"
+    ),
+    BankModel(
+      id: "2", 
+      name: "HDFC Bank", 
+      isPopular: true, 
+      assetPath: "https://cdn.worldvectorlogo.com/logos/hdfc-bank-logo.svg"
+    ),
+    BankModel(
+      id: "3", 
+      name: "Canara Bank", 
+      isPopular: true, 
+      assetPath: "https://www.canarabank.com/media/1053/canara-logo.png"
+    ),
+    BankModel(
+      id: "4", 
+      name: "ICICI Bank", 
+      isPopular: true, 
+      assetPath: "https://companieslogo.com/img/orig/ICICIBANK.NS-8e9da563.png"
+    ),
+    BankModel(
+      id: "5", 
+      name: "Kotak Bank", 
+      isPopular: true, 
+      assetPath: "https://companieslogo.com/img/orig/KOTAKBANK.NS-904128dd.png"
+    ),
+    BankModel(
+      id: "6", 
+      name: "Axis Bank", 
+      isPopular: true, 
+      assetPath: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Axis_Bank_Logo.svg/2560px-Axis_Bank_Logo.svg.png"
+    ),
   ];
 
   List<BankModel> _popularBanks = [];

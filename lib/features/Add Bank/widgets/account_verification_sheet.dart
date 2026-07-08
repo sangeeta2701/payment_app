@@ -130,98 +130,106 @@ class AccountVerificationSheet extends ConsumerWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: discoveredAccounts.length,
 
-                // itemBuilder: (context, index) {
-                //   final account = discoveredAccounts[index];
-                //   return Card(
-                //     elevation: 0,
-                //     color: const Color(0xFFF1F5F9),
-                //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-                //     child: ListTile(
-                //       leading: CircleAvatar(
-                //         backgroundColor: const Color(0xFF002E72),
-                //         child: const Icon(Icons.account_balance, color: Colors.white, size: 18),
-                //       ),
-                //       title: Text(account['bankName'], style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp)),
-                //       subtitle: Text(account['maskedAccountNo'], style: TextStyle(fontSize: 12.sp, letterSpacing: 1.5)),
-                //       trailing: Icon(Icons.arrow_forward_ios_rounded, size: 14.sp, color: Colors.black45),
-                //       onTap: () async {
-                //         bool success = await ref.read(bankProvider.notifier).activateBankAccount(account);
-                //         if (success && context.mounted) {
-                //           Navigator.pop(context); // Close bottom sheet
-                //           Navigator.pop(context); // Return to dashboard home profile root
-                //         }
-                //       },
-                //     ),
-                //   );
-                // },
-                itemBuilder: (context, index) {
-                  final account = discoveredAccounts[index];
-                  final String rawAccountNo =
-                      account['accountNo'] ?? "000000000000";
+               
+               itemBuilder: (context, index) {
+  final account = discoveredAccounts[index];
+  
+  // ➔ SCHEMATIC FIX: Pull the exact field 'maskedAccountNo' as stored in your Firestore console
+  final String dbMaskedNo = account['maskedAccountNo'] ?? "XXXX XXXX 0000";
+  
+  // Clean up formatting to show identical custom layout dots
+  final String displayMaskedNo = dbMaskedNo.replaceAll("XXXX XXXX", "•••• •••• ••");
 
-                  // Slice string safely to isolate trailing digits layout signature
-                  final String maskedDisplayNo = rawAccountNo.length > 3
-                      ? "•••• •••• ••${rawAccountNo.substring(rawAccountNo.length - 3)}"
-                      : "•••• •••• ••$rawAccountNo";
+  return Card(
+    elevation: 0,
+    color: const Color(0xFFF1F5F9),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+    child: ListTile(
+      leading: CircleAvatar(
+        backgroundColor: themeColor,
+        child: const Icon(Icons.account_balance, color: whiteColor, size: 18),
+      ),
+      title: Text(
+        account['bankName'] ?? selectedBank.name,
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp),
+      ),
+      subtitle: Text(
+        displayMaskedNo, // ➔ Renders the mapped '•••• •••• ••0106' layout
+        style: TextStyle(fontSize: 12.sp, letterSpacing: 1.5, fontWeight: FontWeight.w600),
+      ),
+      trailing: Icon(Icons.arrow_forward_ios_rounded, size: 14.sp, color: Colors.black45),
+      // onTap: () async {
+      //   // Show an indicator while executing write commands
+      //   showDialog(
+      //     context: context,
+      //     barrierDismissible: false,
+      //     builder: (context) => const Center(child: CircularProgressIndicator()),
+      //   );
 
-                  return Card(
-                    elevation: 0,
-                    color: const Color(0xFFF1F5F9),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: const Color(0xFF002E72),
-                        child: const Icon(
-                          Icons.account_balance,
-                          color: whiteColor,
-                          size: 18,
-                        ),
-                      ),
-                      title: Text(
-                        account['bankName'],
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14.sp,
-                        ),
-                      ),
-                      subtitle: Text(
-                        maskedDisplayNo,
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          letterSpacing: 1.5,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      trailing: Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        size: 14.sp,
-                        color: Colors.black45,
-                      ),
-                      onTap: () async {
-                        // Prepare payload tracking changes safely
-                        final Map<String, dynamic> activePayload = {
-                          'bankName': account['bankName'],
-                          'maskedAccountNo': maskedDisplayNo,
-                          'upiId':
-                              account['upiId'] ??
-                              "${account['phoneNumber']}@payapp",
-                        };
+      //   final Map<String, dynamic> activePayload = {
+      //     'bankName': account['bankName'] ?? selectedBank.name,
+      //     'maskedAccountNo': displayMaskedNo,
+      //     'upiId': account['upiId'] ?? "${account['phoneNumber']}@payapp",
+      //   };
 
-                        bool success = await ref
-                            .read(bankProvider.notifier)
-                            .activateBankAccount(activePayload);
-                        if (success && context.mounted) {
-                          Navigator.pop(context); // Close sheet
-                          Navigator.pop(
-                            context,
-                          ); // Pop back to Home layout safely
-                        }
-                      },
-                    ),
-                  );
-                },
+      //   bool success = await ref.read(bankProvider.notifier).activateBankAccount(activePayload);
+        
+      //   if (context.mounted) Navigator.pop(context); // Remove progress loading state
+
+      //   if (success && context.mounted) {
+      //     ScaffoldMessenger.of(context).showSnackBar(
+      //       SnackBar(content: Text("${activePayload['bankName']} linked successfully!")),
+      //     );
+      //     Navigator.pop(context); // Close Verification Sheet
+      //     Navigator.pop(context); // Pop back out to Home Dashboard
+      //   } else if (context.mounted) {
+      //     ScaffoldMessenger.of(context).showSnackBar(
+      //       const SnackBar(content: Text("Error linking account. Check connection settings.")),
+      //     );
+      //   }
+      // },
+    
+    onTap: () async {
+  // 1. Capture the structural navigator states BEFORE the async await gap
+  final navigator = Navigator.of(context);
+  final scaffoldMessenger = ScaffoldMessenger.of(context);
+
+  // 2. Prepare payload tracking changes safely
+  final Map<String, dynamic> activePayload = {
+    'bankName': account['bankName'] ?? selectedBank.name,
+    'maskedAccountNo': displayMaskedNo,
+    'upiId': account['upiId'] ?? "${account['phoneNumber']}@payapp",
+  };
+
+  debugPrint("****************[TAP LOG] Click registered on bank row. Sending payload to notifier...");
+
+  // 3. Execute the database transaction update 
+  bool success = await ref
+      .read(bankProvider.notifier)
+      .activateBankAccount(activePayload);
+  
+  debugPrint("****************[TAP LOG] Notifier database task complete. Success code returned: $success");
+
+  // 4. Execute UI state adjustments using the safe, pre-captured navigator instance
+  if (success) {
+    scaffoldMessenger.showSnackBar(
+      SnackBar(content: Text("${activePayload['bankName']} linked successfully!")),
+    );
+    // Pop the verification sheet overlay window first
+    navigator.pop(); 
+    // Pop the selection screen layout backdrop second to return cleanly to home
+    navigator.pop(); 
+  } else {
+    scaffoldMessenger.showSnackBar(
+      const SnackBar(content: Text("Error linking account. Database update rejected.")),
+    );
+  }
+},
+    
+    ),
+
+  );
+}
               ),
               height12,
             ],
