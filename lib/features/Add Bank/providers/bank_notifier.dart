@@ -15,90 +15,113 @@ class BankNotifier extends StateNotifier<AsyncValue<AccountList>> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 
-  Future<void> findLinkedBankAccounts(BankModel selectedBank) async {
+Future<void> findLinkedBankAccounts(BankModel selectedBank) async {
   state = const AsyncValue.loading();
 
   try {
     final User? currentUser = _auth.currentUser;
-    
-    // ➔ DEBUG POINT 1: Inspect the raw Firebase user object status
-    debugPrint("=== [DEBUG] BANK LINKING FLOW STARTED ===");
-    debugPrint("Firebase Current User exists: ${currentUser != null}");
-    if (currentUser != null) {
-      debugPrint("********8Firebase Auth uid: ${currentUser.uid}");
-      debugPrint("****************Firebase Auth phoneNumber: '${currentUser.phoneNumber}'");
+
+    // Hard stop — no fake fallbacks
+    if (currentUser == null) {
+      state = AsyncValue.error(
+        "Session expired. Please log in again.",
+        StackTrace.current,
+      );
+      return;
     }
 
-    // Fallback for development if the user object lacks a verified phone property
-    final String formattedUserPhone = currentUser?.phoneNumber ?? "+916266520680"; 
-    debugPrint("****************Phone number used for Firestore lookup query: '$formattedUserPhone'");
-    debugPrint("****************Bank selected ID: '${selectedBank.id}' | Name: '${selectedBank.name}'");
+    final String formattedUserPhone = currentUser.phoneNumber ?? "";
 
-    // ➔ DEBUG POINT 2: Fetch and evaluate query snapshots
-    debugPrint("Executing Firestore collection query on 'mock_central_bank_registry'...");
+    if (formattedUserPhone.isEmpty) {
+      state = AsyncValue.error(
+        "Phone number not found on your account.",
+        StackTrace.current,
+      );
+      return;
+    }
+
+    debugPrint("****************UID: ${currentUser.uid}");
+    debugPrint("****************Phone: $formattedUserPhone");
+    debugPrint("****************BankId: ${selectedBank.id}");
+
     final querySnapshot = await _firestore
         .collection('mock_central_bank_registry')
         .where('phoneNumber', isEqualTo: formattedUserPhone)
         .where('bankId', isEqualTo: selectedBank.id)
         .get();
 
-    debugPrint("****************Firestore query completed execution.");
-    debugPrint("****************Total matching documents discovered in Cloud DB: ${querySnapshot.docs.length}");
-
-    // If no document matches, let's print a sample to see what the database actually looks like
-    if (querySnapshot.docs.isEmpty) {
-      debugPrint("****************--- [WARNING] No exact match found. Printing first 2 docs from collection for structural cross-check ---");
-      final sampleDocs = await _firestore.collection('mock_central_bank_registry').limit(2).get();
-      for (var doc in sampleDocs.docs) {
-        debugPrint("Sample Doc ID [${doc.id}] Data fields: ${doc.data()}");
-      }
-      debugPrint("--------------------------------------------------------------------------------------------------");
-    }
+    debugPrint("****************Docs found: ${querySnapshot.docs.length}");
 
     final AccountList accounts = querySnapshot.docs.map((doc) {
-      final data = doc.data();
-      debugPrint("Successfully parsed document matching target data profile: $data");
-      return data;
+      debugPrint("****************Doc data: ${doc.data()}");
+      return doc.data();
     }).toList();
-    
+
     state = AsyncValue.data(accounts);
-    debugPrint("=== [DEBUG] BANK LINKING FLOW FINISHED SUCCESSFULLY ===");
+
   } catch (e, stack) {
-    debugPrint("=== [CRITICAL ERROR] FLOW CAUGHT EXCEPTION ===");
-    debugPrint("****************Exception Message: ${e.toString()}");
-    debugPrint("****************Stack Trace: $stack");
-    state = AsyncValue.error("Network lookup failure: ${e.toString()}", stack);
+    debugPrint("****************Exception: $e");
+    state = AsyncValue.error("Lookup failed: ${e.toString()}", stack);
+  }
+}
+
+Future<bool> activateBankAccount(Map<String, dynamic> accountData) async {
+  try {
+    final User? currentUser = _auth.currentUser;
+
+    // Hard stop — no fake fallbacks
+    if (currentUser == null) {
+      debugPrint("****************[ERROR] currentUser is null. User not authenticated.");
+      return false;
+    }
+
+    final String uid = currentUser.uid;
+    debugPrint("****************[DB] Writing to users/$uid");
+
+    await _firestore.collection('users').doc(uid).set({
+      'activeBankName': accountData['bankName'],
+      'activeMaskedAccount': accountData['maskedAccountNo'],
+      'activeUpiId': accountData['upiId'],
+      'bankLinkedAt': FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+
+    debugPrint("****************[DB] Write successful.");
+    return true;
+
+  } catch (e) {
+    debugPrint("****************[ERROR] activateBankAccount failed: $e");
+    return false;
   }
 }
 
  
 
   /// Sets the chosen bank profile as the active transactional payment protocol
-  Future<bool> activateBankAccount(Map<String, dynamic> accountData) async {
-  try {
-    final User? currentUser = _auth.currentUser;
+//   Future<bool> activateBankAccount(Map<String, dynamic> accountData) async {
+//   try {
+//     final User? currentUser = _auth.currentUser;
     
-    debugPrint("****************[DB UPDATE LOG] Checking user authentication profile state...");
+//     debugPrint("****************[DB UPDATE LOG] Checking user authentication profile state...");
     
-    // ➔ DEVELOPMENT FIX: Fall back to a dedicated local testing doc ID string if auth session evaluates to null
-    final String targetUserUid = currentUser?.uid ?? "mock_developer_user_uid";
+//     // ➔ DEVELOPMENT FIX: Fall back to a dedicated local testing doc ID string if auth session evaluates to null
+//     final String targetUserUid = currentUser?.uid ?? "mock_developer_user_uid";
     
-    debugPrint("****************[DB UPDATE LOG] Writing account profile variables to users/$targetUserUid...");
+//     debugPrint("****************[DB UPDATE LOG] Writing account profile variables to users/$targetUserUid...");
 
-    // Write operation updates or initializes the specific user record smoothly
-    await _firestore.collection('users').doc(targetUserUid).set({
-      'activeBankName': accountData['bankName'],
-      'activeMaskedAccount': accountData['maskedAccountNo'],
-      'bankLinkedAt': FieldValue.serverTimestamp(),
-    }, SetOptions(merge: true));
+//     // Write operation updates or initializes the specific user record smoothly
+//     await _firestore.collection('users').doc(targetUserUid).set({
+//       'activeBankName': accountData['bankName'],
+//       'activeMaskedAccount': accountData['maskedAccountNo'],
+//       'bankLinkedAt': FieldValue.serverTimestamp(),
+//     }, SetOptions(merge: true));
 
-    debugPrint("****************[DB UPDATE LOG] Cloud Firestore document updated successfully.");
-    return true;
-  } catch (e) {
-    debugPrint("****************[CRITICAL CATCH EXCEPTION] activateBankAccount failed: ${e.toString()}");
-    return false;
-  }
-}
+//     debugPrint("****************[DB UPDATE LOG] Cloud Firestore document updated successfully.");
+//     return true;
+//   } catch (e) {
+//     debugPrint("****************[CRITICAL CATCH EXCEPTION] activateBankAccount failed: ${e.toString()}");
+//     return false;
+//   }
+// }
 
   void resetStatus() {
     state = const AsyncValue.data([]);

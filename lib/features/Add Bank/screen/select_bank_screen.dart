@@ -1,4 +1,5 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -62,11 +63,26 @@ final List<BankModel> _allBanksMaster = [
   List<BankModel> _popularBanks = [];
   List<BankModel> _allBanksSorted = [];
 
-  @override
-  void initState() {
-    super.initState();
-    _processAndSortLists();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _processAndSortLists();
+  // } 
+
+
+  // Paste this in your SelectBankScreen initState temporarily
+@override
+void initState() {
+  super.initState();
+  _processAndSortLists();
+  
+  //Temp debug — remove after confirming
+  final user = FirebaseAuth.instance.currentUser;
+  debugPrint("**********************=== AUTH CHECK ===");
+  debugPrint("**********************User is null: ${user == null}");
+  debugPrint("**********************UID: ${user?.uid}");
+  debugPrint("**********************Phone: ${user?.phoneNumber}");
+}
 
   void _processAndSortLists() {
     _popularBanks = _allBanksMaster.where((bank) => bank.isPopular).toList();
