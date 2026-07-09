@@ -113,7 +113,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ],
                 ),
       
-                height30,
+                height20,
                 Container(
                   decoration: BoxDecoration(
                     color: whiteColor,
@@ -167,7 +167,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                   ),
                 ),
-                height30,
+                height20,
                 Container(
                   height: 80.h,
                   decoration: BoxDecoration(
@@ -187,7 +187,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ],
                   ),
                 ),
-                height30,
+                height20,
                 Container(
                   decoration: BoxDecoration(
                     color: whiteColor,
@@ -207,7 +207,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             fontSize: 14.sp,
                           ),
                         ),
-                        height20,
+                        height12,
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -245,7 +245,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                   ),
                 ),
-                height30,
+                height20,
                 Container(
                   decoration: BoxDecoration(
                     color: whiteColor,
@@ -265,7 +265,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             fontSize: 14.sp,
                           ),
                         ),
-                        height20,
+                        height12,
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -303,7 +303,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                   ),
                 ),
-                height60,
+                height90,
               ],
             ),
           ),
