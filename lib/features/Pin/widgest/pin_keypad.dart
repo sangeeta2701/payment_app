@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/theme/app_colors.dart';
 
 class PinKeypad extends StatelessWidget {
   final Function(String) onKeyTap;
@@ -9,7 +10,7 @@ class PinKeypad extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: whiteColor,
       padding: EdgeInsets.symmetric(vertical: 16.h),
       child: Column(
         children: [

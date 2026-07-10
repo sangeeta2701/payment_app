@@ -8,7 +8,9 @@ import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
 import 'package:payment_app/features/Pin/widgest/pin_dots_indicator.dart';
 import 'package:payment_app/features/Pin/widgest/pin_keypad.dart';
-import 'package:payment_app/features/Transactions/providers/payment_sdk_notifier.dart';
+
+// ➔ IMPORT THE TRANSACTION NOTIFIER INSTEAD OF RAZORPAY
+import 'package:payment_app/features/Transactions/providers/transaction_notifier.dart'; 
 import 'package:payment_app/features/Transactions/screen/transaction_details_screen.dart';
 
 class EnterPinScreen extends ConsumerStatefulWidget {
@@ -54,52 +56,48 @@ class _EnterPinScreenState extends ConsumerState<EnterPinScreen> {
   }
 
   void _submitPaymentPipeline() async {
-    if (_currentPin != "123456") {
-      setState(() {
-        _currentPin = "";
-        _localError = "Incorrect UPI PIN entered. Please try again.";
-      });
-      return;
-    }
-
     setState(() {
       _isProcessing = true;
       _localError = null;
     });
 
-    // ➔ LAUNCH NATIVE SECURE OVERLAY SDK SESSION
-    await ref.read(paymentSDKProvider.notifier).launchSecureCheckoutSession(
-          recipientName: widget.userName,
+    // ➔ EXECUTING DOMESTIC WALLET TRANSACTION NATIVELY
+    bool success = await ref.read(transactionProvider.notifier).processDirectWalletPayment(
+          receiverName: widget.userName,
+          amount: widget.amountToPay,
           upiId: widget.upiId,
-          numericAmount: widget.amountToPay,
+          enteredPin: _currentPin,
         );
+
+    if (!mounted) return;
+
+    final txState = ref.read(transactionProvider);
+
+    if (success && txState.transactionId != null) {
+      // ➔ SUCCESS: Navigate directly to your native receipt view
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TransactionDetailsScreen(
+            transactionId: txState.transactionId!,
+            receiverName: widget.userName,
+            amount: widget.amountToPay,
+          ),
+        ),
+        (route) => route.isFirst,
+      );
+    } else {
+      // ➔ FAILURE: Reset PIN and show error without leaving the screen
+      setState(() {
+        _isProcessing = false;
+        _currentPin = "";
+        _localError = txState.errorMessage ?? "Transaction failed. Please check your PIN.";
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Listen for events sent from our hardware abstraction plugin wrapper
-    ref.listen<PaymentSDKState>(paymentSDKProvider, (previous, next) {
-      if (next.status == PaymentSDKStatus.completed && next.transactionId != null) {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => TransactionDetailsScreen(
-              transactionId: next.transactionId!,
-              receiverName: widget.userName,
-              amount: widget.amountToPay,
-            ),
-          ),
-          (route) => route.isFirst,
-        );
-      } else if (next.status == PaymentSDKStatus.paymentFailed) {
-        setState(() {
-          _isProcessing = false;
-          _currentPin = "";
-          _localError = next.errorMessage ?? "Transaction failed.";
-        });
-      }
-    });
-
     final currencyFormatter = NumberFormat("#,##,###.00");
 
     return Scaffold(

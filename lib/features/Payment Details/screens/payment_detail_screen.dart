@@ -19,7 +19,11 @@ class PaymentDetailsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final historyAsyncValue = ref.watch(chatHistoryStreamProvider(contact.phoneNumber));
+   
+
+    final String lookupParam = contact.phoneNumber.replaceAll("+91", "").trim();
+    
+    final historyAsyncValue = ref.watch(chatHistoryStreamProvider(lookupParam));
     final String myUid = FirebaseAuth.instance.currentUser?.uid ?? "";
 
     return Scaffold(
