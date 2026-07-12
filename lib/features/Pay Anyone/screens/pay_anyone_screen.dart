@@ -159,9 +159,9 @@ class _PayAnyoneScreenState extends State<PayAnyoneScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: bgColor,
+      // backgroundColor: bgColor,
       appBar: AppBar(
-        backgroundColor: bgColor,
+        // backgroundColor: bgColor,
         elevation: 0,
         scrolledUnderElevation: 0,
         surfaceTintColor: Colors.transparent,
@@ -171,7 +171,7 @@ class _PayAnyoneScreenState extends State<PayAnyoneScreen> {
         ),
         title: Text(
           "Pay Anyone",
-          style: AppTextStyles.blackContentTextStyle.copyWith(fontSize: 16.sp),
+          style: AppTextStyles.blackContentTextStyle(context).copyWith(fontSize: 16.sp),
         ),
       ),
       body: SafeArea(
@@ -225,7 +225,7 @@ class _PayAnyoneScreenState extends State<PayAnyoneScreen> {
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
             child: Text(
               _searchQuery.isEmpty ? "All Contacts" : "Search Results",
-              style: AppTextStyles.greyContentTextStyle.copyWith(
+              style: AppTextStyles.greyContentTextStyle(context).copyWith(
                 fontSize: 12.sp,
                 fontWeight: FontWeight.bold,
               ),
@@ -269,7 +269,7 @@ class _PayAnyoneScreenState extends State<PayAnyoneScreen> {
             Text(
               "Please enable access to choose from your address book natively.",
               textAlign: TextAlign.center,
-              style: AppTextStyles.greyContentTextStyle.copyWith(
+              style: AppTextStyles.greyContentTextStyle(context).copyWith(
                 fontSize: 12.sp,
               ),
             ),

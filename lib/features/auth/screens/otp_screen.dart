@@ -148,7 +148,7 @@ class _OtpScreenState extends State<OtpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: bgColor,
+      // backgroundColor: bgColor,
       appBar: AppBar(
         backgroundColor: transparent,
         elevation: 0,
@@ -168,7 +168,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 children: [
                   Text(
                     "Verify Mobile Number",
-                    style: AppTextStyles.headingBlackTextStyle.copyWith(
+                    style: AppTextStyles.headingBlackTextStyle(context).copyWith(
                       fontSize: 22.sp,
                       fontWeight: FontWeight.bold,
                     ),
@@ -176,7 +176,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   SizedBox(height: 8.h),
                   Text(
                     "Enter the 6-digit code sent to +91 ${widget.phoneNumber}",
-                    style: AppTextStyles.blackContentTextStyle.copyWith(
+                    style: AppTextStyles.blackContentTextStyle(context).copyWith(
                       color: Colors.grey.shade600,
                       fontSize: 13.sp,
                     ),
@@ -194,8 +194,7 @@ class _OtpScreenState extends State<OtpScreen> {
                           focusNode: _focusNodes[index],
                           keyboardType: TextInputType.number,
                           textAlign: TextAlign.center,
-                          style: AppTextStyles.headingBlackTextStyle
-                              .copyWith(
+                          style: AppTextStyles.headingBlackTextStyle(context).copyWith(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.bold,
                           ),
@@ -241,7 +240,7 @@ class _OtpScreenState extends State<OtpScreen> {
                             onPressed: _startTimer,
                             child: Text(
                               "Resend OTP",
-                              style: AppTextStyles.blackContentTextStyle
+                              style: AppTextStyles.blackContentTextStyle(context)
                                   .copyWith(
                                 color: themeColor,
                                 fontWeight: FontWeight.bold,
@@ -251,7 +250,7 @@ class _OtpScreenState extends State<OtpScreen> {
                           )
                         : Text(
                             "Resend OTP in 0:${_secondsRemaining.toString().padLeft(2, '0')}",
-                            style: AppTextStyles.blackContentTextStyle
+                            style: AppTextStyles.blackContentTextStyle(context)
                                 .copyWith(
                               color: Colors.grey.shade500,
                               fontSize: 13.sp,
@@ -272,7 +271,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       ),
                       child: Text(
                         "Verify & Proceed",
-                        style: AppTextStyles.whiteContentTextStyle
+                        style: AppTextStyles.whiteContentTextStyle(context)
                             .copyWith(
                           fontSize: 15.sp,
                           fontWeight: FontWeight.bold,

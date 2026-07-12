@@ -46,7 +46,7 @@ class TransactionDetailsScreen extends StatelessWidget {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Receipt saved safely to local device: $receiptPath", style: AppTextStyles.whiteContentTextStyle.copyWith(fontSize: 12.sp)),
+          content: Text("Receipt saved safely to local device: $receiptPath", style: AppTextStyles.whiteContentTextStyle(context).copyWith(fontSize: 12.sp)),
           backgroundColor: const Color(0xFF00B15E),
           behavior: SnackBarBehavior.floating,
         ),
@@ -69,9 +69,9 @@ class TransactionDetailsScreen extends StatelessWidget {
     final String formattedDate = DateFormat('dd MMM yyyy • hh:mm a').format(DateTime.now());
 
     return Scaffold(
-      backgroundColor: bgColor,
+      // backgroundColor: bgColor,
       appBar: AppBar(
-        backgroundColor: bgColor,
+        // backgroundColor: bgColor,
         elevation: 0,
         scrolledUnderElevation: 0,
         surfaceTintColor: transparent,
@@ -100,9 +100,9 @@ class TransactionDetailsScreen extends StatelessWidget {
                         child: Icon(Icons.check, size: 40.sp, color: whiteColor),
                       ),
                       height16,
-                      Text("Payment Successful", style: AppTextStyles.headingBlackTextStyle.copyWith(fontSize: 22.sp)),
+                      Text("Payment Successful", style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 22.sp)),
                       height4,
-                      Text(formattedDate, style: AppTextStyles.greyContentTextStyle.copyWith(fontSize: 12.sp)),
+                      Text(formattedDate, style: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 12.sp)),
                       SizedBox(height: 32.h),
 
                       // Structured Main Invoice Metadata Card Panel
@@ -117,14 +117,14 @@ class TransactionDetailsScreen extends StatelessWidget {
                           children: [
                             Text(
                               "₹${amount.toStringAsFixed(2)}",
-                              style: AppTextStyles.headingBlackTextStyle.copyWith(fontSize: 34.sp, fontWeight: FontWeight.bold),
+                              style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 34.sp, fontWeight: FontWeight.bold),
                             ),
                             Divider(color: Colors.grey.shade100, height: 32.h),
-                            _buildDetailsRow("To Recipient", receiverName),
+                            _buildDetailsRow("To Recipient", receiverName, context),
                             height12,
-                            _buildDetailsRow("Transaction ID", transactionId.substring(0, 12).toUpperCase()),
+                            _buildDetailsRow("Transaction ID", transactionId.substring(0, 12).toUpperCase(), context),
                             height12,
-                            _buildDetailsRow("Payment Status", "SUCCESS", isStatus: true),
+                            _buildDetailsRow("Payment Status", "SUCCESS", context, isStatus: true),
                           ],
                         ),
                       ),
@@ -145,7 +145,7 @@ class TransactionDetailsScreen extends StatelessWidget {
                       ),
                       onPressed: () => _downloadReceiptReceiptFile(context),
                       icon: const Icon(Icons.file_download_outlined, color: themeColor),
-                      label: Text("Download", style: AppTextStyles.headingThemeTextStyle.copyWith(fontSize: 14.sp)),
+                      label: Text("Download", style: AppTextStyles.headingThemeTextStyle(context).copyWith(fontSize: 14.sp)),
                     ),
                   ),
                   width12,
@@ -159,7 +159,7 @@ class TransactionDetailsScreen extends StatelessWidget {
                       ),
                       onPressed: _shareReceiptViaNativeSheet,
                       icon: const Icon(Icons.share_outlined, color: whiteColor),
-                      label: Text("Share", style: AppTextStyles.whiteButtonTextStyle.copyWith(fontSize: 14.sp)),
+                      label: Text("Share", style: AppTextStyles.whiteButtonTextStyle(context).copyWith(fontSize: 14.sp)),
                     ),
                   ),
                 ],
@@ -172,16 +172,16 @@ class TransactionDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailsRow(String title, String value, {bool isStatus = false}) {
+  Widget _buildDetailsRow(String title, String value, BuildContext context, {bool isStatus = false}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(title, style: AppTextStyles.greyContentTextStyle.copyWith(fontSize: 13.sp)),
+        Text(title, style: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 13.sp)),
         Text(
           value,
           style: isStatus 
-              ? AppTextStyles.headingBlackTextStyle.copyWith(fontSize: 13.sp, color: const Color(0xFF00B15E))
-              : AppTextStyles.headingBlackTextStyle.copyWith(fontSize: 13.sp),
+              ? AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 13.sp, color: const Color(0xFF00B15E))
+              : AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 13.sp),
         ),
       ],
     );

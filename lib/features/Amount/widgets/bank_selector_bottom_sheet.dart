@@ -35,7 +35,7 @@ class _BankSelectorBottomSheetState extends ConsumerState<BankSelectorBottomShee
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Choose account to pay", style: AppTextStyles.headingBlackTextStyle.copyWith(fontSize: 16.sp)),
+              Text("Choose account to pay", style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 16.sp)),
               IconButton(
                 icon: const Icon(Icons.close, color: Colors.black54),
                 onPressed: () => Navigator.pop(context),
@@ -45,7 +45,7 @@ class _BankSelectorBottomSheetState extends ConsumerState<BankSelectorBottomShee
           height8,
           Text(
             "Amount: ₹${widget.amountToPay.toStringAsFixed(2)}",
-            style: AppTextStyles.blackContentTextStyle.copyWith(fontWeight: FontWeight.bold, color: themeColor),
+            style: AppTextStyles.blackContentTextStyle(context).copyWith(fontWeight: FontWeight.bold, color: themeColor),
           ),
           Divider(color: Colors.grey.shade200, height: 32.h),
 
@@ -85,7 +85,7 @@ class _BankSelectorBottomSheetState extends ConsumerState<BankSelectorBottomShee
       children: [
         Text(
           "No bank account linked to your profile yet. Please connect an account to continue with payments.",
-          style: AppTextStyles.greyContentTextStyle.copyWith(fontSize: 13.sp),
+          style: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 13.sp),
         ),
         SizedBox(height: 20.h),
         ElevatedButton.icon(

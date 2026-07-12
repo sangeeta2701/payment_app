@@ -27,7 +27,7 @@ class PaymentDetailsScreen extends ConsumerWidget {
     final String myUid = FirebaseAuth.instance.currentUser?.uid ?? "";
 
     return Scaffold(
-      backgroundColor: bgColor,
+      // backgroundColor: bgColor,
       appBar: PaymentAppBar(contact: contact),
       body: Column(
         children: [
@@ -40,7 +40,7 @@ class PaymentDetailsScreen extends ConsumerWidget {
                   return Center(
                     child: Text(
                       "No transaction history yet.",
-                      style: AppTextStyles.greyContentTextStyle.copyWith(fontSize: 14.sp),
+                      style: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 14.sp),
                     ),
                   );
                 }
@@ -79,7 +79,7 @@ class PaymentDetailsScreen extends ConsumerWidget {
                           ),
                           child: Text(
                             dateString,
-                            style: AppTextStyles.greyContentTextStyle.copyWith(
+                            style: AppTextStyles.greyContentTextStyle(context).copyWith(
                               fontSize: 11.sp,
                               fontWeight: FontWeight.bold,
                               color: Colors.black54,
@@ -145,7 +145,7 @@ class PaymentDetailsScreen extends ConsumerWidget {
               icon: Icon(Icons.verified_user_outlined, color: whiteColor, size: 18.sp),
               label: Text(
                 "Pay Securely",
-                style: AppTextStyles.whiteButtonTextStyle.copyWith(fontSize: 14.sp),
+                style: AppTextStyles.whiteButtonTextStyle(context).copyWith(fontSize: 14.sp),
               ),
             ),
           ),

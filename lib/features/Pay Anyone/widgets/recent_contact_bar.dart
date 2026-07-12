@@ -25,7 +25,7 @@ class RecentContactsBar extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
           child: Text(
             "Recents",
-            style: AppTextStyles.greyContentTextStyle.copyWith(
+            style: AppTextStyles.greyContentTextStyle(context).copyWith(
               fontSize: 12.sp,
               fontWeight: FontWeight.bold,
             ),
@@ -69,7 +69,7 @@ class RecentContactsBar extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
-                        style: AppTextStyles.blackContentTextStyle.copyWith(fontSize: 11.sp),
+                        style: AppTextStyles.blackContentTextStyle(context).copyWith(fontSize: 11.sp),
                       ),
                     ],
                   ),

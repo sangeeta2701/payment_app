@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
+import 'package:payment_app/core/theme/theme_provider.dart';
 import 'package:payment_app/features/Bank%20Transfer/screen/bank_transfer_screen.dart';
 import 'package:payment_app/features/Mobile%20Recharge/screens/mobile_rechage_screen.dart';
 import 'package:payment_app/features/Pay%20Anyone/screens/pay_anyone_screen.dart';
@@ -44,7 +45,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         statusBarColor: transparent,
       ),
       child: Scaffold(
-        backgroundColor: bgColor,
+        // backgroundColor: bgColor,
         appBar: AppBar(
           backgroundColor: transparent,
           elevation: 0,
@@ -69,18 +70,34 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ),
           ),
-          actions: [
-            Icon(Icons.search, color: themeColor, size: 20.h),
-            width8,
-            Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: Icon(
-                Icons.notifications_outlined,
-                color: themeColor,
-                size: 20.h,
-              ),
-            ),
-          ],
+         actions: [
+    // ➔ DYNAMIC CONTRAST FIX: Switch icons to White in Dark Mode, and baseline themeColor in Light Mode!
+    Icon(
+      Icons.search, 
+      color: Theme.of(context).brightness == Brightness.dark ?whiteColor : themeColor, 
+      size: 20.h,
+    ),
+    width8,
+    Icon(
+      Icons.notifications_outlined,
+      color: Theme.of(context).brightness == Brightness.dark ? whiteColor : themeColor,
+      size: 20.h,
+    ),
+    width8,
+    IconButton(
+      onPressed: () {
+        ref.read(themeModeProvider.notifier).toggleTheme();
+      },
+      icon: Icon(
+        ref.watch(themeModeProvider) == ThemeMode.light
+            ? Icons.dark_mode_outlined
+            : Icons.light_mode_outlined,
+        color: Theme.of(context).brightness == Brightness.dark ? whiteColor : themeColor,
+        size: 20.h,
+      ),
+    ),
+    width12
+  ],
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -90,7 +107,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               children: [
                 Text(
                   "UPI Money Transfer",
-                  style: AppTextStyles.headingBlackTextStyle.copyWith(
+                  style: AppTextStyles.headingBlackTextStyle(context).copyWith(
                     fontSize: 14.sp,
                   ),
                 ),
@@ -100,16 +117,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   children: [
                     featureShortcuts(Icons.qr_code_scanner, "Scan\n Any QR", (){
                       Navigator.push(context, MaterialPageRoute(builder: (context) => const ScanScreen()));
-                    }),
+                    }, context),
                     featureShortcuts(Icons.people_alt, "Pay\nAnyone", (){
                       Navigator.push(context, MaterialPageRoute(builder: (context) => const PayAnyoneScreen()));
-                    }),
+                    }, context),
                     featureShortcuts(Icons.account_balance, "Bank\nTransfer", (){
                       Navigator.push(context, MaterialPageRoute(builder: (context) => const BankTransferScreen()));
-                    }),
+                    }, context),
                     featureShortcuts(Icons.article, "Balance &\nHistory", (){
                       Navigator.push(context, MaterialPageRoute(builder: (context) => const HistoryScreen()));
-                    }),
+                    }, context),
                   ],
                 ),
       
@@ -129,7 +146,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       children: [
                         Text(
                           "Recharge & Bill Payments",
-                          style: AppTextStyles.headingBlackTextStyle.copyWith(
+                          style: AppTextStyles.headingBlackTextStyle(context).copyWith(
                             fontSize: 14.sp,
                           ),
                         ),
@@ -142,24 +159,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               "Mobile\nRecharge",
                               () {
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => const MobileRechargeScreen()));
-                              }
+                              },
+                              context
                             ),
                             rechargeBillShortcuts(Icons.tv, "DTH\nRecharge", () {
                               // Handle tap event for DTH Recharge
-                            }),
+                            }, context),
                             rechargeBillShortcuts(
                               Icons.lightbulb_outline,
                               "Electricity\nBill",
                               () {
                                 // Handle tap event for Electricity Bill
-                              }
+                              },
+                              context
                             ),
                             rechargeBillShortcuts(
                               Icons.water_drop_outlined,
                               "Water\nBill",
                               () {
                                 // Handle tap event for Water Bill
-                              }
+                              },
+                              context
                             ),
                           ],
                         ),
@@ -180,7 +200,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       Image.asset("assets/images/cashback.png", height: 60.h),
                       Text(
                         "Assured Cashback on your\nfirst transaction",
-                        style: AppTextStyles.headingBlackTextStyle.copyWith(
+                        style: AppTextStyles.headingBlackTextStyle(context).copyWith(
                           fontSize: 14.sp,
                         ),
                       ),
@@ -203,7 +223,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       children: [
                         Text(
                           "Travel & Tickets",
-                          style: AppTextStyles.headingBlackTextStyle.copyWith(
+                          style: AppTextStyles.headingBlackTextStyle(context).copyWith(
                             fontSize: 14.sp,
                           ),
                         ),
@@ -216,28 +236,32 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               "Flight",
                               () {
                                 // Handle tap event for Flight
-                              }
+                              },
+                              context
                             ),
                             rechargeBillShortcuts(
                               Icons.train_outlined,
                               "Train",
                               () {
                                 // Handle tap event for Train
-                              }
+                              },
+                              context
                             ),
                             rechargeBillShortcuts(
                               Icons.directions_bus_outlined,
                               "Bus",
                               () {
                                 // Handle tap event for Bus
-                              }
+                              },
+                              context
                             ),
                             rechargeBillShortcuts(
                               Icons.domain_outlined,
                               "Hotels",
                               () {
                                 // Handle tap event for Hotels
-                              }
+                              },
+                              context
                             ),
                           ],
                         ),
@@ -261,7 +285,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       children: [
                         Text(
                           "Financial Services",
-                          style: AppTextStyles.headingBlackTextStyle.copyWith(
+                          style: AppTextStyles.headingBlackTextStyle(context).copyWith(
                             fontSize: 14.sp,
                           ),
                         ),
@@ -274,28 +298,32 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               "Loan",
                               () {
                                 // Handle tap event for Loan
-                              }
+                              },
+                              context
                             ),
                             rechargeBillShortcuts(
                               Icons.directions_car_outlined,
                               "Car\nInsurance",
                               () {
                                 // Handle tap event for Car Insurance
-                              }
+                              },
+                              context
                             ),
                             rechargeBillShortcuts(
                               Icons.monetization_on_outlined,
                               "Save in\nGolds",
                               () {
                                 // Handle tap event for Golds
-                              }
+                              },
+                              context
                             ),
                             rechargeBillShortcuts(
                               Icons.bar_chart_outlined,
                               "Stocks",
                               () {
                                 // Handle tap event for Stocks
-                              }
+                              },
+                              context
                             ),
                           ],
                         ),
@@ -320,7 +348,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           icon: Icon(Icons.qr_code_scanner, color: whiteColor),
           label: Text(
             "Scan QR",
-            style: AppTextStyles.whiteContentTextStyle.copyWith(
+            style: AppTextStyles.whiteContentTextStyle(context).copyWith(
               fontSize: 12.sp,
             ),
           ),

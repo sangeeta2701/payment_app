@@ -19,9 +19,9 @@ class MyQrProfileScreen extends StatelessWidget {
     
 
     return Scaffold(
-      backgroundColor: bgColor, 
+      // backgroundColor: bgColor, 
       appBar: AppBar(
-        backgroundColor: bgColor, 
+        // backgroundColor: bgColor, 
         elevation: 0,
         scrolledUnderElevation: 0, 
   surfaceTintColor: Colors.transparent,
@@ -114,10 +114,10 @@ class MyQrProfileScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("EPIC GETAWAYS SALE", 
-                          style: AppTextStyles.blackContentTextStyle.copyWith(fontSize: 10.sp, height:1.2)
+                          style: AppTextStyles.blackContentTextStyle(context).copyWith(fontSize: 10.sp, height:1.2)
                           ),
                           height4,
-                          Text("Get 20% off on\ntravel bookings", style: AppTextStyles.whiteContentTextStyle.copyWith(fontSize: 13.sp, height: 1.0)),
+                          Text("Get 20% off on\ntravel bookings", style: AppTextStyles.whiteContentTextStyle(context).copyWith(fontSize: 13.sp, height: 1.0)),
                         ],
                       ),
                     ),
@@ -129,7 +129,7 @@ class MyQrProfileScreen extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                       ),
                       // ),
-                      child: Text("Book Now →", style: AppTextStyles.whiteButtonTextStyle.copyWith(fontSize: 11.sp)
+                      child: Text("Book Now →", style: AppTextStyles.whiteButtonTextStyle(context) .copyWith(fontSize: 11.sp)
                       
                     )
                     )

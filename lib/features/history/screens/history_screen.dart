@@ -40,9 +40,9 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     final searchQuery = ref.watch(historySearchQueryProvider);
 
     return Scaffold(
-      backgroundColor: bgColor,
+      // backgroundColor: bgColor,
       appBar: AppBar(
-        backgroundColor: bgColor,
+        // backgroundColor: bgColor,
         elevation: 0,
         scrolledUnderElevation: 0,
         surfaceTintColor: Colors.transparent,
@@ -52,7 +52,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
         ),
         title: Text(
           "Balance & History",
-          style: AppTextStyles.blackContentTextStyle.copyWith(fontSize: 18.sp, fontWeight: FontWeight.bold),
+          style: AppTextStyles.blackContentTextStyle(context).copyWith(fontSize: 18.sp, fontWeight: FontWeight.bold),
         ),
       ),
       body: Column(
@@ -73,7 +73,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                   child: Text(
                     "Your Accounts",
-                    style: AppTextStyles.headingBlackTextStyle.copyWith(fontSize: 13.sp),
+                    style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 13.sp),
                   ),
                 ),
                 const AccountsHorizontalList(),
@@ -167,7 +167,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     return Center(
       child: Text(
         "No matching transaction items found.",
-        style: AppTextStyles.greyContentTextStyle.copyWith(fontSize: 13.sp),
+        style: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 13.sp),
       ),
     );
   }

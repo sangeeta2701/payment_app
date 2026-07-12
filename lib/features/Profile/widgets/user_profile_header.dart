@@ -51,7 +51,7 @@ class UserProfileHeader extends StatelessWidget {
                 children: [
                   Text(
                     name,
-                    style: AppTextStyles.headingBlackTextStyle.copyWith(fontSize: 18.sp,),
+                    style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 18.sp,),
                   ),
                   if (isVerified) ...[
                     SizedBox(width: 4.w),
@@ -65,7 +65,7 @@ class UserProfileHeader extends StatelessWidget {
                   Text(
                     "UPI ID: $upiId",
                     // style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600, fontWeight: FontWeight.w500),
-                    style: AppTextStyles.greyContentTextStyle.copyWith(fontSize: 12.sp, fontWeight: FontWeight.w500),
+                    style: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 12.sp, fontWeight: FontWeight.w500),
                   ),
                   width4,
                   GestureDetector(

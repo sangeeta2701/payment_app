@@ -15,7 +15,7 @@ class HeaderSection extends StatelessWidget {
         children: [
           Text(
             "History",
-            style: AppTextStyles.headingBlackTextStyle.copyWith(
+            style: AppTextStyles.headingBlackTextStyle(context).copyWith(
               fontSize: 14.sp,
               fontWeight: FontWeight.bold,
             ),
@@ -25,7 +25,11 @@ class HeaderSection extends StatelessWidget {
             icon: Icon(Icons.arrow_downward, size: 14.sp, color: blackColor),
             label: Text(
               "My Statements",
-              style: TextStyle(fontSize: 10.sp, color: blackColor, fontWeight: FontWeight.w600),
+              style: AppTextStyles.greyContentTextStyle(context).copyWith(
+                fontSize: 10.sp,
+                color: blackColor,
+                fontWeight: FontWeight.w600,
+              ),
             ),
             style: OutlinedButton.styleFrom(
               side: BorderSide(color: greyColor.withOpacity(0.3)),

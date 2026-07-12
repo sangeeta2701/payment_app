@@ -163,7 +163,7 @@ class _ContactsListSectionState extends State<ContactsListSection> {
             ),
             title: Text(
               displayName,
-              style: AppTextStyles.headingBlackTextStyle.copyWith(fontSize: 14.sp),
+              style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 14.sp),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -171,7 +171,7 @@ class _ContactsListSectionState extends State<ContactsListSection> {
               padding: EdgeInsets.only(top: 2.h),
               child: Text(
                 primaryPhoneNumber,
-                style: AppTextStyles.greyContentTextStyle.copyWith(fontSize: 12.sp),
+                style: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 12.sp),
               ),
             ),
           );
@@ -189,7 +189,7 @@ class _ContactsListSectionState extends State<ContactsListSection> {
         children: [
           Icon(icon, size: 36.sp, color: greyColor),
           height8,
-          Text(message, textAlign: TextAlign.center, style: AppTextStyles.greyContentTextStyle.copyWith(fontSize: 12.sp)),
+          Text(message, textAlign: TextAlign.center, style: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 12.sp)),
           if (action != null) ...[height4, action],
         ],
       ),

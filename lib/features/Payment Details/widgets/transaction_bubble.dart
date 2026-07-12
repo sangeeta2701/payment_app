@@ -65,7 +65,7 @@ class TransactionBubble extends StatelessWidget {
                       children: [
                         Text(
                           "₹${amount.toStringAsFixed(amount % 1 == 0 ? 0 : 1)}",
-                          style: AppTextStyles.headingBlackTextStyle.copyWith(fontSize: 24.sp, fontWeight: FontWeight.bold),
+                          style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 24.sp, fontWeight: FontWeight.bold),
                         ),
                         width8,
                         Icon(Icons.check_circle, color: const Color(0xFF00B15E), size: 16.sp),
@@ -75,7 +75,7 @@ class TransactionBubble extends StatelessWidget {
                     // ➔ DYNAMIC CONDITION LABELS:
                     Text(
                       isSent ? "Sent to Bank A/c" : "Received",
-                      style: AppTextStyles.blackContentTextStyle.copyWith(
+                      style: AppTextStyles.blackContentTextStyle(context).copyWith(
                         fontSize: 13.sp, 
                         fontWeight: FontWeight.w600,
                         color: Colors.black87,
@@ -86,7 +86,7 @@ class TransactionBubble extends StatelessWidget {
                       alignment: Alignment.bottomRight,
                       child: Text(
                         dateString,
-                        style: AppTextStyles.blackContentTextStyle.copyWith(fontSize: 10.sp, color: Colors.black45),
+                        style: AppTextStyles.blackContentTextStyle(context).copyWith(fontSize: 10.sp, color: Colors.black45),
                       ),
                     )
                   ],

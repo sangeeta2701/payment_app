@@ -62,7 +62,7 @@ void showAddBankBottomSheet(BuildContext context) {
               "Link your bank account now to send and receive money securely using UPI.",
               textAlign: TextAlign.center,
               
-              style: AppTextStyles.greyContentTextStyle.copyWith(
+              style: AppTextStyles.greyContentTextStyle(context).copyWith(
                 fontSize: 13.sp,
                 height: 1.4,
               ),
@@ -93,7 +93,7 @@ void showAddBankBottomSheet(BuildContext context) {
                 ),
                 child: Text(
                   "Add Bank Account",
-                  style: AppTextStyles.whiteContentTextStyle.copyWith(
+                  style: AppTextStyles.whiteContentTextStyle(context).copyWith(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.bold,
                   ),

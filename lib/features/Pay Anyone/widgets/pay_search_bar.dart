@@ -26,7 +26,7 @@ class PaySearchBar extends StatelessWidget {
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 hintText: "Enter a mobile number or name",
-                hintStyle: AppTextStyles.greyContentTextStyle.copyWith(fontSize: 13.sp),
+                hintStyle: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 13.sp),
                 border: InputBorder.none,
                 isDense: true,
               ),

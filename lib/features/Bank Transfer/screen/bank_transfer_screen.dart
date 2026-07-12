@@ -18,9 +18,9 @@ class BankTransferScreen extends StatelessWidget {
     // Fallback constants if app_colors/text_stylies don't have them explicitly
 
     return Scaffold(
-      backgroundColor: bgColor,
+      // backgroundColor: bgColor,
       appBar: AppBar(
-        backgroundColor: bgColor,
+        // backgroundColor: bgColor,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black87, size: 24),
@@ -28,7 +28,7 @@ class BankTransferScreen extends StatelessWidget {
         ),
         title: Text(
           "Bank Transfers",
-          style: AppTextStyles.blackContentTextStyle.copyWith(
+          style: AppTextStyles.blackContentTextStyle(context).copyWith(
             fontSize: 22.sp, 
             fontWeight: FontWeight.bold,
           ),
@@ -82,7 +82,7 @@ class BankTransferScreen extends StatelessWidget {
               // --- Section 3: Recents & Saved Beneficiaries ---
               Text(
                 "Recents & Saved Beneficiaries",
-                style: AppTextStyles.blackContentTextStyle.copyWith(
+                style: AppTextStyles.blackContentTextStyle(context).copyWith(
                   fontSize: 15.sp, 
                   fontWeight: FontWeight.bold,
                   color: Colors.black87, // Use a deep dark color

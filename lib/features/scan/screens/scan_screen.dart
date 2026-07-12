@@ -111,16 +111,16 @@ class _ScanScreenState extends State<ScanScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteColor,
+      // backgroundColor: whiteColor,
       appBar: AppBar(
-        backgroundColor: whiteColor,
+        // backgroundColor: whiteColor,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.arrow_back_ios_new, color: blackColor, size: 16.sp),
         ),
         title: Text(
           "Scan any QR code",
-          style: AppTextStyles.headingBlackTextStyle.copyWith(fontSize: 14.sp),
+          style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 14.sp),
         ),
         centerTitle: true,
         actions: [
@@ -174,11 +174,13 @@ class _ScanScreenState extends State<ScanScreen> {
                   Icons.image_outlined,
                   selectQRFromGallery,
                   "Upload QR",
+                  context,
                 ),
                 scanShortcuts(
                   Icons.flashlight_on_outlined,
                   toggleFlashLight,
                   "Flashlight",
+                  context,
                 ),
               ],
             ),

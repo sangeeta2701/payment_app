@@ -84,7 +84,7 @@ class PopularBanksGrid extends StatelessWidget {
                       textAlign: TextAlign.center,
                       // maxLines: 2,
                       // overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.blackContentTextStyle.copyWith(
+                      style: AppTextStyles.blackContentTextStyle(context).copyWith(
                         fontSize: 9.sp,
                       ),
                     ),

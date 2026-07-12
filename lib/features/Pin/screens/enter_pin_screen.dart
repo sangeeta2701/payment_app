@@ -101,9 +101,9 @@ class _EnterPinScreenState extends ConsumerState<EnterPinScreen> {
     final currencyFormatter = NumberFormat("#,##,###.00");
 
     return Scaffold(
-      backgroundColor: bgColor,
+      // backgroundColor: bgColor,
       appBar: AppBar(
-        backgroundColor: bgColor,
+        // backgroundColor: bgColor,
         elevation: 0,
         scrolledUnderElevation: 0,
         surfaceTintColor: transparent,
@@ -113,7 +113,7 @@ class _EnterPinScreenState extends ConsumerState<EnterPinScreen> {
         ),
         title: Text(
           "ENTER 6-DIGIT UPI PIN",
-          style: AppTextStyles.headingBlackTextStyle.copyWith(fontSize: 14.sp, letterSpacing: 0.5),
+          style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 14.sp, letterSpacing: 0.5),
         ),
       ),
       body: Column(
@@ -124,16 +124,16 @@ class _EnterPinScreenState extends ConsumerState<EnterPinScreen> {
               child: Column(
                 children: [
                   height30,
-                  Text("Sending money to", style: AppTextStyles.greyContentTextStyle.copyWith(fontSize: 13.sp)),
+                  Text("Sending money to", style: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 13.sp)),
                   height4,
-                  Text(widget.userName, style: AppTextStyles.headingBlackTextStyle.copyWith(fontSize: 18.sp)),
+                  Text(widget.userName, style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 18.sp)),
                   height16,
                   Text(
                     "₹${currencyFormatter.format(widget.amountToPay)}",
-                    style: AppTextStyles.headingBlackTextStyle.copyWith(fontSize: 36.sp, fontWeight: FontWeight.bold),
+                    style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 36.sp, fontWeight: FontWeight.bold),
                   ),
                   height60,
-                  Text("ENTER UPI PIN", style: AppTextStyles.headingThemeTextStyle.copyWith(fontSize: 12.sp, letterSpacing: 1.0)),
+                  Text("ENTER UPI PIN", style: AppTextStyles.headingThemeTextStyle(context).copyWith(fontSize: 12.sp, letterSpacing: 1.0)),
                   height20,
                   
                   PinDotsIndicator(pinLength: _currentPin.length),
@@ -143,7 +143,7 @@ class _EnterPinScreenState extends ConsumerState<EnterPinScreen> {
                     Text(
                       _localError!,
                       textAlign: TextAlign.center,
-                      style: AppTextStyles.errorTextStyle.copyWith(fontSize: 13.sp, fontWeight: FontWeight.w500),
+                      style: AppTextStyles.errorTextStyle(context) .copyWith(fontSize: 13.sp, fontWeight: FontWeight.w500),
                     ),
                   ],
                   

@@ -62,7 +62,7 @@ class AccountVerificationSheet extends ConsumerWidget {
                 SizedBox(height: 14.h),
                 Text(
                   "No Account Found",
-                  style: AppTextStyles.headingBlackTextStyle.copyWith(
+                  style: AppTextStyles.headingBlackTextStyle(context).copyWith(
                     fontSize: 15.sp,
                   ),
                 ),
@@ -70,7 +70,7 @@ class AccountVerificationSheet extends ConsumerWidget {
                 Text(
                   "No account found for the registered number in ${selectedBank.name}. Please check your linked mobile profile registration.",
                   textAlign: TextAlign.center,
-                  style: AppTextStyles.greyContentTextStyle.copyWith(
+                  style: AppTextStyles.greyContentTextStyle(context).copyWith(
                     fontSize: 12.sp,
                     height: 1.3,
                   ),
@@ -112,7 +112,7 @@ class AccountVerificationSheet extends ConsumerWidget {
               height12,
               Text(
                 "Select Bank Account Found",
-                style: AppTextStyles.headingBlackTextStyle.copyWith(
+                style: AppTextStyles.headingBlackTextStyle(context).copyWith(
                   fontSize: 16.sp,
                 ),
               ),
@@ -120,7 +120,7 @@ class AccountVerificationSheet extends ConsumerWidget {
               Text(
                 "We found the following account matching your number with ${selectedBank.name}:",
                 textAlign: TextAlign.center,
-                style: AppTextStyles.greyContentTextStyle.copyWith(
+                style: AppTextStyles.greyContentTextStyle(context).copyWith(
                   fontSize: 12.sp,
                 ),
               ),
@@ -158,25 +158,7 @@ class AccountVerificationSheet extends ConsumerWidget {
         style: TextStyle(fontSize: 12.sp, letterSpacing: 1.5, fontWeight: FontWeight.w600),
       ),
       trailing: Icon(Icons.arrow_forward_ios_rounded, size: 14.sp, color: Colors.black45),
-      // onTap: () async {
-      //   // Show an indicator while executing write commands
-      //   showDialog(
-      //     context: context,
-      //     barrierDismissible: false,
-      //     builder: (context) => const Center(child: CircularProgressIndicator()),
-      //   );
-
-      //   final Map<String, dynamic> activePayload = {
-      //     'bankName': account['bankName'] ?? selectedBank.name,
-      //     'maskedAccountNo': displayMaskedNo,
-      //     'upiId': account['upiId'] ?? "${account['phoneNumber']}@payapp",
-      //   };
-
-      //   bool success = await ref.read(bankProvider.notifier).activateBankAccount(activePayload);
-        
-      //   if (context.mounted) Navigator.pop(context); // Remove progress loading state
-
-      //   if (success && context.mounted) {
+      
       //     ScaffoldMessenger.of(context).showSnackBar(
       //       SnackBar(content: Text("${activePayload['bankName']} linked successfully!")),
       //     );
@@ -244,7 +226,7 @@ class AccountVerificationSheet extends ConsumerWidget {
             SizedBox(height: 14.h),
             Text(
               "Something Went Wrong",
-              style: AppTextStyles.headingBlackTextStyle.copyWith(
+              style: AppTextStyles.headingBlackTextStyle(context).copyWith(
                 fontSize: 15.sp,
               ),
             ),
@@ -252,7 +234,7 @@ class AccountVerificationSheet extends ConsumerWidget {
             Text(
               error.toString(),
               textAlign: TextAlign.center,
-              style: AppTextStyles.greyContentTextStyle.copyWith(
+              style: AppTextStyles.greyContentTextStyle(context).copyWith(
                 fontSize: 12.sp,
               ),
             ),

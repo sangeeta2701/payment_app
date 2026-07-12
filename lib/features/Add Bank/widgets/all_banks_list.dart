@@ -28,7 +28,7 @@ class AllBanksList extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Text(
               "All Banks",
-              style: AppTextStyles.headingBlackTextStyle.copyWith(fontSize: 13.sp),
+              style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 13.sp),
             ),
           ),
           SizedBox(height: 8.h),
@@ -69,7 +69,7 @@ CircleAvatar(
 ),
                   title: Text(
                     bank.name,
-                    style: AppTextStyles.headingBlackTextStyle.copyWith(fontSize: 11.sp),
+                    style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 11.sp),
                   ),
                 );
               },

@@ -4,7 +4,7 @@ import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
 
-Widget rechargeBillShortcuts(IconData icon, String title, VoidCallback onTap) {
+Widget rechargeBillShortcuts(IconData icon, String title, VoidCallback onTap, BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Column(
@@ -12,7 +12,7 @@ Widget rechargeBillShortcuts(IconData icon, String title, VoidCallback onTap) {
                   children: [
                    Icon(icon, color: themeColor,size: 16.h,),
                     height4,
-                    Text(title, style:AppTextStyles. blackContentTextStyle.copyWith(fontSize: 12.sp,height: 1.2,),textAlign: TextAlign.center,)
+                    Text(title, style:AppTextStyles. blackContentTextStyle(context).copyWith(fontSize: 12.sp,height: 1.2,),textAlign: TextAlign.center,)
                   ],
                 ),
     );

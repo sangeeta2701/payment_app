@@ -84,11 +84,11 @@ class ContactTile extends StatelessWidget {
       ),
       title: Text(
         contact.displayName,
-        style: AppTextStyles.blackContentTextStyle.copyWith(fontSize: 14.sp),
+        style: AppTextStyles.blackContentTextStyle(context).copyWith(fontSize: 14.sp),
       ),
       subtitle: Text(
         "${contact.phoneNumber} • ${contact.subtitleInfo ?? 'Mobile'}",
-        style: AppTextStyles.greyContentTextStyle.copyWith(fontSize: 12.sp),
+        style: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 12.sp),
       ),
       trailing: Icon(Icons.arrow_forward_ios, size: 14.sp, color: Colors.grey.shade400),
     );

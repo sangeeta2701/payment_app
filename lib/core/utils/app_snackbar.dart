@@ -22,7 +22,7 @@ class AppSnackbar {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
         content: Text(
           message, 
-          style: AppTextStyles.blackDescriptionTextStyle,
+          style: AppTextStyles.blackDescriptionTextStyle(context),
         ),
         duration: const Duration(seconds: 2),
       ),

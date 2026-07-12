@@ -32,7 +32,7 @@ class PaymentBottomBar extends StatelessWidget {
               child: TextField(
                 decoration: InputDecoration(
                   hintText: "Message or amount",
-                  hintStyle: AppTextStyles.greyContentTextStyle.copyWith(fontSize: 14.sp),
+                  hintStyle: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 14.sp),
                   border: InputBorder.none,
                   isDense: true,
                 ),
@@ -54,7 +54,7 @@ class PaymentBottomBar extends StatelessWidget {
             ),
             child: Text(
               "Pay",
-              style: AppTextStyles.whiteButtonTextStyle.copyWith(fontSize: 14.sp, fontWeight: FontWeight.w600),
+              style: AppTextStyles.whiteButtonTextStyle(context).copyWith(fontSize: 14.sp, fontWeight: FontWeight.w600),
             ),
           ),
         ],

@@ -45,12 +45,12 @@ class RecipientBankCard extends StatelessWidget {
                 children: [
                   Text(
                     holderName,
-                    style: AppTextStyles.blackContentTextStyle.copyWith(fontSize: 14.sp, fontWeight: FontWeight.bold),
+                    style: AppTextStyles.blackContentTextStyle(context).copyWith(fontSize: 14.sp, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 2.h),
                   Text(
                     "$bankName • A/C No: $maskedAccountNumber",
-                    style: AppTextStyles.greyContentTextStyle.copyWith(fontSize: 12.sp),
+                    style: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 12.sp),
                   ),
                 ],
               ),

@@ -59,7 +59,7 @@ class BeneficiaryTile extends StatelessWidget {
                     children: [
                       Text(
                         "$name $emojis",
-                        style: AppTextStyles.blackContentTextStyle.copyWith(
+                        style: AppTextStyles.blackContentTextStyle(context).copyWith(
                           fontSize: 15.sp,
                           fontWeight: FontWeight.w600,
                         ),
@@ -67,7 +67,7 @@ class BeneficiaryTile extends StatelessWidget {
                       const Spacer(),
                       Text(
                         dateStr,
-                        style: AppTextStyles.greyContentTextStyle.copyWith(
+                        style: AppTextStyles.greyContentTextStyle(context).copyWith(
                           fontSize: 13.sp,
                           fontWeight: FontWeight.w500,
                         ),
@@ -77,7 +77,7 @@ class BeneficiaryTile extends StatelessWidget {
                   SizedBox(height: 2.h),
                   Text(
                     phoneNumber,
-                    style: AppTextStyles.greyContentTextStyle.copyWith(
+                    style: AppTextStyles.greyContentTextStyle(context).copyWith(
                       fontSize: 12.sp, 
                       color: Colors.grey.shade600,
                     ),
@@ -96,7 +96,7 @@ class BeneficiaryTile extends StatelessWidget {
                       SizedBox(width: 4.w),
                       Text(
                         statusMessage,
-                        style: AppTextStyles.greyContentTextStyle.copyWith(
+                        style: AppTextStyles.greyContentTextStyle(context).copyWith(
                           fontSize: 12.sp,
                           color: Colors.grey.shade500,
                         ),

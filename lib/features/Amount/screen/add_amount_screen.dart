@@ -95,9 +95,9 @@ class _AddAmountScreenState extends State<AddAmountScreen> {
     bool isButtonDisabled = amount == "0" || validationError != null;
 
     return Scaffold(
-      backgroundColor: bgColor,
+      // backgroundColor: bgColor,
       appBar: AppBar(
-        backgroundColor: bgColor,
+        // backgroundColor: bgColor,
         elevation: 0,
         scrolledUnderElevation: 0,
         surfaceTintColor: Colors.transparent,
@@ -126,7 +126,7 @@ class _AddAmountScreenState extends State<AddAmountScreen> {
                   height16,
                   Text(
                     widget.userName,
-                    style: AppTextStyles.headingBlackTextStyle.copyWith(
+                    style: AppTextStyles.headingBlackTextStyle(context).copyWith(
                       fontSize: 20.sp,
                     ),
                   ),
@@ -134,7 +134,7 @@ class _AddAmountScreenState extends State<AddAmountScreen> {
                     height4,
                     Text(
                       "Banking name: ${widget.bankingName}",
-                      style: AppTextStyles.greyContentTextStyle.copyWith(
+                      style: AppTextStyles.greyContentTextStyle(context).copyWith(
                         fontSize: 14.sp,
                       ),
                     ),
@@ -142,7 +142,7 @@ class _AddAmountScreenState extends State<AddAmountScreen> {
                   height4,
                   Text(
                     widget.upiId,
-                    style: AppTextStyles.blackContentTextStyle,
+                    style: AppTextStyles.blackContentTextStyle(context),
                   ),
                   SizedBox(height: 50.h),
 
@@ -183,7 +183,7 @@ class _AddAmountScreenState extends State<AddAmountScreen> {
                       child: Text(
                         validationError,
                         textAlign: TextAlign.center,
-                        style: AppTextStyles.errorTextStyle.copyWith(
+                        style: AppTextStyles.errorTextStyle(context).copyWith(
                           fontSize: 12.sp,
                         ),
                       ),
@@ -200,10 +200,10 @@ class _AddAmountScreenState extends State<AddAmountScreen> {
                         controller: _messageController,
                         keyboardType: TextInputType.text,
                         textAlign: TextAlign.center,
-                        style: AppTextStyles.blackContentTextStyle,
+                        style: AppTextStyles.blackContentTextStyle(context),
                         decoration: InputDecoration(
                           hintText: "Add message +",
-                          hintStyle: AppTextStyles.greyContentTextStyle,
+                          hintStyle: AppTextStyles.greyContentTextStyle(context),
                           contentPadding: EdgeInsets.symmetric(
                             vertical: 8.h,
                             horizontal: 16.w,
@@ -264,7 +264,7 @@ class _AddAmountScreenState extends State<AddAmountScreen> {
                     ),
                     child: Text(
                       "Proceed Securely",
-                      style: AppTextStyles.whiteButtonTextStyle.copyWith(
+                      style: AppTextStyles.whiteButtonTextStyle(context).copyWith(
                         fontSize: 16.sp,
                       ),
                     ),

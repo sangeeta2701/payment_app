@@ -63,14 +63,6 @@ final List<BankModel> _allBanksMaster = [
   List<BankModel> _popularBanks = [];
   List<BankModel> _allBanksSorted = [];
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _processAndSortLists();
-  // } 
-
-
-  // Paste this in your SelectBankScreen initState temporarily
 @override
 void initState() {
   super.initState();
@@ -118,9 +110,9 @@ void initState() {
     final displayPopularBanks = _popularBanks.where((b) => b.name.toLowerCase().contains(_currentQuery)).toList();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
+      // backgroundColor: const Color(0xFFF8F9FA),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF8F9FA),
+        // backgroundColor: const Color(0xFFF8F9FA),
         elevation: 0,
         scrolledUnderElevation: 0,
         surfaceTintColor: Colors.transparent,

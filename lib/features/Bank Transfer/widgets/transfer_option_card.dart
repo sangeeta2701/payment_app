@@ -45,7 +45,7 @@ class TransferOptionCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: AppTextStyles.blackContentTextStyle.copyWith(
+                    style: AppTextStyles.blackContentTextStyle(context).copyWith(
                       fontSize: 14.sp, 
                       fontWeight: FontWeight.w700,
                     ),
@@ -53,7 +53,7 @@ class TransferOptionCard extends StatelessWidget {
                   SizedBox(height: 2.h),
                   Text(
                     subtitle,
-                    style: AppTextStyles.greyContentTextStyle.copyWith(
+                    style: AppTextStyles.greyContentTextStyle(context).copyWith(
                       fontSize: 11.sp,
                       color: Colors.grey.shade500,
                     ),

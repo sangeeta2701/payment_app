@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
       SnackBar(
         content: Text(
           errorMessage,
-          style: AppTextStyles.whiteContentTextStyle.copyWith(fontSize: 13.sp),
+          style: AppTextStyles.whiteContentTextStyle(context).copyWith(fontSize: 13.sp),
         ),
         backgroundColor: Colors.redAccent,
         behavior: SnackBarBehavior.floating,
@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: bgColor,
+      // backgroundColor: bgColor,
       appBar: AppBar(
         backgroundColor: transparent,
         elevation: 0,
@@ -117,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     Text(
                       "Enter your mobile number",
-                      style: AppTextStyles.headingBlackTextStyle.copyWith(
+                      style: AppTextStyles.headingBlackTextStyle(context).copyWith(
                         fontSize: 22.sp,
                         fontWeight: FontWeight.bold,
                       ),
@@ -125,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(height: 8.h),
                     Text(
                       "We'll send a 4-digit OTP to verify your account",
-                      style: AppTextStyles.blackContentTextStyle.copyWith(
+                      style: AppTextStyles.blackContentTextStyle(context).copyWith(
                         color: Colors.grey.shade600,
                         fontSize: 13.sp,
                       ),
@@ -144,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           Text(
                             "+91",
-                            style: AppTextStyles.blackContentTextStyle.copyWith(
+                            style: AppTextStyles.blackContentTextStyle(context).copyWith(
                               fontSize: 15.sp,
                               fontWeight: FontWeight.bold,
                             ),
@@ -156,7 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: TextFormField(
                               controller: _phoneController,
                               keyboardType: TextInputType.phone,
-                              style: AppTextStyles.blackContentTextStyle.copyWith(fontSize: 15.sp),
+                              style: AppTextStyles.blackContentTextStyle(context).copyWith(fontSize: 15.sp),
                               enabled: !_isLoading, // Disable editing text field while executing network calls
                               inputFormatters: [
                                 FilteringTextInputFormatter.digitsOnly,
@@ -196,7 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         child: Text(
                           "Get OTP",
-                          style: AppTextStyles.whiteContentTextStyle.copyWith(
+                          style: AppTextStyles.whiteContentTextStyle(context).copyWith(
                             fontSize: 15.sp,
                             fontWeight: FontWeight.bold,
                           ),

@@ -35,7 +35,7 @@ class SelfTransferSection extends StatelessWidget {
                   children: [
                     Text(
                       "Self Transfer",
-                      style: AppTextStyles.blackContentTextStyle.copyWith(
+                      style: AppTextStyles.blackContentTextStyle(context).copyWith(
                         fontSize: 15.sp, 
                         fontWeight: FontWeight.w700,
                       ),
@@ -43,7 +43,7 @@ class SelfTransferSection extends StatelessWidget {
                     SizedBox(height: 2.h),
                     Text(
                       "Select A/c where you want to send money",
-                      style: AppTextStyles.greyContentTextStyle.copyWith(fontSize: 11.sp),
+                      style: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 11.sp),
                     ),
                   ],
                 ),
@@ -71,7 +71,7 @@ class SelfTransferSection extends StatelessWidget {
                     children: [
                       Text(
                         "State Bank Of India-0106",
-                        style: AppTextStyles.blackContentTextStyle.copyWith(
+                        style: AppTextStyles.blackContentTextStyle(context).copyWith(
                           fontSize: 14.sp, 
                           fontWeight: FontWeight.w600,
                         ),
@@ -105,7 +105,7 @@ class SelfTransferSection extends StatelessWidget {
                   SizedBox(width: 12.w),
                   Text(
                     "Add another Bank A/c",
-                    style: AppTextStyles.blackContentTextStyle.copyWith(
+                    style: AppTextStyles.blackContentTextStyle(context).copyWith(
                       color: lightBlueColor,
                       fontSize: 13.sp,
                       fontWeight: FontWeight.w600,

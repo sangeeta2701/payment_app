@@ -24,7 +24,7 @@ class SearchBarWidget extends StatelessWidget {
             child: TextField(
               decoration: InputDecoration(
                 hintText: "Search Name, Mobile, UPI ID ...",
-                hintStyle: AppTextStyles.greyContentTextStyle.copyWith(
+                hintStyle: AppTextStyles.greyContentTextStyle(context).copyWith(
                   fontSize: 14.sp, 
                   color: Colors.grey.shade500,
                 ),
