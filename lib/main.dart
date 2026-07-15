@@ -8,7 +8,6 @@ import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/theme_provider.dart';
 import 'package:payment_app/features/Home/screens/home_screen.dart';
 import 'package:payment_app/features/auth/screens/login_screen.dart';
-import 'package:payment_app/features/biometrics/security_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +16,6 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-// ➔ Changed baseline class to ConsumerWidget to give this access to 'ref'
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
@@ -34,12 +32,13 @@ class MyApp extends ConsumerWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           themeMode:
-              themeMode, // ➔ Controls whether the app uses theme or darkTheme configurations
+              themeMode, 
           // Baseline Light Mode Configuration
           theme: ThemeData(
             brightness: Brightness.light,
             primaryColor: themeColor,
-            scaffoldBackgroundColor: const Color(0xFFF8F9FA),
+            // scaffoldBackgroundColor: const Color(0xFFF8F9FA),
+            scaffoldBackgroundColor: bgColor,
             appBarTheme: const AppBarTheme(
               backgroundColor: Colors.transparent,
               elevation: 0,
@@ -61,22 +60,7 @@ class MyApp extends ConsumerWidget {
             cardColor: const Color(0xFF1E1E1E),
           ),
 
-          // home: StreamBuilder<User?>(
-          //   stream: FirebaseAuth.instance.authStateChanges(),
-          //   builder: (context, snapshot) {
-          //     if (snapshot.connectionState == ConnectionState.waiting) {
-          //       return const Scaffold(
-          //         body: Center(child: CircularProgressIndicator()),
-          //       );
-          //     }
-
-          //     if (snapshot.hasData && snapshot.data != null) {
-          //       return const HomeScreen();
-          //     }
-
-          //     return const LoginScreen();
-          //   },
-          // ),
+        
           home: StreamBuilder<User?>(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
@@ -86,40 +70,11 @@ class MyApp extends ConsumerWidget {
                 );
               }
 
+              // If logged in, go straight to HomeScreen.
               if (snapshot.hasData && snapshot.data != null) {
-                // Inject the Biometric Shield wrapper layer before allowing access to HomeScreen
-                return Consumer(
-                  builder: (context, ref, child) {
-                    final isUnlocked = ref.watch(securityProvider).isUnlocked;
-
-                    if (!isUnlocked) {
-                      // Display an asset loader or locked profile window backdrop
-                      return Scaffold(
-                        body: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(
-                                Icons.lock_outline,
-                                size: 64,
-                                color: lightBlueColor,
-                              ),
-                              const SizedBox(height: 16),
-                              ElevatedButton(
-                                onPressed: () => ref
-                                    .read(securityProvider.notifier)
-                                    .verifyIdentity(),
-                                child: const Text("Unlock Wallet"),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }
-                    return const HomeScreen();
-                  },
-                );
+                return const HomeScreen();
               }
+
               return const LoginScreen();
             },
           ),

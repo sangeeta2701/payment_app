@@ -1,32 +1,42 @@
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
-// ➔ IMPORT BOTH PLATFORM DEFINITIONS TO FIX "IOSAuthMessages not defined"
 import 'package:local_auth_android/local_auth_android.dart';
-import 'package:local_auth_darwin/local_auth_darwin.dart'; 
+import 'package:local_auth_darwin/local_auth_darwin.dart';
 
 class BiometricService {
   final LocalAuthentication _auth = LocalAuthentication();
 
-  /// Check if the device hardware supports biometrics and has profiles enrolled
   Future<bool> isDeviceSecure() async {
     try {
-      final bool canAuthenticateWithBiometrics = await _auth.canCheckBiometrics;
-      final bool canAuthenticate = canAuthenticateWithBiometrics || await _auth.isDeviceSupported();
-      return canAuthenticate;
-    } catch (_) {
+      final bool canCheckBiometrics = await _auth.canCheckBiometrics;
+      final bool isDeviceSupported = await _auth.isDeviceSupported();
+
+      debugPrint("=== BiometricService ===");
+      debugPrint("**********************8canCheckBiometrics: $canCheckBiometrics");
+      debugPrint("isDeviceSupported: $isDeviceSupported");
+
+      final List<BiometricType> availableBiometrics =
+          await _auth.getAvailableBiometrics();
+      debugPrint("**********************8availableBiometrics: $availableBiometrics");
+
+      return canCheckBiometrics || isDeviceSupported;
+    } catch (e) {
+      debugPrint("**********************8isDeviceSecure error: $e");
       return false;
     }
   }
 
-  /// Trigger the native lock biometric system overlay panel
   Future<bool> authenticateUser() async {
     try {
-      return await _auth.authenticate(
-        localizedReason: 'Scan fingerprint or Face ID to unlock your Paytm Wallet',
-        biometricOnly: false, 
+      
+      final bool result = await _auth.authenticate(
+        localizedReason:
+            'Scan fingerprint or Face ID to unlock your Payment Wallet',
+        biometricOnly: false,
+        persistAcrossBackgrounding: true, 
         authMessages: const [
           AndroidAuthMessages(
-            signInTitle: 'Paytm Wallet Secure Lock',
+            signInTitle: 'Payment Wallet Secure Lock',
             cancelButton: 'Cancel',
           ),
           IOSAuthMessages(
@@ -34,7 +44,15 @@ class BiometricService {
           ),
         ],
       );
-    } on PlatformException catch (_) {
+
+      debugPrint("=== authenticateUser result: $result ===");
+      return result;
+
+    } on LocalAuthException catch (e) {
+      debugPrint("*************LocalAuthException: ${e.code} — ${e.description}");
+      return false;
+    } catch (e) {
+      debugPrint("Auth error: $e");
       return false;
     }
   }
