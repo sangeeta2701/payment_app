@@ -124,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     SizedBox(height: 8.h),
                     Text(
-                      "We'll send a 4-digit OTP to verify your account",
+                      "We'll send a 6-digit OTP to verify your account",
                       style: AppTextStyles.blackContentTextStyle(context).copyWith(
                         color: Colors.grey.shade600,
                         fontSize: 13.sp,
