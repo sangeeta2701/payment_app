@@ -84,7 +84,9 @@ class ContactTile extends StatelessWidget {
       ),
       title: Text(
         contact.displayName,
-        style: AppTextStyles.blackContentTextStyle(context).copyWith(fontSize: 14.sp),
+        style: AppTextStyles.blackContentTextStyle(context).copyWith(fontSize: 14.sp,  color: Theme.of(context).brightness == Brightness.dark
+                      ? whiteColor
+                      : blackColor,),
       ),
       subtitle: Text(
         "${contact.phoneNumber} • ${contact.subtitleInfo ?? 'Mobile'}",

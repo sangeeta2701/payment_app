@@ -23,14 +23,19 @@ class BankTransferScreen extends StatelessWidget {
         // backgroundColor: bgColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black87, size: 24),
+          icon:  Icon(Icons.arrow_back, color: Theme.of(context).brightness == Brightness.dark
+                      ? whiteColor
+                      : blackColor, size: 24),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           "Bank Transfers",
           style: AppTextStyles.blackContentTextStyle(context).copyWith(
-            fontSize: 22.sp, 
+            fontSize: 16.sp, 
             fontWeight: FontWeight.bold,
+            color: Theme.of(context).brightness == Brightness.dark
+                      ? whiteColor
+                      : blackColor,
           ),
         ),
         titleSpacing: 0,

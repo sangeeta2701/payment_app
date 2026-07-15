@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:payment_app/core/constants/sizedbox.dart';
+import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
 
 class PaySearchBar extends StatelessWidget {
@@ -22,13 +23,17 @@ class PaySearchBar extends StatelessWidget {
           width8,
           Expanded(
             child: TextField(
+              style: AppTextStyles.blackContentTextStyle(context).copyWith(fontSize: 13.sp, color: Theme.of(context).brightness == Brightness.dark
+                      ? blackColor
+                      : greyColor,),
               onChanged: onChanged,
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 hintText: "Enter a mobile number or name",
-                hintStyle: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 13.sp),
+                hintStyle: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 13.sp, ),
                 border: InputBorder.none,
                 isDense: true,
+                
               ),
             ),
           ),

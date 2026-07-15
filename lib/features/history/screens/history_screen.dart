@@ -47,12 +47,16 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
         scrolledUnderElevation: 0,
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: blackColor),
+          icon:  Icon(Icons.arrow_back, color: Theme.of(context).brightness == Brightness.dark
+                      ? whiteColor
+                      : blackColor,),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           "Balance & History",
-          style: AppTextStyles.blackContentTextStyle(context).copyWith(fontSize: 18.sp, fontWeight: FontWeight.bold),
+          style: AppTextStyles.blackContentTextStyle(context).copyWith(fontSize: 18.sp, color: Theme.of(context).brightness == Brightness.dark
+                      ? whiteColor
+                      : blackColor,),
         ),
       ),
       body: Column(

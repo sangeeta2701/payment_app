@@ -427,7 +427,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
 
-  // ✅ FIX 1: Single flag to prevent both sheets from showing simultaneously
+  // Single flag to prevent both sheets from showing simultaneously
   bool _bankSheetScheduled = false;
 
   @override
@@ -448,16 +448,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         await ref.read(securityProvider.notifier).verifyIdentity();
 
     if (!isAuthSuccess && mounted) {
-      // ✅ FIX 2: Show lock sheet only if biometric failed
+      //Show lock sheet only if biometric failed
       _showLockBottomSheetOverlay();
     } else if (isAuthSuccess && mounted) {
-      // ✅ FIX 3: If biometric passed instantly (e.g. face ID),
+      // If biometric passed instantly (e.g. face ID),
       // trigger bank check right away after a short delay
       _checkAndShowAddBankSheet();
     }
   }
 
-  // ✅ FIX 4: New method — shows add bank sheet only after unlock + delay
+  //  shows add bank sheet only after unlock + delay
   Future<void> _checkAndShowAddBankSheet() async {
     if (_bankSheetScheduled || !mounted) return;
     _bankSheetScheduled = true;
@@ -535,7 +535,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       .verifyIdentity();
                   if (success && context.mounted) {
                     Navigator.pop(context);
-                    // ✅ FIX 5: After manual unlock, check bank sheet
                     _checkAndShowAddBankSheet();
                   }
                 },
@@ -695,7 +694,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     height20,
                     Container(
                       decoration: BoxDecoration(
-                        color: Theme.of(context).cardColor,
+                        color: Theme.of(context).brightness == Brightness.dark
+                      ? bgColor
+                      : whiteColor,
                         borderRadius:
                             BorderRadius.all(Radius.circular(12.r)),
                       ),
@@ -774,7 +775,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     height20,
                     Container(
                       decoration: BoxDecoration(
-                        color: Theme.of(context).cardColor,
+                        color: Theme.of(context).brightness == Brightness.dark
+                      ? bgColor
+                      : whiteColor,
                         borderRadius:
                             BorderRadius.all(Radius.circular(12.r)),
                       ),
@@ -824,7 +827,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     height20,
                     Container(
                       decoration: BoxDecoration(
-                        color: Theme.of(context).cardColor,
+                        color: Theme.of(context).brightness == Brightness.dark
+                      ? bgColor
+                      : whiteColor,
                         borderRadius:
                             BorderRadius.all(Radius.circular(12.r)),
                       ),

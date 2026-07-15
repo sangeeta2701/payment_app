@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
 
 class BeneficiaryTile extends StatelessWidget {
@@ -62,6 +63,9 @@ class BeneficiaryTile extends StatelessWidget {
                         style: AppTextStyles.blackContentTextStyle(context).copyWith(
                           fontSize: 15.sp,
                           fontWeight: FontWeight.w600,
+                          color: Theme.of(context).brightness == Brightness.dark
+                      ? whiteColor
+                      : blackColor
                         ),
                       ),
                       const Spacer(),
