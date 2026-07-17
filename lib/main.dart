@@ -7,12 +7,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/theme_provider.dart';
 import 'package:payment_app/features/Home/screens/home_screen.dart';
+import 'package:payment_app/features/Notifications/notification_service.dart';
 import 'package:payment_app/features/auth/screens/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await Firebase.initializeApp();
+  await NotificationService.initializeNotificationEngine(); 
   runApp(const ProviderScope(child: MyApp()));
 }
 

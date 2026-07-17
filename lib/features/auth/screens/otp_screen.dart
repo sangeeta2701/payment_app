@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
 import 'package:payment_app/features/Home/screens/home_screen.dart';
+import 'package:payment_app/features/Notifications/notification_service.dart';
 
 class OtpScreen extends StatefulWidget {
   final String phoneNumber;
@@ -69,6 +70,8 @@ class _OtpScreenState extends State<OtpScreen> {
     final userDocRef =
         FirebaseFirestore.instance.collection('users').doc(user.uid);
     final docSnapshot = await userDocRef.get();
+    final String? pushToken = await NotificationService.getDevicePushToken();
+    debugPrint("************************Retrieved Push Token: $pushToken"); 
 
     if (!docSnapshot.exists) {
       await userDocRef.set({
@@ -78,6 +81,7 @@ class _OtpScreenState extends State<OtpScreen> {
         'displayName': '',
         'upiId': '${widget.phoneNumber}@payapp',
         'walletBalance': 0.0,
+        'fcmToken': pushToken ?? '',
       });
     }
   }
