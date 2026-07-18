@@ -334,7 +334,7 @@ class _SelectMembersScreenState extends State<SelectMembersScreen> {
                 style: TextStyle(fontSize: 12.sp, color: greyColor),
               ),
               trailing: isSelected
-                  ? const Icon(Icons.check_circle, color: Colors.green)
+                  ? const Icon(Icons.check_circle, color: successColor)
                   : null,
             );
           }, childCount: _filteredContacts.length),
@@ -366,14 +366,12 @@ class _SelectMembersScreenState extends State<SelectMembersScreen> {
         height: 48.h,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(
-              0xFF5E17EB,
-            ), // Purple core primary selection theme tint color
+            backgroundColor: themeColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.r),
             ),
           ),
-         
+
           onPressed: () {
             // Map your dynamic list of type PayContact into a list of type UserModel on the fly
             final List<UserModel> convertedMembers = _selectedContacts.map((

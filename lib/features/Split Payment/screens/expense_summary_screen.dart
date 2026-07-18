@@ -99,7 +99,7 @@ class _ExpenseSummaryScreenState extends State<ExpenseSummaryScreen> with Single
                           subtitle: Text("GROUP"),
                         ),
                         ListTile(
-                          leading: CircleAvatar(backgroundColor: Colors.blue, child: Text("KM")),
+                          leading: CircleAvatar(backgroundColor: lightBlueColor, child: Text("KM")),
                           title: Text("KR Market"),
                           subtitle: Text("GROUP"),
                         ),
@@ -129,7 +129,7 @@ class _ExpenseSummaryScreenState extends State<ExpenseSummaryScreen> with Single
         children: [
           Container(
             padding: const EdgeInsets.all(16),
-            color: Colors.grey[50],
+            color: greyColor[50],
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

@@ -13,3 +13,4 @@ const bgColor = Color.fromARGB(255, 243, 243, 243);
 const transparent = Colors.transparent;
 const redColor =  Colors.red;
 const lightBlueColor = Color(0xFF0091FF);
+const successColor = Colors.green;
