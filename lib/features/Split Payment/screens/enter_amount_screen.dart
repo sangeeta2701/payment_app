@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
+import 'package:payment_app/core/theme/text_stylies.dart';
 import 'package:payment_app/features/Split%20Payment/model/split_models.dart';
 import 'package:payment_app/features/Split%20Payment/screens/confirm_split_screen.dart';
 
@@ -72,6 +75,8 @@ class _EnterAmountScreenState extends State<EnterAmountScreen> {
                     ),
                   )
                   .toList(),
+
+                  height30,
             ],
           ),
         );
@@ -82,18 +87,18 @@ class _EnterAmountScreenState extends State<EnterAmountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Split expense with ${widget.groupName}")),
+      appBar: AppBar(title: Text("Split expense with ${widget.groupName}",style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 16.sp, fontWeight: FontWeight.bold),)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const Text("Total Amount", style: TextStyle(color: greyColor)),
+             Text("Total Amount", style: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 12.sp)),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
+                 Text(
                   "₹ ",
-                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                  style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 32, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
                   width: 150,
@@ -101,10 +106,7 @@ class _EnterAmountScreenState extends State<EnterAmountScreen> {
                     controller: _amountController,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 32, fontWeight: FontWeight.bold),
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: "0",
@@ -134,6 +136,7 @@ class _EnterAmountScreenState extends State<EnterAmountScreen> {
                   backgroundColor: _isProceedActive
                       ? themeColor
                       : greyColor[300],
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r)),
                 ),
                 onPressed: _isProceedActive
                     ? () {
@@ -156,6 +159,7 @@ class _EnterAmountScreenState extends State<EnterAmountScreen> {
                 ),
               ),
             ),
+            height30,
           ],
         ),
       ),

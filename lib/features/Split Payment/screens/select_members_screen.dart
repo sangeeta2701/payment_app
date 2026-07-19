@@ -153,10 +153,11 @@ class _SelectMembersScreenState extends State<SelectMembersScreen> {
           children: [
             Text(
               "New Group",
-              style: AppTextStyles.blackContentTextStyle(context).copyWith(
+              style: AppTextStyles.headingBlackTextStyle(context).copyWith(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
                 color: isDark ? whiteColor : blackColor,
+                height: 1.4,
               ),
             ),
             Text(
@@ -368,7 +369,7 @@ class _SelectMembersScreenState extends State<SelectMembersScreen> {
           style: ElevatedButton.styleFrom(
             backgroundColor: themeColor,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.r),
+              borderRadius: BorderRadius.circular(24.r),
             ),
           ),
 
@@ -396,9 +397,8 @@ class _SelectMembersScreenState extends State<SelectMembersScreen> {
           },
           child: Text(
             "CONTINUE",
-            style: TextStyle(
-              color: whiteColor,
-              fontSize: 16.sp,
+            style:AppTextStyles.whiteButtonTextStyle(context).copyWith(
+              fontSize: 15.sp,
               fontWeight: FontWeight.bold,
             ),
           ),

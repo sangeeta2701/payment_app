@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
 import 'package:payment_app/features/Split%20Payment/model/split_models.dart';
@@ -25,15 +26,16 @@ class ConfirmSplitScreen extends StatelessWidget {
     final double splitShare = totalAmount / totalPeopleCount;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Confirm Split")),
+      appBar: AppBar(title:  Text("Confirm Split",
+      style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 16.sp, fontWeight: FontWeight.bold),)),
       body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(24.0),
             child: Column(
               children: [
-                const Text("Total Amount", style: TextStyle(color: greyColor)),
-                Text("₹ ${totalAmount.toStringAsFixed(2)}", style:  AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 20.sp)),
+                 Text("Total Amount", style: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 12.sp, height: 1.5)),
+                Text("₹ ${totalAmount.toStringAsFixed(2)}", style:  AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 20.sp, height: 1.5, fontWeight: FontWeight.bold)),
                 Text("Paid by $paidBy", style: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 12.sp)),
               ],
             ),
@@ -81,7 +83,8 @@ class ConfirmSplitScreen extends StatelessWidget {
               },
               child:  Text("Confirm to Split", style: AppTextStyles.whiteButtonTextStyle(context).copyWith(fontSize: 15.sp)),
             ),
-          )
+          ),
+          height30,
         ],
       ),
     );

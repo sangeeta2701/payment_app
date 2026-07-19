@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
+import 'package:payment_app/core/theme/text_stylies.dart';
 import 'package:payment_app/features/Split%20Payment/model/split_models.dart';
 import 'package:payment_app/features/Split%20Payment/screens/enter_amount_screen.dart';
 
@@ -29,7 +32,7 @@ class _CreateGroupDetailsScreenState extends State<CreateGroupDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Create new group")),
+      appBar: AppBar(title:  Text("Create new group", style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 16.sp, fontWeight: FontWeight.bold))),
       body: Column(
         children: [
           Padding(
@@ -44,9 +47,12 @@ class _CreateGroupDetailsScreenState extends State<CreateGroupDetailsScreen> {
                 const SizedBox(width: 16),
                 Expanded(
                   child: TextField(
+                    style: AppTextStyles.blackContentTextStyle(context).copyWith(fontSize: 14.sp),
                     controller: _nameController,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: "Group name",
+                      labelStyle: AppTextStyles.greyContentTextStyle( context).copyWith(fontSize: 14.sp),
+                    
                       focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: themeColor)),
                     ),
                   ),
@@ -58,7 +64,7 @@ class _CreateGroupDetailsScreenState extends State<CreateGroupDetailsScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Text("Group Members: You + ${widget.selectedMembers.length}", style: const TextStyle(fontWeight: FontWeight.bold)),
+              child: Text("Group Members: You + ${widget.selectedMembers.length}", style: AppTextStyles.blackContentTextStyle(context).copyWith(fontSize: 14.sp, fontWeight: FontWeight.bold)),
             ),
           ),
           const SizedBox(height: 16),
@@ -97,9 +103,10 @@ class _CreateGroupDetailsScreenState extends State<CreateGroupDetailsScreen> {
                   ),
                 );
               } : null,
-              child: Text("CREATE", style: TextStyle(color: _isButtonActive ? whiteColor : greyColor)),
+              child: Text("CREATE", style: TextStyle(color: _isButtonActive ? whiteColor : greyColor, fontSize: 16.sp, fontWeight: FontWeight.bold)),
             ),
-          )
+          ),
+          height30,
         ],
       ),
     );

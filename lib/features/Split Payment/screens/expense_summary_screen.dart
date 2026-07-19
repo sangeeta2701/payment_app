@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
 import 'package:payment_app/features/Split%20Payment/model/split_models.dart';
@@ -119,7 +120,7 @@ class _ExpenseSummaryScreenState extends State<ExpenseSummaryScreen> with Single
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Expense Summary"),
+        title:  Text("Expense Summary", style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 16.sp, fontWeight: FontWeight.bold)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -135,10 +136,10 @@ class _ExpenseSummaryScreenState extends State<ExpenseSummaryScreen> with Single
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text("Total Split Balance", style: TextStyle(color: greyColor)),
-                    Text("₹ 0", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                    Text("Your net payable amount", style: TextStyle(color: greyColor, fontSize: 12)),
+                  children: [
+                    Text("Total Split Balance", style: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 12.sp)),
+                     Text("₹ 0", style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 24.sp, fontWeight: FontWeight.bold)),
+                     Text("Your net payable amount", style: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 12.sp)),
                   ],
                 ),
                 const CircleAvatar(backgroundColor: Colors.orange, radius: 12)
@@ -166,13 +167,13 @@ class _ExpenseSummaryScreenState extends State<ExpenseSummaryScreen> with Single
                       Card(
                         child: ListTile(
                           title: Text("${_settledGroups.length} Settled groups"),
-                          trailing: const Text("View", style: TextStyle(color: themeColor, fontWeight: FontWeight.bold)),
+                          trailing:  Text("View", style: AppTextStyles.themeButtonTextStyle(context).copyWith(fontSize: 12.sp, fontWeight: FontWeight.bold))
                         ),
                       ),
                     ],
                   ),
                 ),
-                const Center(child: Text("No individual entries yet")),
+                 Center(child: Text("No individual entries yet", style: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 14.sp))),
               ],
             ),
           ),
@@ -184,14 +185,16 @@ class _ExpenseSummaryScreenState extends State<ExpenseSummaryScreen> with Single
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: themeColor,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
                 ),
                 onPressed: _showSplitExpensesBottomSheet,
-                child:  Text("SPLIT NEW EXPENSE", style: AppTextStyles.whiteButtonTextStyle(context).copyWith(fontSize: 16.sp, ),
+                child:  Text("SPLIT NEW EXPENSE", style: AppTextStyles.whiteButtonTextStyle(context).copyWith(fontSize: 15.sp, ),
               ),
             ),
           )
-      ),],
+      ),
+      height30,
+      ],
       ),
     );
   }

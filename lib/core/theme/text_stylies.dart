@@ -45,4 +45,10 @@ class AppTextStyles {
         fontWeight: FontWeight.w600, 
         color: whiteColor,
       );
+
+
+  static TextStyle themeButtonTextStyle(BuildContext context) => GoogleFonts.inter(
+        fontWeight: FontWeight.w600, 
+        color: themeColor,
+      );
 }

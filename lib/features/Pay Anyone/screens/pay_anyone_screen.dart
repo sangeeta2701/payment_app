@@ -1,5 +1,5 @@
 
-//updated UI
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fast_contacts/fast_contacts.dart';
@@ -10,8 +10,10 @@ import 'package:payment_app/features/Pay%20Anyone/widgets/contact_tile.dart';
 import 'package:payment_app/features/Pay%20Anyone/widgets/pay_search_bar.dart';
 import 'package:payment_app/features/Pay%20Anyone/widgets/recent_contact_bar.dart';
 import 'package:payment_app/features/Payment%20Details/screens/payment_detail_screen.dart';
+import 'package:payment_app/features/Split%20Payment/screens/expense_summary_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
+
 
 class PayAnyoneScreen extends StatefulWidget {
   const PayAnyoneScreen({super.key});
@@ -23,7 +25,7 @@ class PayAnyoneScreen extends StatefulWidget {
 class _PayAnyoneScreenState extends State<PayAnyoneScreen> {
   List<PayContact> _deviceContacts = [];
   List<PayContact> _filteredContacts = [];
-  List<PayContact> _recentContacts = []; // Tracks horizontal top list
+  List<PayContact> _recentContacts = []; 
   bool _isLoading = false;
   bool _permissionDenied = false;
   String _searchQuery = "";
@@ -65,9 +67,7 @@ class _PayAnyoneScreenState extends State<PayAnyoneScreen> {
           );
           parsedList.add(
             PayContact(
-              displayName: contact.displayName.isEmpty
-                  ? "Unknown"
-                  : contact.displayName,
+              displayName: contact.displayName.isEmpty ? "Unknown" : contact.displayName,
               phoneNumber: cleanPhone,
               isSavedContact: true,
               subtitleInfo: "Mobile",
@@ -76,19 +76,14 @@ class _PayAnyoneScreenState extends State<PayAnyoneScreen> {
         }
       }
 
-      // 1. Sort all loaded device contacts ALPHABETICALLY by display name
       parsedList.sort(
-        (a, b) =>
-            a.displayName.toLowerCase().compareTo(b.displayName.toLowerCase()),
+        (a, b) => a.displayName.toLowerCase().compareTo(b.displayName.toLowerCase()),
       );
 
       setState(() {
         _deviceContacts = parsedList;
         _filteredContacts = parsedList;
-
-        // 2. Mocking historical activity targets (Takes top 5 as recents for mock context)
         _recentContacts = parsedList.take(5).toList();
-
         _permissionDenied = false;
         _isLoading = false;
       });
@@ -109,29 +104,18 @@ class _PayAnyoneScreenState extends State<PayAnyoneScreen> {
     final numericQueryOnly = _searchQuery.replaceAll(RegExp(r'[^0-9]'), '');
 
     final matches = _deviceContacts.where((contact) {
-      final nameMatch = contact.displayName.toLowerCase().contains(
-        lowercaseQuery,
-      );
-      final cleanDevicePhone = contact.phoneNumber.replaceAll(
-        RegExp(r'[^0-9]'),
-        '',
-      );
-      final phoneMatch =
-          numericQueryOnly.isNotEmpty &&
-          cleanDevicePhone.contains(numericQueryOnly);
+      final nameMatch = contact.displayName.toLowerCase().contains(lowercaseQuery);
+      final cleanDevicePhone = contact.phoneNumber.replaceAll(RegExp(r'[^0-9]'), '');
+      final phoneMatch = numericQueryOnly.isNotEmpty && cleanDevicePhone.contains(numericQueryOnly);
       return nameMatch || phoneMatch;
     }).toList();
 
     final isNumericInput = RegExp(r'^[0-9+\- ]+$').hasMatch(_searchQuery);
     bool exactMatchExists = _deviceContacts.any(
-      (c) =>
-          c.phoneNumber.replaceAll(RegExp(r'[^0-9]'), '') == numericQueryOnly,
+      (c) => c.phoneNumber.replaceAll(RegExp(r'[^0-9]'), '') == numericQueryOnly,
     );
 
-    if (matches.isEmpty &&
-        isNumericInput &&
-        numericQueryOnly.length >= 4 &&
-        !exactMatchExists) {
+    if (matches.isEmpty && isNumericInput && numericQueryOnly.length >= 4 && !exactMatchExists) {
       matches.add(
         PayContact(
           displayName: _searchQuery,
@@ -158,22 +142,26 @@ class _PayAnyoneScreenState extends State<PayAnyoneScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         scrolledUnderElevation: 0,
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
-          icon:  Icon(Icons.arrow_back, color: Theme.of(context).brightness == Brightness.dark
-                      ? whiteColor
-                      : blackColor,),
+          icon: Icon(
+            Icons.arrow_back, 
+            color: isDark ? whiteColor : blackColor,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           "Pay Anyone",
-          style: AppTextStyles.blackContentTextStyle(context).copyWith(fontSize: 16.sp, color: Theme.of(context).brightness == Brightness.dark
-                      ? whiteColor
-                      : blackColor,),
+          style: AppTextStyles.blackContentTextStyle(context).copyWith(
+            fontSize: 16.sp, 
+            color: isDark ? whiteColor : blackColor,
+          ),
         ),
       ),
       body: SafeArea(
@@ -209,10 +197,55 @@ class _PayAnyoneScreenState extends State<PayAnyoneScreen> {
       );
     }
 
-    // Wrap list inside CustomScrollView to elegantly hold both components together
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return CustomScrollView(
       slivers: [
-        // 1. Show Horizontal Recents ONLY when search text field query is empty
+        if (_searchQuery.isEmpty)
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 4.h),
+              child: ListTile(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ExpenseSummaryScreen()),
+                  );
+                },
+                leading: CircleAvatar(
+                  radius: 22.r,
+                  backgroundColor: themeColor.withOpacity(0.1),
+                  child: Icon(
+                    Icons.call_split_rounded, 
+                    color: themeColor,
+                    size: 22.sp,
+                  ),
+                ),
+                title: Text(
+                  "Split Expenses / Payments",
+                  style: AppTextStyles.blackContentTextStyle(context).copyWith(
+                    fontSize: 14.sp, 
+                    fontWeight: FontWeight.w600,
+                    color: isDark ? whiteColor : blackColor,
+                    height: 1.4,
+                  ),
+                ),
+               
+                subtitle: Text(
+                  "Create groups and split bills with friends",
+                  style: AppTextStyles.greyContentTextStyle(context).copyWith(
+                    fontSize: 12.sp,
+                  ),
+                ),
+                trailing: Icon(
+                  Icons.chevron_right_rounded, 
+                  color: greyColor.shade400,
+                ),
+              ),
+            ),
+          ),
+
+        // 1. Show Horizontal Recents ONLY when search query is empty
         if (_searchQuery.isEmpty)
           SliverToBoxAdapter(
             child: RecentContactsBar(
@@ -256,15 +289,14 @@ class _PayAnyoneScreenState extends State<PayAnyoneScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.contacts_outlined, size: 54.sp, color: Colors.grey),
-            
+            Icon(Icons.contacts_outlined, size: 54.sp, color: greyColor),
             height16,
             Text(
               "Contact Permission Required",
-              style: TextStyle(
+              style: AppTextStyles.blackContentTextStyle(context).copyWith(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
-                color: blackColor,
+               
               ),
             ),
             height8,
@@ -281,9 +313,9 @@ class _PayAnyoneScreenState extends State<PayAnyoneScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF0F0C21),
               ),
-              child: const Text(
+              child:  Text(
                 "Grant Access",
-                style: TextStyle(color: whiteColor),
+                style: AppTextStyles.whiteButtonTextStyle(context).copyWith(fontSize: 15.sp),
               ),
             ),
           ],
