@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:screen_protector/screen_protector.dart'; 
+
 import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
 import 'package:payment_app/features/Pin/widgest/pin_dots_indicator.dart';
 import 'package:payment_app/features/Pin/widgest/pin_keypad.dart';
-
-// ➔ IMPORT THE TRANSACTION NOTIFIER INSTEAD OF RAZORPAY
 import 'package:payment_app/features/Transactions/providers/transaction_notifier.dart'; 
 import 'package:payment_app/features/Transactions/screen/transaction_details_screen.dart';
 
@@ -34,6 +34,30 @@ class _EnterPinScreenState extends ConsumerState<EnterPinScreen> {
   final int _maxPinLength = 6;
   bool _isProcessing = false;
   String? _localError;
+
+  @override
+  void initState() {
+    super.initState();
+    _enableScreenProtection(); //Enable screenshot blocking when screen loads
+  }
+
+  @override
+  void dispose() {
+    _disableScreenProtection(); //Restore screenshot capabilities when navigating away
+    super.dispose();
+  }
+
+  /// Turn ON protection against screenshots & screen recording
+  Future<void> _enableScreenProtection() async {
+    await ScreenProtector.preventScreenshotOn(); // Block screenshots
+    await ScreenProtector.protectDataLeakageOn(); // Hide preview in App Switcher
+  }
+
+  /// Turn OFF protection
+  Future<void> _disableScreenProtection() async {
+    await ScreenProtector.preventScreenshotOff();
+    await ScreenProtector.protectDataLeakageOff();
+  }
 
   void _handleKeyPress(String value) {
     if (_isProcessing) return;
@@ -61,7 +85,6 @@ class _EnterPinScreenState extends ConsumerState<EnterPinScreen> {
       _localError = null;
     });
 
-    // ➔ EXECUTING DOMESTIC WALLET TRANSACTION NATIVELY
     bool success = await ref.read(transactionProvider.notifier).processDirectWalletPayment(
           receiverName: widget.userName,
           amount: widget.amountToPay,
@@ -74,7 +97,6 @@ class _EnterPinScreenState extends ConsumerState<EnterPinScreen> {
     final txState = ref.read(transactionProvider);
 
     if (success && txState.transactionId != null) {
-      // ➔ SUCCESS: Navigate directly to your native receipt view
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
@@ -87,7 +109,6 @@ class _EnterPinScreenState extends ConsumerState<EnterPinScreen> {
         (route) => route.isFirst,
       );
     } else {
-      // ➔ FAILURE: Reset PIN and show error without leaving the screen
       setState(() {
         _isProcessing = false;
         _currentPin = "";
@@ -101,9 +122,7 @@ class _EnterPinScreenState extends ConsumerState<EnterPinScreen> {
     final currencyFormatter = NumberFormat("#,##,###.00");
 
     return Scaffold(
-      // backgroundColor: bgColor,
       appBar: AppBar(
-        // backgroundColor: bgColor,
         elevation: 0,
         scrolledUnderElevation: 0,
         surfaceTintColor: transparent,
@@ -143,7 +162,7 @@ class _EnterPinScreenState extends ConsumerState<EnterPinScreen> {
                     Text(
                       _localError!,
                       textAlign: TextAlign.center,
-                      style: AppTextStyles.errorTextStyle(context) .copyWith(fontSize: 13.sp, fontWeight: FontWeight.w500),
+                      style: AppTextStyles.errorTextStyle(context).copyWith(fontSize: 13.sp, fontWeight: FontWeight.w500),
                     ),
                   ],
                   
