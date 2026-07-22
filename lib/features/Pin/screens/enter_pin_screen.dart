@@ -13,16 +13,28 @@ import 'package:payment_app/features/Pin/widgest/pin_keypad.dart';
 import 'package:payment_app/features/Transactions/providers/transaction_notifier.dart'; 
 import 'package:payment_app/features/Transactions/screen/transaction_details_screen.dart';
 
+enum PinPurpose { payment, checkBalance }
+
 class EnterPinScreen extends ConsumerStatefulWidget {
-  final String userName;
-  final double amountToPay;
-  final String upiId;
+  final PinPurpose purpose;
+
+  // Payment Mode Fields
+  final String? userName;
+  final double? amountToPay;
+  final String? upiId;
+
+  // Check Balance Mode Fields
+  final String? bankName;
+  final String? accountNumber;
 
   const EnterPinScreen({
     super.key,
-    required this.userName,
-    required this.amountToPay,
-    required this.upiId,
+    this.purpose = PinPurpose.payment,
+    this.userName,
+    this.amountToPay,
+    this.upiId,
+    this.bankName,
+    this.accountNumber,
   });
 
   @override
@@ -38,22 +50,20 @@ class _EnterPinScreenState extends ConsumerState<EnterPinScreen> {
   @override
   void initState() {
     super.initState();
-    _enableScreenProtection(); //Enable screenshot blocking when screen loads
+    _enableScreenProtection();
   }
 
   @override
   void dispose() {
-    _disableScreenProtection(); //Restore screenshot capabilities when navigating away
+    _disableScreenProtection();
     super.dispose();
   }
 
-  /// Turn ON protection against screenshots & screen recording
   Future<void> _enableScreenProtection() async {
-    await ScreenProtector.preventScreenshotOn(); // Block screenshots
-    await ScreenProtector.protectDataLeakageOn(); // Hide preview in App Switcher
+    await ScreenProtector.preventScreenshotOn();
+    await ScreenProtector.protectDataLeakageOn();
   }
 
-  /// Turn OFF protection
   Future<void> _disableScreenProtection() async {
     await ScreenProtector.preventScreenshotOff();
     await ScreenProtector.protectDataLeakageOff();
@@ -72,11 +82,20 @@ class _EnterPinScreenState extends ConsumerState<EnterPinScreen> {
         if (_currentPin.length < _maxPinLength) {
           _currentPin += value;
           if (_currentPin.length == _maxPinLength) {
-            _submitPaymentPipeline();
+            _onPinComplete();
           }
         }
       }
     });
+  }
+
+  void _onPinComplete() {
+    if (widget.purpose == PinPurpose.checkBalance) {
+      // Return PIN back to caller instead of executing payment pipeline
+      Navigator.pop(context, _currentPin);
+    } else {
+      _submitPaymentPipeline();
+    }
   }
 
   void _submitPaymentPipeline() async {
@@ -86,9 +105,9 @@ class _EnterPinScreenState extends ConsumerState<EnterPinScreen> {
     });
 
     bool success = await ref.read(transactionProvider.notifier).processDirectWalletPayment(
-          receiverName: widget.userName,
-          amount: widget.amountToPay,
-          upiId: widget.upiId,
+          receiverName: widget.userName ?? "",
+          amount: widget.amountToPay ?? 0.0,
+          upiId: widget.upiId ?? "",
           enteredPin: _currentPin,
         );
 
@@ -102,8 +121,8 @@ class _EnterPinScreenState extends ConsumerState<EnterPinScreen> {
         MaterialPageRoute(
           builder: (context) => TransactionDetailsScreen(
             transactionId: txState.transactionId!,
-            receiverName: widget.userName,
-            amount: widget.amountToPay,
+            receiverName: widget.userName ?? "",
+            amount: widget.amountToPay ?? 0.0,
           ),
         ),
         (route) => route.isFirst,
@@ -120,6 +139,7 @@ class _EnterPinScreenState extends ConsumerState<EnterPinScreen> {
   @override
   Widget build(BuildContext context) {
     final currencyFormatter = NumberFormat("#,##,###.00");
+    final isBalanceCheck = widget.purpose == PinPurpose.checkBalance;
 
     return Scaffold(
       appBar: AppBar(
@@ -143,14 +163,28 @@ class _EnterPinScreenState extends ConsumerState<EnterPinScreen> {
               child: Column(
                 children: [
                   height30,
-                  Text("Sending money to", style: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 13.sp)),
-                  height4,
-                  Text(widget.userName, style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 18.sp)),
-                  height16,
-                  Text(
-                    "₹${currencyFormatter.format(widget.amountToPay)}",
-                    style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 36.sp, fontWeight: FontWeight.bold),
-                  ),
+                  
+                  if (isBalanceCheck) ...[
+                    Text(
+                      widget.bankName ?? "Bank Account",
+                      style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                    ),
+                    height4,
+                    Text(
+                      "A/c No: XX${widget.accountNumber ?? ''}",
+                      style: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 13.sp),
+                    ),
+                  ] else ...[
+                    Text("Sending money to", style: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 13.sp)),
+                    height4,
+                    Text(widget.userName ?? "", style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 18.sp)),
+                    height16,
+                    Text(
+                      "₹${currencyFormatter.format(widget.amountToPay ?? 0.0)}",
+                      style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 36.sp, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+
                   height60,
                   Text("ENTER UPI PIN", style: AppTextStyles.headingThemeTextStyle(context).copyWith(fontSize: 12.sp, letterSpacing: 1.0)),
                   height20,

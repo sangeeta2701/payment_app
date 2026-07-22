@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart'; // ➔ IMPORTED RIVERPOD
+import 'package:payment_app/core/constants/sizedbox.dart';
 import 'package:payment_app/core/theme/app_colors.dart';
 import 'package:payment_app/core/theme/text_stylies.dart';
 import 'package:payment_app/features/History/widgets/account_horizobtal_list.dart';
+
 import '../models/transaction_model.dart';
-import '../providers/history_notifier.dart'; // Import providers
-import '../widgets/payment_history_header.dart';
+import '../providers/account_balance_provider.dart';
+import '../providers/history_notifier.dart';
 import '../widgets/month_group_header.dart';
+import '../widgets/payment_history_header.dart';
 import '../widgets/transaction_item_tile.dart';
 
 class HistoryScreen extends ConsumerStatefulWidget {
@@ -24,7 +27,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     setState(() {
       _isSearching = searching;
       if (!searching) {
-        ref.read(historySearchQueryProvider.notifier).state = ""; // Clear state clean
+        ref.read(historySearchQueryProvider.notifier).state = ""; // Clear state cleanly
       }
     });
   }
@@ -35,72 +38,123 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // 1. Read live database stream collections reactively
+    //  Read live database stream & search queries
     final historyStream = ref.watch(historyStreamProvider);
     final searchQuery = ref.watch(historySearchQueryProvider);
 
+    // Read live account balance provider
+    final accountsMap = ref.watch(accountBalanceProvider);
+
+    // Dynamic calculations for Total Balance header summary
+    double totalBalance = 0;
+    int fetchedCount = 0;
+    accountsMap.forEach((_, data) {
+      if (data.state == BalanceState.fetched && data.balance != null) {
+        totalBalance += data.balance!;
+        fetchedCount++;
+      }
+    });
+
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDarkMode ? whiteColor : blackColor;
+
     return Scaffold(
-      // backgroundColor: bgColor,
       appBar: AppBar(
-        // backgroundColor: bgColor,
         elevation: 0,
         scrolledUnderElevation: 0,
-        surfaceTintColor: Colors.transparent,
+        surfaceTintColor: transparent,
         leading: IconButton(
-          icon:  Icon(Icons.arrow_back, color: Theme.of(context).brightness == Brightness.dark
-                      ? whiteColor
-                      : blackColor,),
+          icon: Icon(Icons.arrow_back, color: textColor),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           "Balance & History",
-          style: AppTextStyles.blackContentTextStyle(context).copyWith(fontSize: 18.sp, color: Theme.of(context).brightness == Brightness.dark
-                      ? whiteColor
-                      : blackColor,),
+          style: AppTextStyles.blackContentTextStyle(context).copyWith(
+            fontSize: 18.sp,
+            color: textColor,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       body: Column(
         children: [
+          // Accounts Section Wrapper Container
           Container(
             width: double.infinity,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Color(0xFFD0E7F9), Color(0xFFF4F9FD)],
+                colors: [whiteColor, Color(0xFFF8FAFC)],
               ),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Header displaying Total Balance matching reference UI
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                  child: Text(
-                    "Your Accounts",
-                    style: AppTextStyles.headingBlackTextStyle(context).copyWith(fontSize: 13.sp),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Accounts",
+                            style: AppTextStyles.headingBlackTextStyle(context).copyWith(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          if (fetchedCount > 0) ...[
+                            SizedBox(height: 4.h),
+                            Text(
+                              "Total Balance: ₹${totalBalance.toStringAsFixed(2)}",
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                      Text(
+                        "($fetchedCount of ${accountsMap.length} accounts)",
+                        style: TextStyle(fontSize: 11.sp, color: Colors.grey[600]),
+                      ),
+                    ],
                   ),
                 ),
+                height8,
                 const AccountsHorizontalList(),
-                SizedBox(height: 16.h),
+                height16,
               ],
             ),
           ),
 
+          // Search & Filter Header Toolbar
           PaymentHistoryHeader(
             isSearching: _isSearching,
             onSearchToggle: _handleSearchToggle,
             onSearchChanged: _filterSearch,
           ),
 
-          // 2. Wire up Async patterns gracefully inside our list tree framework
+          // Transaction Stream History View
           Expanded(
             child: Container(
               color: whiteColor,
               child: historyStream.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (err, stack) => Center(child: Text("Connection error: $err", style: const TextStyle(color: Colors.red))),
+                error: (err, stack) => Center(
+                  child: Text(
+                    "Connection error: $err",
+                    style: const TextStyle(color: redColor, fontSize: 14),
+                  ),
+                ),
                 data: (masterGroups) {
-                  // Apply filter calculations on server collection variables if search is running
                   final displayedGroups = _applySearchFilter(masterGroups, searchQuery);
 
                   if (displayedGroups.isEmpty) {
@@ -116,15 +170,15 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     );
   }
 
-  // Local helper strategy processing character filters cleanly over lists
+  // Filter strategy processing character query over list items
   List<GroupedTransactions> _applySearchFilter(List<GroupedTransactions> data, String query) {
     if (query.isEmpty) return data;
-    
+
     List<GroupedTransactions> filtered = [];
     for (var group in data) {
       final matches = group.transactions.where((tx) {
         return tx.title.toLowerCase().contains(query.toLowerCase()) ||
-               tx.categoryTag.toLowerCase().contains(query.toLowerCase());
+            tx.categoryTag.toLowerCase().contains(query.toLowerCase());
       }).toList();
 
       if (matches.isNotEmpty) {

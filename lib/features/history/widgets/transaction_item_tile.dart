@@ -1,29 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:payment_app/core/constants/sizedbox.dart';
+import 'package:payment_app/core/theme/app_colors.dart';
+import 'package:payment_app/core/theme/text_stylies.dart';
 import '../models/transaction_model.dart';
 
 class TransactionItemTile extends StatelessWidget {
   final TransactionModel transaction;
   const TransactionItemTile({super.key, required this.transaction});
 
+  /// Safe helper method to prevent RangeError when title length is less than 2
+  String _getInitials(String title) {
+    final trimmed = title.trim();
+    if (trimmed.isEmpty) return "TX";
+    if (trimmed.length < 2) return trimmed.toUpperCase();
+    return trimmed.substring(0, 2).toUpperCase();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.grey.shade100, width: 1)),
+        border: Border(bottom: BorderSide(color: greyColor.shade100, width: 1)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Circle Initials Profile Badge
+          // Circle Initials Profile Badge (Safely handled)
           CircleAvatar(
             radius: 22.r,
             backgroundColor: const Color(0xFFEDE7F6),
             child: Text(
-              transaction.title.substring(0, 2).toUpperCase(),
-              style: TextStyle(color: const Color(0xFF673AB7), fontWeight: FontWeight.bold, fontSize: 14.sp),
+              _getInitials(transaction.title),
+              style: TextStyle(
+                color: const Color(0xFF673AB7),
+                fontWeight: FontWeight.bold,
+                fontSize: 14.sp,
+              ),
             ),
           ),
           width12,
@@ -35,14 +49,19 @@ class TransactionItemTile extends StatelessWidget {
               children: [
                 Text(
                   "${transaction.title} ${transaction.emojiSuffix ?? ''}",
-                  style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: Colors.black),
+                  style: AppTextStyles.blackContentTextStyle(context).copyWith(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                SizedBox(height: 3.h),
+                height4,
                 Text(
                   "${transaction.dateString}, ${transaction.timestamp}",
-                  style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600),
+                  style: AppTextStyles.greyContentTextStyle(context).copyWith(
+                    fontSize: 12.sp,
+                  ),
                 ),
-                width4,
+                height8,
                 
                 // Functional Categorization Badge Pill
                 Container(
@@ -60,7 +79,11 @@ class TransactionItemTile extends StatelessWidget {
                       ],
                       Text(
                         transaction.categoryTag,
-                        style: TextStyle(fontSize: 11.sp, color: transaction.categoryTextColor, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 11.sp,
+                          color: transaction.categoryTextColor,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
@@ -78,18 +101,21 @@ class TransactionItemTile extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 15.sp,
                   fontWeight: FontWeight.bold,
-                  color: transaction.type == TransactionType.credit ? const Color(0xFF00875A) : Colors.black,
+                  color: transaction.type == TransactionType.credit ? successColor : blackColor,
                 ),
               ),
               height8,
               Row(
                 children: [
-                  Text("To ", style: TextStyle(fontSize: 11.sp, color: Colors.grey)),
+                  Text("To ", style: AppTextStyles.greyContentTextStyle(context).copyWith(fontSize: 11.sp) ),
                   // Inline App target brand badge indicator
                   Container(
                     padding: const EdgeInsets.all(3),
                     decoration: const BoxDecoration(color: Color(0xFF5F259F), shape: BoxShape.circle),
-                    child: const Text("पे", style: TextStyle(color: Colors.white, fontSize: 8, fontWeight: FontWeight.bold)),
+                    child:  Text(
+                      "पे",
+                      style: AppTextStyles.whiteButtonTextStyle(context).copyWith(fontSize: 8.sp, fontWeight: FontWeight.bold),
+                    ),
                   )
                 ],
               )
