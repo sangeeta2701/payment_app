@@ -651,6 +651,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       style: AppTextStyles.headingBlackTextStyle(context)
                           .copyWith(
                         fontSize: 14.sp,
+                        color: Theme.of(context).brightness == Brightness.dark
+                        ? whiteColor
+                        : blackColor,
                       ),
                     ),
                     height12,

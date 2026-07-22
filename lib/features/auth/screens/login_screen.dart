@@ -16,7 +16,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  
+
   // State variables for managing loading animations smoothly
   bool _isLoading = false;
 
@@ -32,7 +32,9 @@ class _LoginScreenState extends State<LoginScreen> {
       SnackBar(
         content: Text(
           errorMessage,
-          style: AppTextStyles.whiteContentTextStyle(context).copyWith(fontSize: 13.sp),
+          style: AppTextStyles.whiteContentTextStyle(
+            context,
+          ).copyWith(fontSize: 13.sp),
         ),
         backgroundColor: Colors.redAccent,
         behavior: SnackBarBehavior.floating,
@@ -55,21 +57,29 @@ class _LoginScreenState extends State<LoginScreen> {
       await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: formattedPhone,
         timeout: const Duration(seconds: 30),
-        
+
         verificationCompleted: (PhoneAuthCredential credential) async {
           // Instant Android automatic SMS code retrieval callback handler
           await FirebaseAuth.instance.signInWithCredential(credential);
         },
-        
+
+        // verificationFailed: (FirebaseAuthException e) {
+        //   setState(() => _isLoading = false);
+        //   _showErrorSnackBar(e.message ?? "Authentication failed. Try again.");
+        // },
         verificationFailed: (FirebaseAuthException e) {
           setState(() => _isLoading = false);
-          _showErrorSnackBar(e.message ?? "Authentication failed. Try again.");
+          debugPrint("************Phone Auth Error Code: ${e.code}");
+          debugPrint("❌***************Phone Auth Error Message: ${e.message}");
+          _showErrorSnackBar(
+            "Error [${e.code}]: ${e.message ?? 'Authentication failed.'}",
+          );
         },
-        
+
         codeSent: (String verificationId, int? resendToken) {
           // Turn off loading animation right before we transition away
           setState(() => _isLoading = false);
-          
+
           // Secure route migration carrying token references downstream
           Navigator.push(
             context,
@@ -81,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           );
         },
-        
+
         codeAutoRetrievalTimeout: (String verificationId) {
           if (mounted) setState(() => _isLoading = false);
         },
@@ -117,21 +127,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     Text(
                       "Enter your mobile number",
-                      style: AppTextStyles.headingBlackTextStyle(context).copyWith(
-                        fontSize: 22.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: AppTextStyles.headingBlackTextStyle(
+                        context,
+                      ).copyWith(fontSize: 22.sp, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 8.h),
                     Text(
                       "We'll send a 6-digit OTP to verify your account",
-                      style: AppTextStyles.blackContentTextStyle(context).copyWith(
-                        color: Colors.grey.shade600,
-                        fontSize: 13.sp,
-                      ),
+                      style: AppTextStyles.blackContentTextStyle(
+                        context,
+                      ).copyWith(color: Colors.grey.shade600, fontSize: 13.sp),
                     ),
                     SizedBox(height: 32.h),
-                    
+
                     // Input Card Box Layout
                     Container(
                       decoration: BoxDecoration(
@@ -139,32 +147,46 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(16.r),
                         border: Border.all(color: Colors.grey.shade300),
                       ),
-                      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 4.h,
+                      ),
                       child: Row(
                         children: [
                           Text(
                             "+91",
-                            style: AppTextStyles.blackContentTextStyle(context).copyWith(
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: AppTextStyles.blackContentTextStyle(context)
+                                .copyWith(
+                                  fontSize: 15.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
                           SizedBox(width: 12.w),
-                          Container(width: 1, height: 24.h, color: Colors.grey.shade300),
+                          Container(
+                            width: 1,
+                            height: 24.h,
+                            color: Colors.grey.shade300,
+                          ),
                           SizedBox(width: 12.w),
                           Expanded(
                             child: TextFormField(
                               controller: _phoneController,
                               keyboardType: TextInputType.phone,
-                              style: AppTextStyles.blackContentTextStyle(context).copyWith(fontSize: 15.sp),
-                              enabled: !_isLoading, // Disable editing text field while executing network calls
+                              style: AppTextStyles.blackContentTextStyle(
+                                context,
+                              ).copyWith(fontSize: 15.sp),
+                              enabled:
+                                  !_isLoading, // Disable editing text field while executing network calls
                               inputFormatters: [
                                 FilteringTextInputFormatter.digitsOnly,
                                 LengthLimitingTextInputFormatter(10),
                               ],
                               decoration: InputDecoration(
                                 hintText: "00000 00000",
-                                hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 15.sp),
+                                hintStyle: TextStyle(
+                                  color: Colors.grey.shade400,
+                                  fontSize: 15.sp,
+                                ),
                                 border: InputBorder.none,
                               ),
                               validator: (value) {
@@ -182,7 +204,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     const Spacer(),
-                    
+
                     // Proceed Launcher Action Button
                     SizedBox(
                       width: double.infinity,
@@ -191,15 +213,18 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: _isLoading ? null : _submitPhoneNumber,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: themeColor,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24.r),
+                          ),
                           elevation: 0,
                         ),
                         child: Text(
                           "Get OTP",
-                          style: AppTextStyles.whiteContentTextStyle(context).copyWith(
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: AppTextStyles.whiteContentTextStyle(context)
+                              .copyWith(
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
                         ),
                       ),
                     ),
@@ -207,14 +232,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            
+
             // Layer 2: Safety Modal Spinner Shield preventing duplicate submit clicks
             if (_isLoading)
               Container(
                 color: Colors.black.withOpacity(0.05),
                 child: const Center(
                   child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0F0C21)),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Color(0xFF0F0C21),
+                    ),
                   ),
                 ),
               ),
